@@ -43,7 +43,7 @@ export default function Header() {
             Welcome to Bharat Technical College Of Fire Engineering & Safety
             Management
             <span className="text-yellow-400 ml-2">• Admissions Open </span> 
-              • Explore Our Courses 
+            <span className="font-extrabold">  • Explore Our Courses   </span> 
               • Stay Safe 
           </div>
         </div>
