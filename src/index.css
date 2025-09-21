@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme{
+    --font-family: 'roboto', sans-serif;
+    --font-size: 16px;
+    --line-height: 1.5;
+    --color-primary: #1a202c;
+    --color-secondary: #2d3748;
+    --color-accent: #4a5568;
+    --color-background: #f7fafc;
+    --color-text: #2d3748;
+}
+
+@layer utilities {
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+  .animate-marquee {
+    display: inline-block;
+    min-width: 100%;
+    animation: marquee 15s linear infinite;
+  }
+}
