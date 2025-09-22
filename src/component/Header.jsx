@@ -1,12 +1,12 @@
 import { useState } from "react";
-
+import collage from "../assets/college.png"
 export default function Header() {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="w-full">
-      {/* 🔍 Search Bar */}
-      <div className="flex items-center justify-between bg-white border-b p-2">
+    <div className="w-full z-20">
+         {/* 🔍 Search Bar */}
+      <div className="flex items-center justify-between bg-white border-b p-2 mt-1 roinded-2xl">
         <input
           type="text"
           value={search}
@@ -34,6 +34,10 @@ export default function Header() {
           👤
         </button>
       </div>
+        <div className="flex items-center rounded-2xl m-1  border-2  justify-center bg-white border-b p-2">
+        <img src={collage} alt="college" />
+      </div>
+     
 
       {/* 📢 Scrolling Notice Bar */}
       <div className="bg-red-700  font-semibold text-white flex items-center overflow-hidden">
@@ -43,11 +47,12 @@ export default function Header() {
             Welcome to Bharat Technical College Of Fire Engineering & Safety
             Management
             <span className="text-yellow-400 ml-2">• Admissions Open </span> 
-            <span className="font-extrabold">  • Explore Our Courses   </span> 
+             • Explore Our Courses   
               • Stay Safe 
           </div>
         </div>
       </div>
+      
     </div>
   );
 }
