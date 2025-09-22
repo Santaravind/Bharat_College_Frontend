@@ -2,7 +2,7 @@ import React from 'react'
 
 function About() {
   return (
-    <div>
+    <div className='text-2xl items-start justify-center '>
       About us ...
     </div>
   )
