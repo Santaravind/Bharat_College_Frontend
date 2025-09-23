@@ -1,5 +1,5 @@
 import React from "react";
-
+import logo2 from '../assets/logo2.png'
 export default function Footer() {
   return (
     <footer className="bg-black text-white">
@@ -7,11 +7,11 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* NSDM Info */}
         <div>
-          <h3 className="text-lg font-bold mb-4">NSDM</h3>
+          <h3 className="text-lg font-bold mb-4 ">NSDM</h3>
           <img
-            src="https://nehruskilldevelopmentmission.com/wp-content/uploads/2020/04/logo-300x272.png"
+            src={logo2}
             alt="NSDM Logo"
-            className="w-36 mb-4"
+            className="w-46 mb-4"
           />
           <p className="text-sm">
             <b>Skills training</b> is designed to provide employees with the
@@ -25,8 +25,9 @@ export default function Footer() {
         <div>
           <h3 className="text-lg font-bold mb-4">QR Code</h3>
           <a href="https://nehruskilldevelopmentmission.com/student-verification/">
+          {/* QR not added */}
             <img
-              src="https://nehruskilldevelopmentmission.com/wp-content/uploads/2020/04/qr-code.png"
+              src="https://res.cloudinary.com/djwanfb4j/image/upload/v1758614510/hrrtvtzsz18ymcqkfadg.jpg"
               alt="QR Code"
               className="w-full max-w-xs"
             />
@@ -70,7 +71,7 @@ export default function Footer() {
       {/* Footer Bottom */}
       <div className="bg-gray-900 text-gray-400 py-4 text-center text-sm">
         <p>
-          © 2025 <a href="https://nehruskilldevelopmentmission.com/" className="text-white font-semibold">NSDM</a>. All rights reserved. Theme <a href="https://themegrill.com/themes/spacious" className="text-white" target="_blank" rel="noreferrer">Spacious</a> by ThemeGrill. Powered by <a href="https://wordpress.org" className="text-white" target="_blank" rel="noreferrer">WordPress</a>.
+          © 2025 <a href="https://nehruskilldevelopmentmission.com/" className="text-white font-semibold">BTCFSM</a>. All rights reserved. Theme <a href="https://themegrill.com/themes/spacious" className="text-white" target="_blank" rel="noreferrer">Spacious</a> by ThemeGrill. Powered by <a href="https://wordpress.org" className="text-white" target="_blank" rel="noreferrer"></a>.
         </p>
       </div>
     </footer>
