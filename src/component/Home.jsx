@@ -23,7 +23,7 @@ const navigate=  useNavigate()
     alert("Form Submitted Successfully!");
     setFormData({ name: "", email: "", course: "" });
   };
-
+//Course cards details
   const cards = [
     { title: "D. Pharm", icon: <FaPills className="text-green-600 text-6xl hover:animate-pulse hover:text-9xl" /> },
     { title: "University Courses", icon: <FaUniversity className="text-blue-600 text-6xl" /> },
@@ -37,7 +37,8 @@ const navigate=  useNavigate()
 
   return (
 
-<>    <div className="min-h-screen radial-gradient(circle at top center, rgba(59, 130, 246, 0.5),transparent 70% flex p-6">
+<>   
+ <div className="min-h-screen radial-gradient(circle at top center, rgba(59, 130, 246, 0.5),transparent 70% flex p-6">
 
       {/* Left Side - 3/4 */}
       
