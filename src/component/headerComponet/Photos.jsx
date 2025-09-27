@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function ImageGallery() {
-  const images = [
+
+ const images = [
     "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
     "https://images.pexels.com/photos/4951277/pexels-photo-4951277.jpeg",
     "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
@@ -10,14 +10,19 @@ export default function ImageGallery() {
     "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
     "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
     "https://images.pexels.com/photos/4951277/pexels-photo-4951277.jpeg",
-    "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
+    "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",    
+    "https://images.pexels.com/photos/4951277/pexels-photo-4951277.jpeg",
     "https://images.pexels.com/photos/4951277/pexels-photo-4951277.jpeg",
     "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
     "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
-    "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
+    "https://images.pexels.com/photos/4951277/pexels-photo-4951277.jpeg",
+    "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",    
+    "https://images.pexels.com/photos/4951277/pexels-photo-4951277.jpeg",
     "https://images.pexels.com/photos/4738081/pexels-photo-4738081.jpeg",
     
   ];
+const Photos = () => {
+ 
 
   const [index, setIndex] = useState(0);
 
@@ -32,6 +37,8 @@ export default function ImageGallery() {
   };
 
   return (
+    <>
+    
     <section className="w-full py-8 px-4">
       <h2 className="text-2xl font-bold mb-6 text-center">📸 Photo Gallery</h2>
 
@@ -74,5 +81,7 @@ export default function ImageGallery() {
         </button>
       </div>
     </section>
+    </>
   );
 }
+export default Photos;
