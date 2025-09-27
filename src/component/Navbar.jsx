@@ -147,9 +147,9 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-[oklch(71.2%_0.194_13.428)] shadow-md font-semibold">
+    <nav className="bg-[oklch(70.7%_0.165_254.624)] text-white  shadow-md font-semibold">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-14">
           {/* Logo / Home */}
           <div className="flex items-center space-x-2">
             <Link to="/" className="flex items-center text-lg hover:text-red-500 transition-colors duration-300">
@@ -175,12 +175,12 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden md:flex space-x-6 ">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className="text-lg hover:text-yellow-400 transition-colors duration-300"
+                className="text-xl hover:text-red-500 transition-colors duration-300  "
               >
                 {link.name}
               </Link>

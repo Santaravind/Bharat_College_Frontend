@@ -1,10 +1,14 @@
 import React from 'react'
+import FireSafety from './FireSafety'
+import Computer from './Computer'
+
 
 function Course() {
   return (
-    <div>
-      our  Courses...
-    </div>
+    <>
+      <FireSafety/>
+      <Computer/>
+    </>
   )
 }
 

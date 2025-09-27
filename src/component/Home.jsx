@@ -6,6 +6,7 @@ import CourseHome from "./coursepage/CourseHome";
 import ImageGallery from "./headerComponet/Imagegallery";
 
 
+
 const Home = () => {
  
 

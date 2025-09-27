@@ -75,7 +75,7 @@ export default function Header() {
       <HeadeGallery/>
       
       {/* 📢 Scrolling Notice Bar */}
-      <div className="bg-[oklch(64.5%_0.246_16.439)] font-semibold text-white flex items-center overflow-hidden header-notice text-2xl">
+      <div className="bg-[oklch(62.3%_0.214_259.815)] font-semibold text-white flex items-center overflow-hidden header-notice text-2xl">
         <span className="bg-[oklch(45.5%_0.188_13.697)] text-white px-3 py-2 mr-2 text-2xl header-notice-label">NOTICE</span>
         <div className="overflow-hidden relative w-full">
           <div className="animate-marquee whitespace-nowrap py-2">
