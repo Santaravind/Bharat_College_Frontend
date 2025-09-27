@@ -1,6 +1,7 @@
 
 import logo from "./assets/logo2.png"
 import CourseHome from "./coursepage/CourseHome";
+
 import Photos from "./headerComponet/Photos";
 
 
@@ -61,17 +62,17 @@ const Home = () => {
   
   {/* Collage heads */}
  
-   <div className="bg-[oklch(97.7%_0.014_308.299)] mt-2 rounded-2xl"> 
+   <div className="bg-[oklch(97.7%_0.014_308.299)] mt-2 rounded-2xl items-center justify-center"> 
           <h1 className="text-black flex justify-center items-center font-bold text-2xl"> College heads</h1>
         
-      <div className="max-w-7xl mx-auto mt-5 p-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="max-w-7xl mx-auto mt-5 p-1 justify-items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 ">
        
     
   
    
   {/* Card 1 */}
   <div
-    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center w-72"
+    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col  items-center w-72 sm:mt-4 "
     style={{
       backgroundImage: `
         radial-gradient(circle at 30% 20%, #FFF991 0%, transparent 40%),
@@ -82,7 +83,7 @@ const Home = () => {
     }}
   >
     {/* Image */}
-    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-12">
+    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-10 ">
       <img
         src={logo}
         alt="profile"
@@ -103,7 +104,7 @@ const Home = () => {
 
   {/* Card 2 */}
   <div
-    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center w-72"
+    className="relative bg-white rounded-2xl shadow-lg p-6 mt-3 flex flex-col items-center w-72"
     style={{
       backgroundImage: `
         radial-gradient(circle at 30% 20%, #FFF991 0%, transparent 40%),
@@ -114,7 +115,7 @@ const Home = () => {
     }}
   >
     {/* Image */}
-    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-yellow-100 shadow-md -mt-12">
+    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-yellow-100 shadow-md -mt-10">
       <img
         src="https://images.pexels.com/photos/4974915/pexels-photo-4974915.jpeg"
         alt="profile"
@@ -135,7 +136,7 @@ const Home = () => {
 
 {/* Card 3 */}
   <div
-    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center w-72"
+    className="relative bg-white rounded-2xl shadow-lg p-6 mt-3 flex flex-col items-center w-72"
     style={{
       backgroundImage: `
         radial-gradient(circle at 30% 20%, #FFF991 0%, transparent 40%),
@@ -146,7 +147,7 @@ const Home = () => {
     }}
   >
     {/* Image */}
-    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-12">
+    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-10">
       <img
         src={logo}
         alt="profile"
@@ -167,7 +168,7 @@ const Home = () => {
 
 {/* Card 4 */}
   <div
-    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center w-72"
+    className="relative bg-white rounded-2xl shadow-lg p-6 mt-3 flex flex-col items-center w-72"
     style={{
       backgroundImage: `
         radial-gradient(circle at 30% 20%, #FFF991 0%, transparent 40%),
@@ -178,7 +179,7 @@ const Home = () => {
     }}
   >
     {/* Image */}
-    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-12">
+    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-10">
       <img
         src={logo}
         alt="profile"

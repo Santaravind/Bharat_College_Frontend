@@ -70,7 +70,7 @@ const FireSafety = () => {
   return (
     <>
     <div className="bg-gray-50 py-9 px-6">
-      <h2 className="text-3xl font-bold text-center mb-8 rounded-full text-black shadow-[inset_1px_15px_13px_0px_#97266d]">
+      <h2 className="text-3xl font-bold text-center mb-8 rounded-full text-black shadow-[inset_1px_15px_13px_10px_#97266d]">
         🔥 Fire & Safety Courses
       </h2>
 
