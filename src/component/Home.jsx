@@ -1,9 +1,10 @@
-import React, { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
 import logo from "./assets/logo2.png"
 import CourseHome from "./coursepage/CourseHome";
-import ImageGallery from "./headerComponet/Imagegallery";
+import Photos from "./headerComponet/Photos";
+
+
+
 
 
 
@@ -202,7 +203,7 @@ const Home = () => {
 {/* Course that display in home  */}
  <CourseHome/>
  {/* image that display at home page */}
- <ImageGallery/>
+ <Photos/>
 
 
 
