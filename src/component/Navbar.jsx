@@ -147,7 +147,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-[oklch(70.7%_0.165_254.624)] text-white  shadow-md font-semibold">
+    <nav className="bg-[oklch(27.1%_0.105_12.094)] text-white  shadow-md font-semibold">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-4">
         <div className="flex justify-between items-center h-14">
           {/* Logo / Home */}
