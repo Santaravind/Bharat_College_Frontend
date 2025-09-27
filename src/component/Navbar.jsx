@@ -152,7 +152,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-14">
           {/* Logo / Home */}
           <div className="flex items-center space-x-2">
-            <Link to="/" className="flex items-center text-lg hover:text-red-500 transition-colors duration-300">
+            <Link to="/" className="flex items-center text-lg hover:text-red-700 transition-colors duration-300">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
