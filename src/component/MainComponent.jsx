@@ -57,7 +57,7 @@ function MainComponent() {
       />
       {/* Header only */}
       <Header />
-      <Navbar />
+      
     </div>
   )
 }

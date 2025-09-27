@@ -78,7 +78,7 @@ const HeadeGallery = () => {
               key={index}
               src={img }
               alt={`slide-${index}`}
-              className="w-full h-72 object-cover flex-shrink-0 "
+              className="w-full h-72  object-cover flex-shrink-0 "
             />
           ))}
         </div>

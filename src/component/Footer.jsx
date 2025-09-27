@@ -2,7 +2,7 @@ import React from "react";
 import logo2 from './assets/logo2.png'
 export default function Footer() {
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-white text-black">
       {/* Footer Widgets */}
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* NSDM Info */}
@@ -69,7 +69,7 @@ export default function Footer() {
       </div>
 
       {/* Footer Bottom */}
-      <div className="bg-gray-900 text-gray-400 py-4 text-center text-sm">
+      <div className="bg-white text-gray-900 py-4 text-center text-sm">
         <p>
           © 2025 <a href="https://nehruskilldevelopmentmission.com/" className="text-white font-semibold">BTCFSM</a>. All rights reserved. Theme <a href="https://themegrill.com/themes/spacious" className="text-white" target="_blank" rel="noreferrer">Spacious</a> by ThemeGrill. Powered by <a href="https://wordpress.org" className="text-white" target="_blank" rel="noreferrer"></a>.
         </p>

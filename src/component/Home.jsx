@@ -1,126 +1,220 @@
 import React, { useState } from "react";
-import { FaPills, FaUniversity, FaPhoneAlt, FaList } from "react-icons/fa";
-import { GiMountains } from "react-icons/gi";
-import { IoBook } from "react-icons/io5";
+
 import { useNavigate } from "react-router-dom";
-import Home2 from   './Home2'
+import logo from "./assets/logo2.png"
+import CourseHome from "./coursepage/CourseHome";
+import ImageGallery from "./headerComponet/Imagegallery";
+
 
 const Home = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    course: "",
-  });
-const navigate=  useNavigate()
+ 
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Student Data:", formData);
-    alert("Form Submitted Successfully!");
-    setFormData({ name: "", email: "", course: "" });
-  };
-//Course cards details
-  const cards = [
-    { title: "D. Pharm", icon: <FaPills className="text-green-600 text-6xl hover:animate-pulse hover:text-9xl" /> },
-    { title: "University Courses", icon: <FaUniversity className="text-blue-600 text-6xl" /> },
-    { title: "Sikkim Alpine University", icon: <GiMountains className="text-orange-500 text-6xl" /> },
-    { title: "NSDM Syllabus", icon: <IoBook className="text-purple-600 text-6xl" /> },
-    { title: "Contact Us", icon: <FaPhoneAlt className="text-green-500 text-6xl" /> },
-    { title: "BTCFSM Course List", icon: <FaList className="text-pink-500 text-6xl"
-      onClick={()=>navigate("/course" )}
-      /> },
-  ];
 
   return (
 
 <>   
- <div className="min-h-screen radial-gradient(circle at top center, rgba(59, 130, 246, 0.5),transparent 70% flex p-6">
+ <div className="min-h-screen radial-gradient(circle at top center, rgba(59, 130, 246, 0.5),transparent 70% mb-10 p-2">
 
-      {/* Left Side - 3/4 */}
-      
-      <div className="w-3/4 grid grid-cols-3 gap-6 pr-6 ">
-      
-        {cards.map((card, index) => (
-          <div
-            key={index}
-            className="bg-yellow-50 hover:shadow-lg transition p-6 rounded-2xl flex flex-col items-center justify-center cursor-pointer  shadow-amber-300 "
-          >
-            {card.icon}
-            <h3 className="mt-4 text-lg font-semibold text-gray-800 text-center">
-              {card.title}
-            </h3>
-          </div>
-        ))}
-      </div>
-        
-      {/* Right Side - 1/4 (Student Form) */}
-      <div className="w-1/4 max-h-full bg-white rounded-2xl shadow-lg p-6">
-        <h2 className="text-xl font-bold text-gray-700 mb-4 text-center">
-          Admission Form
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Course
-            </label>
-            <select
-              name="course"
-              value={formData.course}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="">Select Course</option>
-              <option value="D. Pharm">D. Pharm</option>
-              <option value="University Courses">University Courses</option>
-              <option value="Sikkim Alpine University">Sikkim Alpine University</option>
-              <option value="NSDM Syllabus">NSDM Syllabus</option>
-              <option value="NSDM Course List">NSDM Course List</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-          >
-            Submit
-          </button>
-        </form>
-      </div>
+     
+          {/* about us and notification  */}
+     <div className="w-full p-2 md:p-2 lg:p-2.5   ">
+  <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-2">
+    
+    {/* About Section */}
+    <div className="md:col-span-2 bg-white shadow-lg rounded-2xl p-3">
+      <h1 className="text-3xl font-bold text-gray-900 mb-4">About Us</h1>
+      <p className="text-gray-700 leading-relaxed">
+        Kashi Institute of Technology (KIT), established in 2008 under the aegis of 
+        the Jain Education Society, is a premier institution dedicated to excellence 
+        in technical education. Located in Varanasi, Uttar Pradesh, the institute stands 
+        out for its strong academic foundation, state-of-the-art infrastructure, and 
+        commitment to student success.
+      </p>
+      <p className="mt-4 text-gray-700 leading-relaxed">
+        KIT is approved by the All India Council for Technical Education (AICTE) and is 
+        affiliated with Dr. A.P.J. Abdul Kalam Technical University (AKTU), Lucknow. 
+        The institute offers a wide range of undergraduate and postgraduate programs 
+        in engineering, management, and applied sciences.
+      </p>
     </div>
-    <Home2/>
+
+    {/* Notifications Section */}
+    <div className="bg-white shadow-lg rounded-2xl p-6">
+      <h2 className="text-xl font-bold text-gray-900 mb-4">📢 Notifications</h2>
+      <ul className="space-y-3">
+        <li className="bg-yellow-50 p-3 rounded-lg shadow-sm border-l-4 border-yellow-500">
+          New admission form is available now!
+        </li>
+        <li className="bg-green-50 p-3 rounded-lg shadow-sm border-l-4 border-green-500">
+          Classes will resume from Oct 5th.
+        </li>
+        <li className="bg-blue-50 p-3 rounded-lg shadow-sm border-l-4 border-blue-500">
+          Check the updated syllabus in the portal.
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+  
+  {/* Collage heads */}
+ 
+   <div className="bg-[oklch(97.7%_0.014_308.299)] mt-2 rounded-2xl"> 
+          <h1 className="text-black flex justify-center items-center font-bold text-2xl"> College heads</h1>
+        
+      <div className="max-w-7xl mx-auto mt-5 p-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+       
+    
+  
+   
+  {/* Card 1 */}
+  <div
+    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center w-72"
+    style={{
+      backgroundImage: `
+        radial-gradient(circle at 30% 20%, #FFF991 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, #FFD6E8 0%, transparent 50%),
+        radial-gradient(circle at 90% 10%, #C9E7FF 0%, transparent 40%)
+      `,
+      backgroundBlendMode: "multiply",
+    }}
+  >
+    {/* Image */}
+    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-12">
+      <img
+        src={logo}
+        alt="profile"
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Details */}
+    <div className="mt-6 text-center">
+      <h2 className="text-xl font-semibold text-gray-800">John Doe</h2>
+      <p className="text-gray-600 mt-2">Software Engineer</p>
+      <p className="text-gray-500 text-sm mt-1">
+        Passionate about building scalable web apps.
+      </p>
+    </div>
+  
+</div>
+
+  {/* Card 2 */}
+  <div
+    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center w-72"
+    style={{
+      backgroundImage: `
+        radial-gradient(circle at 30% 20%, #FFF991 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, #FFD6E8 0%, transparent 50%),
+        radial-gradient(circle at 90% 10%, #C9E7FF 0%, transparent 40%)
+      `,
+      backgroundBlendMode: "multiply",
+    }}
+  >
+    {/* Image */}
+    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-yellow-100 shadow-md -mt-12">
+      <img
+        src="https://images.pexels.com/photos/4974915/pexels-photo-4974915.jpeg"
+        alt="profile"
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Details */}
+    <div className="mt-6 text-center">
+      <h2 className="text-xl font-semibold text-gray-800">John Doe</h2>
+      <p className="text-gray-600 mt-2">Software Engineer</p>
+      <p className="text-gray-500 text-sm mt-1">
+        Passionate about building scalable web apps.
+      </p>
+    </div>
+  
+</div>
+
+{/* Card 3 */}
+  <div
+    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center w-72"
+    style={{
+      backgroundImage: `
+        radial-gradient(circle at 30% 20%, #FFF991 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, #FFD6E8 0%, transparent 50%),
+        radial-gradient(circle at 90% 10%, #C9E7FF 0%, transparent 40%)
+      `,
+      backgroundBlendMode: "multiply",
+    }}
+  >
+    {/* Image */}
+    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-12">
+      <img
+        src={logo}
+        alt="profile"
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Details */}
+    <div className="mt-6 text-center">
+      <h2 className="text-xl font-semibold text-gray-800">John Doe</h2>
+      <p className="text-gray-600 mt-2">Software Engineer</p>
+      <p className="text-gray-500 text-sm mt-1">
+        Passionate about building scalable web apps.
+      </p>
+    </div>
+  
+</div>
+
+{/* Card 4 */}
+  <div
+    className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center w-72"
+    style={{
+      backgroundImage: `
+        radial-gradient(circle at 30% 20%, #FFF991 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, #FFD6E8 0%, transparent 50%),
+        radial-gradient(circle at 90% 10%, #C9E7FF 0%, transparent 40%)
+      `,
+      backgroundBlendMode: "multiply",
+    }}
+  >
+    {/* Image */}
+    <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-12">
+      <img
+        src={logo}
+        alt="profile"
+        className="w-full h-full object-cover"
+      />
+    </div>
+
+    {/* Details */}
+    <div className="mt-6 text-center">
+      <h2 className="text-xl font-semibold text-gray-800">John Doe</h2>
+      <p className="text-gray-600 mt-2">Software Engineer</p>
+      <p className="text-gray-500 text-sm mt-1">
+        Passionate about building scalable web apps.
+      </p>
+    </div>
+  
+</div>
+
+  </div>
+  </div>
+
+{/* Course that display in home  */}
+ <CourseHome/>
+ {/* image that display at home page */}
+ <ImageGallery/>
+
+
+
+  
+</div>
+
+
+   
+    
+
+
+    
+    
     </>
 
   );

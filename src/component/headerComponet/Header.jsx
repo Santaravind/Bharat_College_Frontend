@@ -2,6 +2,7 @@ import { useState } from "react";
 import collage from '../assets/college.png'
 import imageCollege from '../assets/icollege.jpg'
 import HeadeGallery from "./HeadeGallery";
+import Navbar from "../Navbar";
 export default function Header() {
   //const [search, setSearch] = useState("");
 
@@ -69,10 +70,13 @@ export default function Header() {
           <img src={collage} alt="college" className="header-college-img h-32 w-full" />
         </div>
      
-
+     <Navbar />
+      {/* Image Gallery Component */}
+      <HeadeGallery/>
+      
       {/* 📢 Scrolling Notice Bar */}
-      <div className="bg-red-700 font-semibold text-white flex items-center overflow-hidden header-notice">
-        <span className="bg-red-900 text-white px-3 py-2 mr-2 text-2xl header-notice-label">NOTICE</span>
+      <div className="bg-[oklch(64.5%_0.246_16.439)] font-semibold text-white flex items-center overflow-hidden header-notice text-2xl">
+        <span className="bg-[oklch(45.5%_0.188_13.697)] text-white px-3 py-2 mr-2 text-2xl header-notice-label">NOTICE</span>
         <div className="overflow-hidden relative w-full">
           <div className="animate-marquee whitespace-nowrap py-2">
             Welcome to Bharat Technical College Of Fire Engineering & Safety
@@ -83,13 +87,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-      {/* Image for gallery s */}
-      {/* <div className="justify-center items-center m-.5">
-       <div>
-               <img src={ imageCollege} alt="college" className="w-full h-80 object-cover rounded-b-2xl"/>
-     </div>
-      </div> */}
-      <HeadeGallery/>
     </div>
   );
 }
