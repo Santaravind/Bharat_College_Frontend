@@ -1,9 +1,9 @@
 import React from 'react'
 import { FaLaptopCode } from "react-icons/fa";
 
-import AdmissionForm from '../form/Admissionform';
+import AdmissionForm from '../form/AdmissionForm';
 
-
+AdmissionForm
 function CourseHome() {
   return (
     <>
