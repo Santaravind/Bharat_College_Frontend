@@ -23,7 +23,6 @@ function CourseHome() {
           
             <div
       className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-lg"
-      
     >
       {/* Icon */}
       <FaLaptopCode className="text-4xl text-yellow-400 mb-3" />
@@ -34,6 +33,7 @@ function CourseHome() {
       {/* Duration */}
       <p className="text-sm  mt-1 text-black">Duration: 2 Months</p>
     </div>
+      
       <div
       className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-lg"
       
