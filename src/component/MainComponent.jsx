@@ -33,7 +33,7 @@
 
 // export default MainComponent
 import React from 'react'
-import Header from './Header'
+import Header from './headerComponet/Header'
 import Navbar from './Navbar'
 
 function MainComponent() {
@@ -57,7 +57,7 @@ function MainComponent() {
       />
       {/* Header only */}
       <Header />
-      <Navbar />
+      
     </div>
   )
 }

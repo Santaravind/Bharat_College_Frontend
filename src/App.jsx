@@ -4,14 +4,13 @@ import Home from './component/Home'
 import { Route, Routes } from 'react-router-dom'
 import About from './component/About'
 import Student from './component/Student'
-import Course from './component/Course'
+import Course from './component/coursepage/Course'
 import Footer from './component/Footer'
 import Admission from './component/Admission'
 import Gallery from './component/Gallery'
 import Syllabus from './component/Syllabus'
 import Verification from './component/Verification'
-import Navbar from './component/Navbar'
-// import Navbar from './component/Navbar'
+
 
 
 
