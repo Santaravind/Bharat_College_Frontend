@@ -20,7 +20,11 @@ const AdmissionForm= () => {
 
   return (
     <>
-   <h2 className="text-xl font-bold text-gray-800 mb-6 text-center">
+     <div className="w-full  border border-gray-400 rounded-xl bg-white  p-6 mr-0.5">
+ 
+       
+        
+   <h2 className="text-xl font-bold text-gray-800 mb-6  text-center">
     Admission Form
   </h2>
   <form onSubmit={handleSubmit} className="space-y-5">
@@ -100,7 +104,7 @@ const AdmissionForm= () => {
       Submit
     </button>
   </form>
-
+</div> 
 </>
   );
 };
