@@ -10,6 +10,7 @@ import Admission from './component/Admission'
 import Gallery from './component/Gallery'
 import Syllabus from './component/Syllabus'
 import Verification from './component/Verification'
+import { Toaster } from 'react-hot-toast'
 
 
 
@@ -18,7 +19,7 @@ import Verification from './component/Verification'
 function App() {
   return (
     <>
-    
+    <Toaster/>
       <MainComponent/>
        <div className=""> 
     <Routes>

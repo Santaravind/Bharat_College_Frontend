@@ -70,12 +70,25 @@ const FireSafety = () => {
   return (
     <>
     <div className="bg-gray-50 py-9 px-6">
+     
       <h2 className="text-3xl font-bold text-center mb-8 rounded-full text-black shadow-[inset_1px_15px_13px_10px_#97266d]">
         🔥 Fire & Safety Courses
       </h2>
 
      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, rgba(0,0,0,0.06) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px),
+            radial-gradient(circle, rgba(51,65,85,0.3) 1px, transparent 1px)
+          `,
+          backgroundSize: "20px 20px, 20px 20px, 20px 20px",
+          backgroundPosition: "0 0, 0 0, 0 0",
+        }}
+      />
           {displayedCourses.map((course, index) => (
             <div
               key={course.id}
