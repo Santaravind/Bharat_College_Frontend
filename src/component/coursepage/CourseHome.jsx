@@ -13,8 +13,8 @@ function CourseHome() {
      
      e.preventDefault();
 
-     navigate("/Course")
-     window.scroll(top);
+     navigate("/course")
+      window.scroll(top);
   }
   return (
     <>
@@ -87,12 +87,7 @@ function CourseHome() {
       <h3 className="text-lg font-bold text-black">Fire Technician</h3>
       {/* Duration */}
       <p className="text-sm  mt-1 text-black">Duration: 6 Months</p> 
-        {/* <h1  className="text-lg font-bold text-black">More</h1> */}
-      {/* <h2  className="text-lg font-bold text-black"> Fire & sefty Courses</h2> */}
-      {/* <button className="text-lg  mt-1 text-yellow-300 font-bold  border-2 border-red-600 rounded-full p-2 m-1  bg-red-600 hover:bg-blue-600 hover:border-black cursor-pointer "  */}
-       onClick={handalCourse}
-      {/* > */}
-        {/* <span className='blink-text' > Click here </span> </button> */}
+        
     </div>
 
      {/* course 5 */}
