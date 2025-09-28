@@ -1,7 +1,7 @@
 
 import logo from "./assets/logo2.png"
 import CourseHome from "./coursepage/CourseHome";
-
+import AdmissionForm from "./form/FormAdmission"
 import Photos from "./headerComponet/Photos";
 
 
@@ -201,16 +201,19 @@ const Home = () => {
   </div>
   </div>
 
-{/* Course that display in home  */}
- <CourseHome/>
- {/* image that display at home page */}
- <Photos/>
+
 
 
 
   
 </div>
 
+{/* Course that display in home  */}
+ <CourseHome/>
+  {/* Admission form */}
+ <AdmissionForm/>
+ {/* image that display at home page */}
+ <Photos/>
 
    
     
