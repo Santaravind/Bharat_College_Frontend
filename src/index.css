@@ -35,3 +35,16 @@
 .blink-text {
   animation: blink 1s infinite;
 }
+@keyframes scroll-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.animate-scroll {
+  display: inline-block;
+  animation: scroll-up 15s linear infinite;
+}
