@@ -1,6 +1,7 @@
 
 import logo from "./assets/logo2.png"
 import CourseHome from "./coursepage/CourseHome";
+import Notification from "./coursepage/Notification";
 import AdmissionForm from "./form/FormAdmission"
 import Photos from "./headerComponet/Photos";
 
@@ -18,12 +19,15 @@ const Home = () => {
 <>   
  <div className="min-h-screen radial-gradient(circle at top center, rgba(59, 130, 246, 0.5),transparent 70% mb-10 p-2">
 
-     
+
+ 
           {/* about us and notification  */}
      <div className="w-full p-2 md:p-2 lg:p-2.5   ">
+           
+
   <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-2">
     
-    {/* About Section */}
+    {/* About Section
     <div className="md:col-span-2 bg-white shadow-lg rounded-2xl p-3">
       <h1 className="text-3xl font-bold text-gray-900 mb-4">About Us</h1>
       <p className="text-gray-700 leading-relaxed">
@@ -39,12 +43,21 @@ const Home = () => {
         The institute offers a wide range of undergraduate and postgraduate programs 
         in engineering, management, and applied sciences.
       </p>
+    </div> */}
+
+
+
+ {/* Course Section */}
+    <div className="md:col-span-2 bg-white shadow-lg rounded-2xl p-4">
+      <h1 className="text-3xl font-bold text-gray-900 mb-4 bg-rose-400 p-2 rounded-full text-center  ">Our Courses</h1>
+      {/* home courses */}
+       <CourseHome />
     </div>
 
     {/* Notifications Section */}
-    <div className="bg-white shadow-lg rounded-2xl p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">📢 Notifications</h2>
-      <ul className="space-y-3">
+    <div className="bg-gray-200 shadow-lg rounded-2xl p-6">
+      <h2 className="text-3xl font-bold text-gray-900 mb-4">📢 Notifications</h2>
+      {/* <ul className="space-y-3">
         <li className="bg-yellow-50 p-3 rounded-lg shadow-sm border-l-4 border-yellow-500">
           New admission form is available now!
         </li>
@@ -54,18 +67,26 @@ const Home = () => {
         <li className="bg-blue-50 p-3 rounded-lg shadow-sm border-l-4 border-blue-500">
           Check the updated syllabus in the portal.
         </li>
-      </ul>
+      </ul> */}
+      
+     <Notification/>
+     {/* bellow of notification */}
+     {/* <h1> New notification is available , as per you need click and pull fill your reqirement .</h1> */}
+
     </div>
 
   </div>
 </div>
   
+
+
   {/* Collage heads */}
  
-   <div className="bg-[oklch(97.7%_0.014_308.299)] mt-2 rounded-2xl items-center justify-center"> 
-          <h1 className="text-black flex justify-center items-center font-bold text-2xl"> College heads</h1>
+   <div className="bg-[oklch(97.7%_0.014_308.299)] mt-2 rounded-2xl items-center justify-centermb-4
+   "> 
+          <h1 className="text-black flex justify-center items-center font-bold text-3xl"> Our team</h1>
         
-     <div className="max-w-7xl mx-auto mt-5 p-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+     <div className="max-w-7xl mx-auto mt-5 p-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ">
        
     
   
@@ -201,15 +222,30 @@ const Home = () => {
   </div>
   </div>
 
+<div className="max-w-7xl mx-auto  mt-4 ">
+    {/* About Section */}
+    <div className="md:col-span-2 bg-white shadow-lg rounded-2xl p-3">
+      <h1 className="text-3xl font-bold text-gray-900 mb-4 text-center">About Us</h1>
+      <p className="text-gray-700 leading-relaxed text-2xl">
+        Kashi Institute of Technology (KIT), established in 2008 under the aegis of 
+        the Jain Education Society, is a premier institution dedicated to excellence 
+        in technical education. Located in Varanasi, Uttar Pradesh, the institute stands 
+        out for its strong academic foundation, state-of-the-art infrastructure, and 
+        commitment to student success.
+      </p>
+      <p className="mt-4 text-gray-700 leading-relaxed text-2xl">
+        KIT is approved by the All India Council for Technical Education (AICTE) and is 
+        affiliated with Dr. A.P.J. Abdul Kalam Technical University (AKTU), Lucknow. 
+        The institute offers a wide range of undergraduate and postgraduate programs 
+        in engineering, management, and applied sciences.
+      </p>
+    </div> 
 
-
-
-
+    </div>   
   
 </div>
 
-{/* Course that display in home  */}
- <CourseHome/>
+
   {/* Admission form */}
  <AdmissionForm/>
  {/* image that display at home page */}

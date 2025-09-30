@@ -186,7 +186,7 @@ const FormAdmission = () => {
           <input
             type="text"
             name="course"
-            placeholder="Coure name that you interested "
+            placeholder="Course name that you interested "
             value={formData.course}
             onChange={handleChange}
             className="p-3 rounded-lg border border-gray-700 bg-gray-800 w-full focus:outline-none focus:ring-2 focus:ring-blue-500 col-span-1 md:col-span-2"

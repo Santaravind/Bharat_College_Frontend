@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* NSDM Info */}
         <div>
-          <h3 className="text-lg font-bold mb-4 ">NSDM</h3>
+          <h3 className="text-lg font-bold mb-4 ">BTCFSM</h3>
           <img
             src={logo2}
             alt="NSDM Logo"
@@ -36,44 +36,44 @@ export default function Footer() {
 
         {/* MSME & Visitor Counts */}
         <div>
-          <h3 className="text-lg font-bold mb-4">MSME</h3>
+          <h3 className="text-lg font-bold mb-4">BTCFSM</h3>
           <img
-            src="https://nehruskilldevelopmentmission.com/wp-content/uploads/2021/03/msme-1.png"
-            alt="MSME"
+            src="https://res.cloudinary.com/djwanfb4j/image/upload/v1758614510/hrrtvtzsz18ymcqkfadg.jpg"
+            alt="BTCFSM"
             className="w-40 mb-4"
           />
-          <h3 className="text-lg font-bold mb-2">Visitor Counts</h3>
+          {/* <h3 className="text-lg font-bold mb-2">Visitor Counts</h3>
           <div className="text-yellow-400 text-sm">
             <p>Today: 3,935</p>
             <p>This Month: 41,379</p>
-            <p>Total Visits: 393,567</p>
-          </div>
+            <p>Total Visits: 393,567</p> */}
+          {/* </div> */}
         </div>
 
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-bold mb-4">Contact</h3>
           <p className="text-sm mb-2">
-            Nehru Skill Development Mission<br />
-            4/1958, Samiyapuram Koot Road,<br />
-            Pattukonampatti post, Pappireddipatti Tk,<br />
-            Dharmapuri Dt, Tamilnadu, India, 636905
+            Bharat Technical College of Fire & Safety Management<br />
+            Robertsganj,Sonbhadra<br />
+            <br />
+            Sonbhadra,Utter Predash, India, 231216
           </p>
-          <p className="text-sm mb-2">Land Line: 04643-296120</p>
+          <p className="text-sm mb-2">Land Line: </p>
           <p className="text-sm mb-2">
-            Mobile: 8110897011, 9786390331, 9585343052, 7639884905
+            Mobile: 8840157051
           </p>
-          <p className="text-sm mb-2">WhatsApp: 8110897011</p>
-          <p className="text-sm mb-2">Email: nsdmeduc@gmail.com</p>
+          <p className="text-sm mb-2">WhatsApp: 8840157051</p>
+          <p className="text-sm mb-2">Email: bharattechnicalcollege@gmail.com</p>
         </div>
       </div>
 
       {/* Footer Bottom */}
-      <div className="bg-white text-gray-900 py-4 text-center text-sm">
+      {/* <div className="bg-white text-gray-900 py-4 text-center text-sm">
         <p>
           © 2025 <a href="https://nehruskilldevelopmentmission.com/" className="text-white font-semibold">BTCFSM</a>. All rights reserved. Theme <a href="https://themegrill.com/themes/spacious" className="text-white" target="_blank" rel="noreferrer">Spacious</a> by ThemeGrill. Powered by <a href="https://wordpress.org" className="text-white" target="_blank" rel="noreferrer"></a>.
         </p>
-      </div>
+      </div> */}
     </footer>
   );
 }

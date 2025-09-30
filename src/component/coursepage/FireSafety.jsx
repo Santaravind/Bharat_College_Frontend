@@ -77,7 +77,7 @@ const FireSafety = () => {
 
      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        <div
+        {/* <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `
@@ -88,7 +88,7 @@ const FireSafety = () => {
           backgroundSize: "20px 20px, 20px 20px, 20px 20px",
           backgroundPosition: "0 0, 0 0, 0 0",
         }}
-      />
+      /> */}
           {displayedCourses.map((course, index) => (
             <div
               key={course.id}

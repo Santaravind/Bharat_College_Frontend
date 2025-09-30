@@ -20,10 +20,8 @@ function CourseHome() {
     <>
 
 
- <div className="w-full bg-[oklch(97.7%_0.014_308.299)] flex items-center justify-center p-4">
-  <h1 className="font-bold text-black text-3xl text-center">
-    Course
-  </h1>
+ <div className="w-full bg-[oklch(97.7%_0.014_308.299)] flex items-center justify-center "> 
+  
 </div>
 
 {/* Main Content */}
