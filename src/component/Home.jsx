@@ -4,6 +4,7 @@ import CourseHome from "./coursepage/CourseHome";
 import Notification from "./coursepage/Notification";
 import AdmissionForm from "./form/FormAdmission"
 import Photos from "./headerComponet/Photos";
+import Placement from "./placement/Placement";
 
 
 
@@ -91,7 +92,7 @@ const Home = () => {
     
   
    
-  {/* Card 1 */}
+  {/* Director1 */}
   <div
     className="relative bg-white rounded-2xl shadow-lg p-6 flex flex-col  items-center sm:w-72 sm:mt-4 "
     style={{
@@ -103,7 +104,7 @@ const Home = () => {
       backgroundBlendMode: "multiply",
     }}
   >
-    {/* Image */}
+    {/* Director */}
     <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-gray-200 shadow-md -mt-10 ">
       <img
         src={logo}
@@ -114,11 +115,12 @@ const Home = () => {
 
     {/* Details */}
     <div className="mt-6 text-center">
-      <h2 className="text-xl font-semibold text-gray-800">John Doe</h2>
-      <p className="text-gray-600 mt-2">Software Engineer</p>
-      <p className="text-gray-500 text-sm mt-1">
+      <h2 className="text-xl font-semibold text-gray-800">Director 
+</h2>
+      <p className="text-gray-600 mt-2">Rk Mishra</p>
+      {/* <p className="text-gray-500 text-sm mt-1">
         Passionate about building scalable web apps.
-      </p>
+      </p> */}
     </div>
   
 </div>
@@ -138,7 +140,7 @@ const Home = () => {
     {/* Image */}
     <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-yellow-100 shadow-md -mt-10">
       <img
-        src="https://images.pexels.com/photos/4974915/pexels-photo-4974915.jpeg"
+        src={logo}
         alt="profile"
         className="w-full h-full object-cover"
       />
@@ -146,11 +148,12 @@ const Home = () => {
 
     {/* Details */}
     <div className="mt-6 text-center">
-      <h2 className="text-xl font-semibold text-gray-800">John Doe</h2>
-      <p className="text-gray-600 mt-2">Software Engineer</p>
+      <h2 className="text-xl font-semibold text-gray-800">Shashikant 
+</h2>
+      {/* <p className="text-gray-600 mt-2">Software Engineer</p>
       <p className="text-gray-500 text-sm mt-1">
         Passionate about building scalable web apps.
-      </p>
+      </p> */}
     </div>
   
 </div>
@@ -178,11 +181,12 @@ const Home = () => {
 
     {/* Details */}
     <div className="mt-6 text-center">
-      <h2 className="text-xl font-semibold text-gray-800">John Doe</h2>
-      <p className="text-gray-600 mt-2">Software Engineer</p>
+      <h2 className="text-xl font-semibold text-gray-800">Swati Singh 
+</h2>
+      {/* <p className="text-gray-600 mt-2">Software Engineer</p>
       <p className="text-gray-500 text-sm mt-1">
         Passionate about building scalable web apps.
-      </p>
+      </p> */}
     </div>
   
 </div>
@@ -210,11 +214,11 @@ const Home = () => {
 
     {/* Details */}
     <div className="mt-6 text-center">
-      <h2 className="text-xl font-semibold text-gray-800">John Doe</h2>
-      <p className="text-gray-600 mt-2">Software Engineer</p>
+      <h2 className="text-xl font-semibold text-gray-800">Sulekha</h2>
+      {/* <p className="text-gray-600 mt-2">Software Engineer</p>
       <p className="text-gray-500 text-sm mt-1">
         Passionate about building scalable web apps.
-      </p>
+      </p> */}
     </div>
   
 </div>
@@ -226,19 +230,18 @@ const Home = () => {
     {/* About Section */}
     <div className="md:col-span-2 bg-white shadow-lg rounded-2xl p-3">
       <h1 className="text-3xl font-bold text-gray-900 mb-4 text-center">About Us</h1>
-      <p className="text-gray-700 leading-relaxed text-2xl">
-        Kashi Institute of Technology (KIT), established in 2008 under the aegis of 
-        the Jain Education Society, is a premier institution dedicated to excellence 
-        in technical education. Located in Varanasi, Uttar Pradesh, the institute stands 
-        out for its strong academic foundation, state-of-the-art infrastructure, and 
-        commitment to student success.
+      <p className="text-gray-700 font-semibold leading-relaxed text-2xl">
+        Bharat Technical College of Fire & Safety Management, Robertsganj, Sonbhadra (U.P.) is recognized as one of the No.1 colleges in the region for Fire & Safety Management and Computer Courses. We are committed to providing quality education, practical training, and career-oriented programs that prepare students to become skilled professionals.
+
       </p>
-      <p className="mt-4 text-gray-700 leading-relaxed text-2xl">
-        KIT is approved by the All India Council for Technical Education (AICTE) and is 
-        affiliated with Dr. A.P.J. Abdul Kalam Technical University (AKTU), Lucknow. 
-        The institute offers a wide range of undergraduate and postgraduate programs 
-        in engineering, management, and applied sciences.
+      <p className="mt-4 text-gray-700 font-semibold leading-relaxed text-2xl">
+        The institution is operated by Chameli Devi Sonanchal Sewa Sansthan, registered under the Societies Registration Act, No. 21 of 1860, with Registration Number SON/01794/2025-2026. It is also ISO Certified, ensuring the highest standards of education and training.
+
       </p>
+       <p className="mt-4 text-gray-700 font-semibold leading-relaxed text-2xl">
+        📍 Address: Pusauli, Robertsganj, Sonbhadra, Uttar Pradesh – 231216
+
+       </p>
     </div> 
 
     </div>   
@@ -248,6 +251,11 @@ const Home = () => {
 
   {/* Admission form */}
  <AdmissionForm/>
+
+  {/* Placement componet */}
+  <Placement/>
+
+
  {/* image that display at home page */}
  <Photos/>
 

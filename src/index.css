@@ -35,6 +35,7 @@
 .blink-text {
   animation: blink 1s infinite;
 }
+
 @keyframes scroll-up {
   0% {
     transform: translateY(100%);

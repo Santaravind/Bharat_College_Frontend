@@ -51,8 +51,10 @@
 
 import { useEffect, useState } from "react";
 import college from "../assets/icollege.jpg";
+import college2 from "../assets/collage2.2.jpg";
+import college3 from "../assets/collage3.jpg";
 
-const images = [college, college, college];
+const images = [college, college2, college3];
 
 const HeadeGallery = () => {
   const [current, setCurrent] = useState(0);
@@ -68,7 +70,7 @@ const HeadeGallery = () => {
   return (
     <div className="w-full  flex flex-col md:flex-row gap-.5 mt-0.5">
       {/* Gallery Section */}
-      <div className=" relative overflow-hidden rounded-2xl shadow-lg">
+      <div className=" relative overflow-hidden rounded-lg shadow-lg">
         <div
           className="flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
@@ -78,7 +80,7 @@ const HeadeGallery = () => {
               key={index}
               src={img }
               alt={`slide-${index}`}
-              className="w-full h-24 sm:h-60 md:h-72 lg:h-76  object-cover flex-shrink-0 "
+              className="w-full h-44 sm:h-96 md:h-96 lg:h-96  object-cover flex-shrink-0 "
             />
           ))}
         </div>
