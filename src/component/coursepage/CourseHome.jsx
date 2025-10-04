@@ -68,7 +68,7 @@ function CourseHome() {
      
       {/* course 3 */}
       <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
+      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
        onClick={handalAdmission}
     >
       {/* Icon */}
@@ -82,7 +82,7 @@ function CourseHome() {
     </div>
        {/* course 4 */}
       <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4  shadow-[-4px_8px_16px_14px_#fc8181]"
+      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4  shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
        onClick={handalAdmission}
     >
       {/*  Icon */}
