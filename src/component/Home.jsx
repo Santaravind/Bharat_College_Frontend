@@ -257,7 +257,7 @@ const Home = () => {
 
 
  {/* image that display at home page */}
- <Photos/>
+ {/* <Photos/> */}
 
    
     

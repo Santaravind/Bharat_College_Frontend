@@ -51,7 +51,7 @@
 
 import { useEffect, useState } from "react";
 import college from "../assets/icollege.jpg";
-import college2 from "../assets/collage2.2.jpg";
+import college2 from "../assets/collage2.5.jpg";
 import college3 from "../assets/collage3.jpg";
 
 const images = [college, college2, college3];

@@ -53,7 +53,7 @@ export default function Footer() {
           <h3 className="text-lg font-bold mb-4">Contact</h3>
           <p className="text-sm mb-2">
             Bharat Technical College of Fire & Safety Management<br />
-            Robertsganj,Sonbhadra<br />
+            Pusauli, Robertsganj<br />
             <br />
             Sonbhadra,Utter Predash, India, 231216
           </p>
@@ -69,7 +69,7 @@ export default function Footer() {
       {/* Footer Bottom */}
       <div className="bg-white text-gray-900 py-4 text-center text-sm">
         <p>
-          © 2025 <a href="" className="text-black font-semibold">BTCFSM</a>. All rights reserved. Theme <a href="https:happydigitalbharat.com" className="text-black" target="_blank" rel="noreferrer">Happy digital bharat</a> 
+          © 2025 <a href="" className="text-black font-semibold">BTCFSM</a>. All rights reserved. Theme <a href="https://linkedin.com/in/aravind-sant-singh-717023229" className="text-black hover:text-blue-600" target="_blank" rel="noreferrer">Develop By Aravind Sant</a> 
            {/* <a href="https://wordpress.org" className="text-white" target="_blank" rel="noreferrer"></a>. */}
         </p>
       </div>
