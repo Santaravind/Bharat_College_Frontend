@@ -244,8 +244,38 @@ const Home = () => {
        </p>
     </div> 
 
-    </div>   
-  
+    </div>
+
+<div className="max-w-7xl mx-auto mt-8 px-4">
+  {/* Our Branches */}
+  <div className="bg-white shadow-xl rounded-2xl p-6 md:p-10">
+    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
+      Our Branches
+    </h1>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center">
+      {/* Branch Card */}
+      <div className="bg-[oklch(87.1%_0.15_154.449)] rounded-xl   shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)] hover:shadow-xl transition-all duration-300 p-6">
+        <p className="text-xl md:text-2xl font-semibold text-gray-800">
+          Kushinagar, UP
+        </p>
+      </div>
+
+     <div className="bg-[oklch(93.8%_0.127_124.321)] rounded-xl   shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)] hover:shadow-xl transition-all duration-300 p-6">
+        <p className="text-xl md:text-2xl font-semibold text-gray-800">
+          Siwan, Bihar
+        </p>
+      </div>
+
+     <div className="bg-[oklch(84.5%_0.143_164.978)] rounded-xl   shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)] hover:shadow-xl transition-all duration-300 p-6">
+        <p className="text-xl md:text-2xl font-semibold text-gray-800">
+          Jamshedpur, Jharkhand
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 

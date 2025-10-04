@@ -9,12 +9,17 @@ import { useNavigate } from 'react-router-dom';
 
 function CourseHome() {
   const navigate=useNavigate();
-  const handalCourse=(e)=>{
-     
-     e.preventDefault();
 
+  const handalCourse=(e)=>{
+          e.preventDefault();
      navigate("/course")
       window.scroll(top);
+  }
+  const handalAdmission=(e)=>{
+     e.preventDefault();
+     navigate("/admission");
+     window.scroll(top);
+
   }
   return (
     <>
@@ -32,13 +37,14 @@ function CourseHome() {
           
           {/* Fist course 1 */}
             <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
-    >
+      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4  shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
+    onClick={handalAdmission}>
       {/* Icon */}
-      <FaComputer className="text-4xl text-yellow-400 mb-2 " />
+     <FaFire className="text-4xl text-yellow-400 mb-2 " />
 
       {/* Course Name */}
-      <h3 className="text-lg font-bold text-black">Post Diploma in Computer Hardware Maintenance</h3>
+      <h3 className="text-lg font-bold text-black ">Diploma in Fire Safety</h3>
+      
 
       {/* Duration */}
       <p className="text-sm  mt-1 text-black">Duration: 1 Year</p>
@@ -46,52 +52,52 @@ function CourseHome() {
       
        {/*  course 2 */}
       <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
-      
+      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
+       onClick={handalAdmission}
     >
       {/* Icon */}
       <DiHtml5Multimedia className="text-5xl text-yellow-400 mb-3" />
 
       {/* Course Name */}
-      <h3 className="text-lg font-bold text-black">Diploma in Multimedia
+      <h3 className="text-lg font-bold text-black">Diploma in Industrial Safety 
        </h3>
 
       {/* Duration */}
-      <p className="text-sm  mt-1 text-black">Duration: 3 Months</p>
+      <p className="text-sm  mt-1 text-black">Duration: 1 Year</p>
     </div>
      
       {/* course 3 */}
       <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
-      
+      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
+       onClick={handalAdmission}
     >
       {/* Icon */}
      <FaBowlFood className="text-5xl text-yellow-400 mb-3" />
 
       {/* Course Name */}
-      <h3 className="text-lg font-bold text-black">Diploma in Food Safety</h3>
+      <h3 className="text-lg font-bold text-black">Advanced Diploma in Fire Safety Management</h3>
 
       {/* Duration */}
       <p className="text-sm  mt-1 text-black">Duration: 1 Year</p>
     </div>
        {/* course 4 */}
       <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4  shadow-[-4px_8px_16px_14px_#fc8181]"
-      
+      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4  shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
+       onClick={handalAdmission}
     >
       {/*  Icon */}
      <FaFire  className="text-5xl text-yellow-400 mb-3" />
       {/* Course Name */}
-      <h3 className="text-lg font-bold text-black">Fire Technician</h3>
+      <h3 className="text-lg font-bold text-black">Post Diploma in Fire in Safety Engineering</h3>
       {/* Duration */}
-      <p className="text-sm  mt-1 text-black">Duration: 6 Months</p> 
+      <p className="text-sm  mt-1 text-black">Duration: 1 Year</p> 
         
     </div>
 
      {/* course 5 */}
       <div
       className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
-      
+       onClick={handalAdmission}
     >
       {/* Icon */}
       <FaLaptopCode className="text-5xl text-yellow-400 mb-3" />
@@ -107,7 +113,7 @@ function CourseHome() {
            {/* course 6 */}
            <div
       className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
-      
+       onClick={handalAdmission}
     >
       {/* Icon */}
       <MdOutlineConstruction className="text-5xl text-yellow-400 mb-3" />
@@ -122,7 +128,7 @@ function CourseHome() {
            {/* course 7 */}
            <div
       className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
-      
+       onClick={handalAdmission}
     >
       {/* Icon */}
       <PiFireTruckDuotone className="text-5xl text-yellow-400 mb-3" />
