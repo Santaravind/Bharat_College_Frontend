@@ -1,5 +1,5 @@
 import { useState } from "react";
-import collage from '../assets/college.png'
+import collage from '../assets/headlogo.jpg'
 import imageCollege from '../assets/icollege.jpg'
 import HeadeGallery from "./HeadeGallery";
 import Navbar from "../Navbar";
@@ -67,7 +67,7 @@ export default function Header() {
        
        {/* Image of college + Logo */}
         <div className="flex items-center border justify-center bg-white">
-          <img src={collage} alt="college" className="header-college-img h-32 w-full" />
+          <img src={collage} alt="college" className="header-college-img h-36 w-full" />
         </div>
      
      <Navbar />
