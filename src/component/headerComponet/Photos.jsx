@@ -38,10 +38,10 @@ const IMAGE_HEIGHT = 224 + 12;
   }, []);
   return (
     <section className="w-full py-8 px-4">
-      <h2 className="text-2xl font-bold mb-6 text-center">📸 Photo Gallery</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Resent Events</h2>
 
       {/* Desktop / Laptop View (Horizontal scroll) */}
-      <div className="hidden sm:block relative">
+      <div className="hidden  md:block relative">
         {/* Left Button */}
         <button
           onClick={prevSlide}
