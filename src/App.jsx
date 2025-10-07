@@ -11,6 +11,7 @@ import Gallery from './component/Gallery'
 import Syllabus from './component/Syllabus'
 import Verification from './component/Verification'
 import { Toaster } from 'react-hot-toast'
+import AdmissionSuccess from './component/form/admissionpages/AdmissionSuccess'
 
 
 
@@ -32,6 +33,7 @@ function App() {
       <Route  path='/gallery' element={<Gallery/>} />
       <Route  path='/syllabus' element={<Syllabus/>} />
       <Route  path='/verification' element={<Verification/>} />
+      <Route path='/admissionSuccess' element={<AdmissionSuccess/>}/>
     </Routes>
      <Footer/>
 

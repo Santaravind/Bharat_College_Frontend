@@ -49,16 +49,27 @@ const FormAdmission = () => {
     toast.success("Query register sucessfully!!!")
 
     // 🔹 Example: send to backend API
-    /*
-    fetch("http://localhost:8080/api/form", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log("Success:", data))
-      .catch((err) => console.error("Error:", err));
-    */
+    fetch("https://script.google.com/macros/s/AKfycbw56NSS59LR2zonODfwHOkjFdwRX7Vi9rsdeYrom2dtXLgVF5bjuStD13vKk0RAsd6_Sw/exec", {
+      redirect:"follow",
+  method: "POST",
+  headers: {
+        "Content-Type": "text/plain;charset=utf-8", 
+      },
+  body: JSON.stringify(formData),
+})
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.status === "success") {
+      toast.success("Query registered successfully!");
+    } else {
+      toast.error("Failed to submit form. Try again.");
+    }
+  })
+  .catch((err) => {
+    console.error("Error:", err);
+    toast.error("Error submitting form.");
+  });
+
 
     // Reset form (optional)
     setFormData({
@@ -144,7 +155,7 @@ const FormAdmission = () => {
         }}
       />
 
-    <h1 className="text-black  font-bold text-6xl font-serif flex items-center justify-center rounded-2xl mt-8 p-2"> Admission & Query Form</h1>
+    <h1 className="text-black  font-bold text-6xl font-serif flex items-center justify-center rounded-2xl mt-8 p-2">  Query Form</h1>
       {/* Form */}
       <form
         onSubmit={handleSubmit}
