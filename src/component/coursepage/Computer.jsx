@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { BookOpen, Shield, Flame, Hammer, ComputerIcon } from "lucide-react"; // example icons
+import { useNavigate } from 'react-router-dom';
 
     const courses = [
   { id: 1, name: "Post Diploma in Computer Hardware Maintenance", duration: "1 Year" },
@@ -86,11 +87,17 @@ import { BookOpen, Shield, Flame, Hammer, ComputerIcon } from "lucide-react"; //
   { id: 82, name: "Diploma in Graphic Web Designing & Development", duration: "1 Year" },
 ];
 function Computer() {
-
+const navigate=useNavigate();
   const icons = [<BookOpen />, <Shield />, <Flame />, <Hammer />,<ComputerIcon/>];
    const [showAll, setShowAll] = useState(false);  
   // Limit to 10 courses initially
   const displayedCourses = showAll ? courses : courses.slice(0, 8);
+  const handalAdmission=(e)=>{
+    e.preventDefault();
+     navigate("/admission");
+     window.scroll(top);
+  }
+
   return (
     <>
        <div className="bg-gray-50 py-9 px-6">
@@ -102,7 +109,8 @@ function Computer() {
           {displayedCourses.map((course, index) => (
             <div
               key={course.id}
-              className="flex flex-col items-center justify-center border border-gray-300 rounded-xl bg-white p-6 shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] hover:shadow-[inset_1px_15px_13px_0px_#48bb78] transition"
+              onClick={handalAdmission}
+              className="flex flex-col items-center cursor-pointer justify-center border border-gray-300 rounded-xl bg-white p-6 shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] hover:shadow-[inset_1px_15px_13px_0px_#48bb78] transition"
             >
               {/* Icon */}
               <div className="text-yellow-500 mb-3 text-4xl">

@@ -1,5 +1,6 @@
 import { BookOpen, Shield, Flame, Hammer } from "lucide-react"; // example icons
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const courses = [
   { id: 1, name: "Diploma in Fire & Safety Methods", duration: "1 Year" },
@@ -61,13 +62,20 @@ const courses = [
 
 
 const FireSafety = () => {
+   const navigate=useNavigate();
   // Choose random icons for variety
   const icons = [<BookOpen />, <Shield />, <Flame />, <Hammer />];
    const [showAll, setShowAll] = useState(false);  
     // Limit to 10 courses initially
     const displayedCourses = showAll ? courses : courses.slice(0, 8);
-
+      const handlAdmission=(e)=>{
+      
+   e.preventDefault();
+     navigate("/admission");
+     window.scroll(top);
+      }
   return (
+
     <>
     <div className="bg-gray-50 py-9 px-6">
      
@@ -92,7 +100,8 @@ const FireSafety = () => {
           {displayedCourses.map((course, index) => (
             <div
               key={course.id}
-              className="flex flex-col items-center justify-center border border-gray-300 rounded-xl bg-white p-6 shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] hover:shadow-[inset_1px_15px_13px_0px_#48bb78] transition"
+              onClick={handlAdmission}
+              className="flex flex-col  cursor-pointer  items-center justify-center border border-gray-300 rounded-xl bg-white p-6 shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] hover:shadow-[inset_1px_15px_13px_0px_#48bb78] transition"
             >
               {/* Icon */}
               <div className="text-yellow-500 mb-3 text-4xl">
