@@ -37,13 +37,16 @@ function CourseHome() {
           
           {/* Fist course 1 */}
             <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4  shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
+      className="flex flex-col items-center justify-center border-2 border-gray-600 rounded-xl  text-white p-3  "
     onClick={handalAdmission}>
       {/* Icon */}
      <FaFire className="text-4xl text-yellow-400 mb-2 " />
 
       {/* Course Name */}
-      <h3 className="text-lg font-bold text-black ">Diploma in Fire Safety</h3>
+      <h3 className="text-lg font-bold text-black ">Diploma in Fire
+        <p className='text-center'>Safety</p> 
+        </h3>
+      
       
 
       {/* Duration */}
@@ -52,7 +55,7 @@ function CourseHome() {
       
        {/*  course 2 */}
       <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
+      className="flex flex-col items-center justify-center border-2 border-gray-600 rounded-xl text-white p-3"
        onClick={handalAdmission}
     >
       {/* Icon */}
@@ -67,8 +70,8 @@ function CourseHome() {
     </div>
      
       {/* course 3 */}
-      <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
+       <div
+      className="flex flex-col items-center justify-center border-2 border-gray-600 rounded-xl text-white p-3"
        onClick={handalAdmission}
     >
       {/* Icon */}
@@ -81,8 +84,8 @@ function CourseHome() {
       <p className="text-sm  mt-1 text-black">Duration: 1 Year</p>
     </div>
        {/* course 4 */}
-      <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4  shadow-[0_10px_20px_rgba(240,_46,_170,_0.7)]"
+       <div
+      className="flex flex-col items-center justify-center border-2 border-gray-600 rounded-xl text-white p-3"
        onClick={handalAdmission}
     >
       {/*  Icon */}
@@ -96,7 +99,7 @@ function CourseHome() {
 
      {/* course 5 */}
       <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
+      className="flex flex-col items-center justify-center border-2 border-gray-600 rounded-xl text-white p-3"
        onClick={handalAdmission}
     >
       {/* Icon */}
@@ -107,12 +110,12 @@ function CourseHome() {
       <h3 className='text-lg font-bold text-black'>Science</h3>
 
       {/* Duration */}
-      <p className="text-sm  mt-1 text-black">Duration: 6 Months</p>
+      <p className="text-sm  mt-1 text-black ">Duration: 6 Months</p>
     </div>
           
            {/* course 6 */}
-           <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
+          <div
+      className="flex flex-col items-center justify-center border-2 border-gray-600 rounded-xl text-white p-3"
        onClick={handalAdmission}
     >
       {/* Icon */}
@@ -126,8 +129,8 @@ function CourseHome() {
       <p className="text-sm  mt-1 text-black">Duration: 1 Year</p>
     </div>
            {/* course 7 */}
-           <div
-      className="flex flex-col items-center justify-center border border-gray-400 rounded-xl text-white p-4 shadow-[-4px_8px_16px_14px_#fc8181]"
+        <div
+      className="flex flex-col items-center justify-center border-2 border-gray-600 rounded-xl text-white p-3"
        onClick={handalAdmission}
     >
       {/* Icon */}

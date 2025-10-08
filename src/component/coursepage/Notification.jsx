@@ -13,6 +13,11 @@ export default function Notification() {
       link: "https://yourcollege.edu/schedule",
       type: "class",
     },
+    {
+      title: "Classes will resume from Oct 5th.",
+      link: "https://yourcollege.edu/schedule",
+      type: "class",
+    },
   ]);
 
 
