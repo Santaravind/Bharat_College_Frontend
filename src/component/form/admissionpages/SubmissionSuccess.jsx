@@ -62,14 +62,13 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
           
                     {/* Contect  */}
                     <div>
-                      <div className="flex justify-center mb-3">
+                      <div className="flex justify-center mb-3 ">
                         <span className="text-7xl">📞</span>
                       </div>
                       <h3 className="font-bold text-2xl">Contact us:</h3>
                      
-                        <p className="text-blue-600 font-medium text-xl fl ">
-                            
-                         bharattechnicalcollege@gmail.com
+                        <p className="text-blue-600 font-medium text-lg break-all">
+                           bharattechnicalcollege@gmail.com
                           </p>
                       
                       <p className="text-blue-600 font-medium text-xl"> 📞+91-8840157051</p>
