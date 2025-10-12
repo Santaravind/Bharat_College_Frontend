@@ -68,7 +68,7 @@ const HeadeGallery = () => {
   }, [images.length]);
 
   return (
-    <div className="w-full  flex flex-col md:flex-row gap-.5 mt-0.5">
+    <div className=" footer w-full  flex flex-col md:flex-row gap-.5 mt-0.5">
       {/* Gallery Section */}
       <div className=" relative overflow-hidden rounded-lg shadow-lg">
         <div

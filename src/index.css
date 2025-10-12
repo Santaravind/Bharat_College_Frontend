@@ -49,3 +49,9 @@
   display: inline-block;
   animation: scroll-up 15s linear infinite;
 }
+@media print{
+  .footer{
+        display: none !important;
+
+  }
+}
