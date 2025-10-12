@@ -3,7 +3,7 @@ import logo2 from './assets/logo2.png'
 import QR from './assets/QR.jpg'
 export default function Footer() {
   return (
-    <footer className="bg-white text-black">
+    <footer className="bg-white text-black footer">
       {/* Footer Widgets */}
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* NSDM Info */}

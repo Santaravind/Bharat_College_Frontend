@@ -69,8 +69,11 @@ function Admission() {
               
 
             </div>
-    
-   <AdmissionForm/>
+    <div className='border-2 border-neutral-200 rounded-2xl  bg-neutral-200'>   
+
+ <AdmissionForm/>
+    </div>
+  
     
         
       

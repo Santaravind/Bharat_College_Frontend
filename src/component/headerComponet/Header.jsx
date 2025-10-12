@@ -7,7 +7,7 @@ export default function Header() {
   //const [search, setSearch] = useState("");
 
   return (
-    <div className="w-full z-20">
+    <div className="w-full z-20 footer">
       {/* Responsive styles for Header */}
       <style>{`
         @media (max-width: 768px) {

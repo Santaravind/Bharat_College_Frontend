@@ -3,9 +3,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const SubmissionSuccess = ({ formData, admissionId }) => {
-  //    const query = new URLSearchParams(useLocation().search);
-  // const status = query.get("status");
-
+  
   const handlePrint = () => {
     window.print();
   };
@@ -13,9 +11,7 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
   const handleNewAdmission = () => {
     window.location.reload();
   };
-// const handlePayment = () => {
-//     navigate(`/payment?admissionId=${admissionId}`);
-//   };
+
   return (
     <div className="text-center">
       <div className="bg-green-50 border border-green-200 rounded-lg p-8 mb-6">
@@ -144,25 +140,7 @@ Sonbhadra,
           Bring this admission reference ID when you visit the college.
         </p>
       </div>
-      {/* if (status !== "paid") {
-           <>
-      <div className="text-center mt-20">
-        <h2 className="text-2xl font-bold text-red-600 mb-4">
-          Payment Pending!
-        </h2>
-        <p className="text-gray-700 mb-6">
-          Please complete your payment to confirm admission.
-        </p>
-        <button
-        //   onClick={() => navigate(`/payment?admissionId=${admissionId}`)}
-           onClick={() => navigate(`https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view`)}
-          className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-        >
-          Proceed to Payment
-        </button>
-      </div>
-    </>
-  } */}
+      
     </div>
   );
 };
