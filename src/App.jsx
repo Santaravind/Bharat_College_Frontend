@@ -12,6 +12,7 @@ import Syllabus from './component/Syllabus'
 import Verification from './component/Verification'
 import { Toaster } from 'react-hot-toast'
 import AdmissionSuccess from './component/form/admissionpages/AdmissionSuccess'
+import SubmissionSuccess from './component/form/admissionpages/SubmissionSuccess'
 
 
 
@@ -34,6 +35,8 @@ function App() {
       <Route  path='/syllabus' element={<Syllabus/>} />
       <Route  path='/verification' element={<Verification/>} />
       <Route path='/admissionSuccess' element={<AdmissionSuccess/>}/>
+      <Route path='/Success' element={<SubmissionSuccess/>}/>
+      
     </Routes>
      <Footer/>
 
