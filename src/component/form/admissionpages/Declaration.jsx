@@ -85,7 +85,7 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
         >
           Previous
         </button>
-        <button
+        {/* <button
           type="button"
           onClick={onSubmit}
           disabled={!formData.declarationAccepted || isSubmitting}
@@ -106,8 +106,8 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
           ) : (
             'Pay & Submit Admission Form'
           )}
-        </button>
-         {/* <button
+        </button> */}
+         <button
   type="button"
   onClick={() => {
     // First, submit the form
@@ -134,7 +134,7 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
   ) : (
     'Submit Admission Form & Proceed to Payment'
   )}
-</button> */}
+</button>
 
       </div>
     </div>
