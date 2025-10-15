@@ -13,6 +13,7 @@ import Verification from './component/Verification'
 import { Toaster } from 'react-hot-toast'
 import AdmissionSuccess from './component/form/admissionpages/AdmissionSuccess'
 import SubmissionSuccess from './component/form/admissionpages/SubmissionSuccess'
+import Declaration from './component/form/admissionpages/Declaration'
 
 
 
@@ -36,6 +37,9 @@ function App() {
       <Route  path='/verification' element={<Verification/>} />
       <Route path='/admissionSuccess' element={<AdmissionSuccess/>}/>
       <Route path='/Success' element={<SubmissionSuccess/>}/>
+      <Route path='/declaration' element={<Declaration/>}/>
+      {/* <Route path='/admisucces' element={<AdmissionSuccess/>}/> */}
+
       
     </Routes>
      <Footer/>

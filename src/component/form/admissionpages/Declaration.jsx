@@ -1,7 +1,33 @@
-// components/Declaration.jsx
 import React from 'react';
 
 const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => {
+  const handlePaymentRedirect = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.declarationAccepted) {
+      setErrors({ declarationAccepted: 'You must accept the declaration to proceed' });
+      return;
+    }
+
+    try {
+      // First submit the form data with payment status as "paid"
+      const submissionData = {
+        ...formData,
+        paymentStatus: 'paid',
+        status: 'ADMISSION_CONFIRMED'
+      };
+      
+      await onSubmit(submissionData);
+      
+      // If submission is successful, redirect to payment
+      const paymentUrl = "https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view";
+      window.location.href = paymentUrl;
+    } catch (error) {
+      console.error("Error saving data before payment:", error);
+      alert("Something went wrong while saving your details. Please try again.");
+    }
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Review & Declaration</h2>
@@ -43,6 +69,18 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
         </ul>
       </div>
 
+      {/* Payment Information */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+        <h3 className="text-lg font-semibold text-blue-800 mb-2">Payment Information</h3>
+        <p className="text-blue-700">
+          <strong>Application Fee:</strong> ₹60 (Non-refundable)
+        </p>
+        <p className="text-sm text-blue-600 mt-2">
+          After submitting the form, you will be redirected to a secure payment page. 
+          Your admission will be confirmed by the college Not your payment .
+        </p>
+      </div>
+
       {/* Declaration Checkbox */}
       <div className="border rounded-lg p-6 mb-6">
         <div className="flex items-start">
@@ -60,6 +98,7 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
               <li>All details match with my 10th class certificate and Aadhar card</li>
               <li>I understand that any mismatch will lead to cancellation of my admission</li>
               <li>I have read and understood all the rules and instructions mentioned above</li>
+              <li>I agree to pay the application fee of ₹60</li>
               <li>I will visit the college campus for document verification and fee payment</li>
             </ul>
           </label>
@@ -77,7 +116,7 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
       )}
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <button
           type="button"
           onClick={() => window.history.back()}
@@ -85,9 +124,10 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
         >
           Previous
         </button>
-        {/* <button
+        
+        <button
           type="button"
-          onClick={onSubmit}
+          onClick={handlePaymentRedirect}
           disabled={!formData.declarationAccepted || isSubmitting}
           className={`px-6 py-2 rounded-md ${
             !formData.declarationAccepted || isSubmitting
@@ -104,76 +144,45 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
               Submitting...
             </span>
           ) : (
-            'Pay & Submit Admission Form'
+            'Submit Form & Proceed to Payment'
           )}
-        </button> */}
-         {/* <button
-  type="button"
-  onClick={() => {
-    // First, submit the form
-    onSubmit();
-
-    // Then redirect to Razorpay payment page
-    window.location.href = "https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view";
-  }}
-  disabled={!formData.declarationAccepted || isSubmitting}
-  className={`px-6 py-2 rounded-md ${
-    !formData.declarationAccepted || isSubmitting
-      ? 'bg-gray-400 cursor-not-allowed'
-      : 'bg-green-600 text-white hover:bg-green-700'
-  }`}
->
-  {isSubmitting ? (
-    <span className="flex items-center">
-      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>
-      Submitting...
-    </span>
-  ) : (
-    'Submit Admission Form & Proceed to Payment'
-  )}
-</button> */}
-{/* // Wait for the form data to save before redirecting */}
-<button
-  type="button"
-  onClick={async (e) => {
-    try {
-      // Wait for the form data to save before redirecting
-      await onSubmit(e);
-
-      // If submission is successful, then go to Razorpay payment page
-      window.location.href = "https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view";
-    } catch (error) {
-      console.error("Error saving data before payment:", error);
-      alert("Something went wrong while saving your details. Please try again.");
-    }
-  }}
-  disabled={!formData.declarationAccepted || isSubmitting}
-  className={`px-6 py-2 rounded-md ${
-    !formData.declarationAccepted || isSubmitting
-      ? 'bg-gray-400 cursor-not-allowed'
-      : 'bg-green-600 text-white hover:bg-green-700'
-  }`}
->
-  {isSubmitting ? (
-    <span className="flex items-center">
-      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-      </svg>
-      Submitting...
-    </span>
-  ) : (
-    'Submit Admission Form & Proceed to Payment'
-  )}
-</button>
-
-
+        </button>
+      </div> */}
+      <div className="flex justify-between">
+        <button
+          type="button"
+          onClick={() => window.history.back()}
+          className="px-6 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+        >
+          Previous
+        </button>
+        
+        <button
+          type="button"
+          onClick={handlePaymentRedirect}
+          disabled={!formData.declarationAccepted || isSubmitting}
+          className={`px-6 py-2 rounded-md ${
+            !formData.declarationAccepted || isSubmitting
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-green-600 text-white hover:bg-green-700'
+          }`}
+        >
+          {isSubmitting ? (
+            <span className="flex items-center">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Submitting...
+            </span>
+          ) : (
+            'Submit Form & Proceed to Payment'
+          )}
+        </button>
       </div>
     </div>
   );
 };
 
 export default Declaration;
+

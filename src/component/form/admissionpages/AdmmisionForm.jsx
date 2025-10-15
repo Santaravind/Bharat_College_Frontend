@@ -1,80 +1,84 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import PersonalDetails from './PersonalDetails';
 import ContactDetails from './ContactDetails';
-import EducationalDetails from './EducationDetails';
+import EducationDetails from './EducationDetails';
 import Declaration from './Declaration';
 import SubmissionSuccess from './SubmissionSuccess';
-import {googleSheetsService} from './services/googleSheetsService.js'
+import { cloudinaryService } from './services/cloudinaryService';
+import { googleSheetsService } from './services/googleSheetsService';
 
-// const API_BASE_URL = 'http://localhost:5000/api'; // Update with your backend URL
 const AdmissionForm = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     // Personal Details
-    title: '',
-    firstName: '',
-    lastName: '',
-    dateOfBirth: '',
-    fatherName: '',
-    motherName: '',
-    age: '',
-    castCategory: '',
-    aadharNumber: '',
-    
+    title: "",
+    firstName: "",
+    lastName: "",
+    dateOfBirth: "",
+    fatherName: "",
+    motherName: "",
+    age: "",
+    castCategory: "",
+    aadharNumber: "",
+
     // Contact Details
-    mobileNumber: '',
-    email: '',
-    address: '',
-    city: '',
-    villagePost: '',
-    district: '',
-    state: '',
-    pinCode: '',
-    permanentAddress: '',
+    mobileNumber: "",
+    email: "",
+    address: "",
+    city: "",
+    villagePost: "",
+    district: "",
+    state: "",
+    pinCode: "",
+    permanentAddress: "",
     sameAsAddress: false,
-    
+
     // Educational Details
-    tenth: { collegeName: '', yearOfPassing: '', percentage: '' },
-    twelfth: { collegeName: '', yearOfPassing: '', percentage: '' },
-    diploma: { collegeName: '', yearOfPassing: '', percentage: '' },
-    graduation: { collegeName: '', yearOfPassing: '', percentage: '' },
-    postGraduation: { collegeName: '', yearOfPassing: '', percentage: '' },
-    
+    tenth: { collegeName: "", yearOfPassing: "", percentage: "" },
+    twelfth: { collegeName: "", yearOfPassing: "", percentage: "" },
+    diploma: { collegeName: "", yearOfPassing: "", percentage: "" },
+    graduation: { collegeName: "", yearOfPassing: "", percentage: "" },
+    postGraduation: { collegeName: "", yearOfPassing: "", percentage: "" },
+
     // Course Details
-    courseProgram: '',
-    fillingDate: new Date().toISOString().split('T')[0],
-    
+    courseProgram: "",
+    fillingDate: new Date().toISOString().split("T")[0],
+
+    // Photo Upload
+    photo: null,
+    photoUrl: "",
+
     // Declaration
-    declarationAccepted: false
+    declarationAccepted: false,
   });
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [admissionId, setAdmissionId] = useState('');
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
- 
-  // Validate Aadhar and check uniqueness
-  // In AdmissionForm.jsx - remove Aadhar validation for now
-const validateAadhar = async (aadhar) => {
-  const aadharRegex = /^\d{12}$/;
-  if (!aadharRegex.test(aadhar)) {
-    return 'Aadhar number must be 12 digits';
-  }
-  
-  // Skip duplicate check due to CORS limitations
-  return null;
-};
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-// const nextStep = async () => {
-//   // Remove the Aadhar validation call
-//   if (validateStep(step)) {
-//     setStep(step + 1);
-//   }
-// };
+  // Check if returning from payment
+  useEffect(() => {
+    const checkPaymentReturn = () => {
+      const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+      if (pendingAdmissionId) {
+        setAdmissionId(pendingAdmissionId);
+        setSubmissionSuccess(true);
+        setStep(5);
+      }
+    };
+
+    checkPaymentReturn();
+  }, []);
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked, files } = e.target;
+    
+    if (name === 'photo' && files && files[0]) {
+      handlePhotoUpload(files[0]);
+      return;
+    }
     
     if (name === 'dateOfBirth') {
       const age = calculateAge(value);
@@ -114,6 +118,35 @@ const validateAadhar = async (aadhar) => {
     }
   };
 
+  const handlePhotoUpload = async (file) => {
+    // Validate file size (500KB)
+    if (file.size > 500 * 1024) {
+      setErrors(prev => ({ ...prev, photo: 'Photo size must be less than 500KB' }));
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setErrors(prev => ({ ...prev, photo: 'Please upload a valid image file' }));
+      return;
+    }
+
+    setUploadingPhoto(true);
+    try {
+      const photoUrl = await cloudinaryService.uploadPhoto(file);
+      setFormData(prev => ({
+        ...prev,
+        photo: file,
+        photoUrl: photoUrl
+      }));
+      setErrors(prev => ({ ...prev, photo: '' }));
+    } catch (error) {
+      setErrors(prev => ({ ...prev, photo: 'Failed to upload photo. Please try again.' }));
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
   const calculateAge = (dob) => {
     const birthDate = new Date(dob);
     const today = new Date();
@@ -130,7 +163,6 @@ const validateAadhar = async (aadhar) => {
     const newErrors = {};
 
     if (step === 1) {
-      // if (!formData.title) newErrors.title = 'Title is required';
       if (!formData.firstName) newErrors.firstName = 'First name is required';
       if (!formData.lastName) newErrors.lastName = 'Last name is required';
       if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
@@ -142,6 +174,7 @@ const validateAadhar = async (aadhar) => {
       } else if (formData.aadharNumber.length !== 12) {
         newErrors.aadharNumber = 'Aadhar number must be 12 digits';
       }
+      if (!formData.photoUrl) newErrors.photo = 'Photo is required';
     }
 
     if (step === 2) {
@@ -168,15 +201,6 @@ const validateAadhar = async (aadhar) => {
   };
 
   const nextStep = async () => {
-    if (step === 1 && formData.aadharNumber) {
-      // Validate Aadhar uniqueness when moving from step 1
-      const aadharError = await validateAadhar(formData.aadharNumber);
-      if (aadharError) {
-        setErrors(prev => ({ ...prev, aadharNumber: aadharError }));
-        return;
-      }
-    }
-
     if (validateStep(step)) {
       setStep(step + 1);
     }
@@ -186,43 +210,85 @@ const validateAadhar = async (aadhar) => {
     setStep(step - 1);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  //this before payment
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
     
-    if (!validateStep(4)) return;
+//     if (!validateStep(4)) return;
     
-    setIsSubmitting(true);
+//     setIsSubmitting(true);
     
-    try {
-      console.log('Submitting form data to Google Sheets:', formData);
-      
-      // Generate admission ID
-      const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
-      setAdmissionId(generatedAdmissionId);
+//     try {
+//       // Generate admission ID
+//       const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
+//       setAdmissionId(generatedAdmissionId);
 
-      // Prepare data for Google Sheets
-      const submissionData = {
-        ...formData,
-        admissionId: generatedAdmissionId,
-        submissionTimestamp: new Date().toISOString(),
-        status: 'SUBMITTED'
-      };
+//       // Store in localStorage for payment return
+//       localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
+//       localStorage.setItem('pendingFormData', JSON.stringify(formData));
 
-      // Submit to Google Sheets
-      const response = await googleSheetsService.submitAdmission(submissionData);
-      
-      console.log('Form submitted successfully to Google Sheets:', response);
-      setSubmissionSuccess(true);
-      setStep(5); // Move to success step
-      
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setErrors({ submit: error.message || 'Failed to submit form. Please try again.' });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+//       // Prepare data for Google Sheets
+//       const submissionData = {
+//         ...formData,
+//         admissionId: generatedAdmissionId,
+//         submissionTimestamp: new Date().toISOString(),
+//         status: 'PENDING_PAYMENT',
+//         paymentStatus: 'pending'
+//       };
 
+//       // Submit to Google Sheets directly
+//       const response = await googleSheetsService.submitAdmission(submissionData);
+      
+//       console.log('Form submitted successfully to Google Sheets:', response);
+      
+//     } catch (error) {
+//       console.error('Error submitting form:', error);
+//       setErrors({ submit: error.message || 'Failed to submit form. Please try again.' });
+//     } finally {
+//       setIsSubmitting(false);
+//     }
+//   };
+
+const handleSubmit = async (e, submissionData = null) => {
+//   e.preventDefault();
+  
+  if (!validateStep(4)) return;
+  
+  setIsSubmitting(true);
+  
+  try {
+    // Generate admission ID
+    const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
+    setAdmissionId(generatedAdmissionId);
+
+    // Store in localStorage for payment return
+    localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
+    localStorage.setItem('pendingFormData', JSON.stringify(formData));
+
+    // Prepare data for Google Sheets - use provided data or default
+    const finalSubmissionData = submissionData || {
+      ...formData,
+      admissionId: generatedAdmissionId,
+      submissionTimestamp: new Date().toISOString(),
+      status: 'ADMISSION_CONFIRMED',
+      paymentStatus: 'paid' // Set as paid immediately
+    };
+
+    // Submit to Google Sheets directly
+    const response = await googleSheetsService.submitAdmission(finalSubmissionData);
+    
+    console.log('Form submitted successfully to Google Sheets:', response);
+    
+    // Move to success page immediately
+    setStep(5);
+    
+  } catch (error) {
+    console.error('Error submitting form:', error);
+    setErrors({ submit: error.message || 'Failed to submit form. Please try again.' });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -230,7 +296,8 @@ const validateAadhar = async (aadhar) => {
           <PersonalDetails 
             formData={formData} 
             errors={errors} 
-            onChange={handleInputChange} 
+            onChange={handleInputChange}
+            uploadingPhoto={uploadingPhoto}
           />
         );
       case 2:
@@ -243,7 +310,7 @@ const validateAadhar = async (aadhar) => {
         );
       case 3:
         return (
-          <EducationalDetails 
+          <EducationDetails 
             formData={formData} 
             errors={errors} 
             onChange={handleInputChange} 
@@ -257,6 +324,7 @@ const validateAadhar = async (aadhar) => {
             onChange={handleInputChange}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
+            admissionId={admissionId}
           />
         );
       case 5:
@@ -272,7 +340,7 @@ const validateAadhar = async (aadhar) => {
   };
 
   return (
-    <div className="min-h-screen  py-10">
+    <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-4xl mx-auto px-4">
         {/* Header */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
@@ -286,12 +354,12 @@ const validateAadhar = async (aadhar) => {
         </div>
 
         {/* Progress Bar */}
-        {/* <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
+          <div className="flex flex-wrap items-center justify-center sm:justify-between mb-4 gap-2 sm:gap-4">
             {[1, 2, 3, 4, 5].map((stepNumber) => (
               <div key={stepNumber} className="flex items-center">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold ${
                     step >= stepNumber
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-300 text-gray-600'
@@ -301,7 +369,7 @@ const validateAadhar = async (aadhar) => {
                 </div>
                 {stepNumber < 5 && (
                   <div
-                    className={`w-16 h-1 ${
+                    className={`hidden sm:block w-16 h-1 ${
                       step > stepNumber ? 'bg-blue-600' : 'bg-gray-300'
                     }`}
                   />
@@ -309,50 +377,14 @@ const validateAadhar = async (aadhar) => {
               </div>
             ))}
           </div>
-          <div className="flex justify-between text-sm text-gray-600">
+          <div className="flex flex-wrap justify-center sm:justify-between text-xs sm:text-sm text-gray-600 gap-2 sm:gap-0">
             <span>Personal</span>
             <span>Contact</span>
             <span>Education</span>
             <span>Declaration</span>
             <span>Complete</span>
           </div>
-        </div> */}
-        <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6">
-  <div className="flex flex-wrap items-center justify-center sm:justify-between mb-4 gap-2 sm:gap-4">
-    {[1, 2, 3, 4, 5].map((stepNumber) => (
-      <div key={stepNumber} className="flex items-center">
-        <div
-          className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold ${
-            step >= stepNumber
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-300 text-gray-600'
-          }`}
-        >
-          {stepNumber}
         </div>
-
-        {/* Connector line (hidden on small screens) */}
-        {stepNumber < 5 && (
-          <div
-            className={`hidden sm:block w-16 h-1 ${
-              step > stepNumber ? 'bg-blue-600' : 'bg-gray-300'
-            }`}
-          />
-        )}
-      </div>
-    ))}
-  </div>
-
-  {/* Step labels */}
-  <div className="flex flex-wrap justify-center sm:justify-between text-xs sm:text-sm text-gray-600 gap-2 sm:gap-0">
-    <span>Personal</span>
-    <span>Contact</span>
-    <span>Education</span>
-    <span>Declaration</span>
-    <span>Complete</span>
-  </div>
-</div>
-
 
         {/* Form Content */}
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -389,5 +421,3 @@ const validateAadhar = async (aadhar) => {
 };
 
 export default AdmissionForm;
-
-
