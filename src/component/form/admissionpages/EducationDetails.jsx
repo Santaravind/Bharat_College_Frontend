@@ -1,6 +1,6 @@
 import React from 'react';
 
-const EducationalDetails = ({ formData, errors, onChange }) => {
+const EducationDetails = ({ formData, errors, onChange }) => {
   const renderEducationField = (level, label, required = false) => (
     <div className="border rounded-lg p-4 mb-4">
       <h3 className="text-lg font-semibold mb-3">{label} {required && '*'}</h3>
@@ -110,4 +110,4 @@ const EducationalDetails = ({ formData, errors, onChange }) => {
   );
 };
 
-export default EducationalDetails;
+export default EducationDetails;

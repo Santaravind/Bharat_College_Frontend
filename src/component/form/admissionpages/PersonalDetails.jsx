@@ -1,6 +1,5 @@
 import React from 'react';
-
-const PersonalDetails = ({ formData, errors, onChange }) => {
+const PersonalDetails = ({ formData, errors, onChange, uploadingPhoto }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Personal Details</h2>
@@ -160,7 +159,49 @@ const PersonalDetails = ({ formData, errors, onChange }) => {
             <p className="text-red-500 text-sm mt-1">{errors.castCategory}</p>
           )}
         </div>
-
+{/* // Add this to PersonalDetails.jsx after the existing fields */}
+<div className="md:col-span-2">
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Passport Size Photo * (Max 500KB)
+  </label>
+  <div className="flex items-center space-x-4">
+    <div className="flex-shrink-0">
+      {formData.photoUrl ? (
+        <img 
+          src={formData.photoUrl} 
+          alt="Student" 
+          className="h-24 w-24 rounded-full object-cover border-2 border-gray-300"
+        />
+      ) : (
+        <div className="h-24 w-24 rounded-full bg-gray-200 border-2 border-dashed border-gray-300 flex items-center justify-center">
+          <span className="text-gray-500 text-sm">No Photo</span>
+        </div>
+      )}
+    </div>
+    <div className="flex-1">
+      <input
+        type="file"
+        name="photo"
+        accept="image/*"
+        onChange={onChange}
+        className="hidden"
+        id="photo-upload"
+      />
+      <label
+        htmlFor="photo-upload"
+        className="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >
+        {uploadingPhoto ? 'Uploading...' : 'Choose Photo'}
+      </label>
+      {errors.photo && (
+        <p className="text-red-500 text-sm mt-1">{errors.photo}</p>
+      )}
+      <p className="text-xs text-gray-500 mt-1">
+        JPEG, PNG, or JPG, Max 500KB. This photo will be used for your ID card.
+      </p>
+    </div>
+  </div>
+</div>
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Aadhar Number *

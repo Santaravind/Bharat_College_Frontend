@@ -239,7 +239,7 @@ const Home = () => {
 
       </p>
        <p className="mt-4 text-gray-900 font-semibold leading-relaxed text-2xl">
-        📍 Address: Pusauli, Robertsganj, Sonbhadra, Uttar Pradesh – 231216
+        📍 Address: Pusauli, Robertsganj, Sonbhadra, Uttar Pradesh-231216
 
        </p>
     </div> 
