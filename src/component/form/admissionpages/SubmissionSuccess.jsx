@@ -299,6 +299,9 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
      </div>
       <div className="max-w-4xl mx-auto px-4">
         {/* Success Header */}
+        <div className=' m-4 px-5 py-3'>
+          <h1 className='text-4xl font-bold text-center items-center'>Online Submission Form </h1>
+        </div>
         <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
           <h2 className="text-3xl items-center text-center font-bold text-rose-400 mb-4">
             Welcome  Bharat Technical College 
@@ -310,18 +313,21 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
             </svg>
           </div>
           
+          <div className='text-center items-center justify-center '> 
           <h2 className="text-3xl font-bold text-green-800 mb-4">
             Admission Form  Submitted Successfully!
           </h2>
           <p className="text-green-700 text-lg mb-4">
             Your admission form has been submitted. Please complete the payment process.
           </p>
-          
-          <div className="bg-white border border-green-300 rounded-lg p-4 inline-block">
+          </div>
+          <div className='items-center justify-center flex'> 
+          <div className="bg-white border border-green-300 rounded-lg p-4  inline-grid text-center items-center justify-center ">
             <p className="text-lg font-semibold">Admission Reference ID:</p>
-            <p className="text-2xl font-bold text-blue-600">{currentAdmissionId}</p>
+            <p className="text-2xl font-bold text-blue-600 flex ">{currentAdmissionId}</p>
           </div>
         </div>
+           </div>
 
         {/* Student Information */}
         <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
@@ -442,7 +448,7 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
 
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center footer">
           <button
             onClick={handlePrint}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center"
@@ -455,7 +461,7 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
           
           <button
             onClick={handleNewAdmission}
-            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center"
+            className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center footer"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
