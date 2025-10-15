@@ -32,6 +32,16 @@
   }
 }
 
+.react-select__control {
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.375rem;   /* rounded-md */
+  min-height: 2.5rem;
+}
+.react-select__control--is-focused {
+  border-color: #3b82f6; /* blue-500 */
+  box-shadow: 0 0 0 1px #3b82f6;
+}
+
 .blink-text {
   animation: blink 1s infinite;
 }

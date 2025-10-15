@@ -1,6 +1,21 @@
 import React from 'react';
+import Select from 'react-select/base';
 
 const EducationDetails = ({ formData, errors, onChange }) => {
+  const courseOptions = [
+  { value: "DIPLOMA IN FIRE & SAFETY METHODS", label: "DIPLOMA IN FIRE & SAFETY METHODS" },
+  { value: "DIPLOMA IN FOOD SAFETY", label: "DIPLOMA IN FOOD SAFETY" },
+  { value: "DIPLOMA IN INDUSTRIAL SAFETY", label: "DIPLOMA IN INDUSTRIAL SAFETY" },
+  { value: "FIRE TECHNICIAN", label: "FIRE TECHNICIAN" },
+  { value: "DIPLOMA IN COMPUTER APPLICATIONS", label: "DIPLOMA IN COMPUTER APPLICATIONS" },
+  { value: "POST DIPLOMA IN COMPUTER APPLICATIONS", label: "POST DIPLOMA IN COMPUTER APPLICATIONS" },
+  { value: "DIPLOMA IN MULTIMEDIA", label: "DIPLOMA IN MULTIMEDIA" },
+  { value: "DIPLOMA IN WEB DESIGNING", label: "DIPLOMA IN WEB DESIGNING" },
+  { value: "ADVANCED DIPLOMA IN COMPUTER APPLICATION", label: "ADVANCED DIPLOMA IN COMPUTER APPLICATION" },
+  { value: "HONORS DIPLOMA IN COMPUTER HARDWARE & NETWORKING", label: "HONORS DIPLOMA IN COMPUTER HARDWARE & NETWORKING" },
+  // ... add all remaining
+];
+
   const renderEducationField = (level, label, required = false) => (
     <div className="border rounded-lg p-4 mb-4">
       <h3 className="text-lg font-semibold mb-3">{label} {required && '*'}</h3>
@@ -73,7 +88,8 @@ const EducationDetails = ({ formData, errors, onChange }) => {
         {renderEducationField('graduation', 'Graduation')}
         {renderEducationField('postGraduation', 'Post Graduation')}
 
-        <div>
+{/* program that you want to admmission */}
+        {/* <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Course/Program Name *
           </label>
@@ -90,7 +106,34 @@ const EducationDetails = ({ formData, errors, onChange }) => {
           {errors.courseProgram && (
             <p className="text-red-500 text-sm mt-1">{errors.courseProgram}</p>
           )}
-        </div>
+        </div> */}
+        <div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Course/Program Name *
+  </label>
+
+  <Select
+    options={courseOptions}
+    name="courseProgram"
+    value={courseOptions.find(option => option.value === formData.courseProgram)}
+    onChange={(selectedOption) => 
+      onChange({
+        target: {
+          name: "courseProgram",
+          value: selectedOption ? selectedOption.value : "",
+        },
+      })
+    }
+    placeholder="Select or search a course/program..."
+    className="w-full text-sm"
+    classNamePrefix="react-select"
+    isSearchable
+  />
+
+  {errors.courseProgram && (
+    <p className="text-red-500 text-sm mt-1">{errors.courseProgram}</p>
+  )}
+</div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">

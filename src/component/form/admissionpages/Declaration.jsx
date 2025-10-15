@@ -73,11 +73,11 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
         <h3 className="text-lg font-semibold text-blue-800 mb-2">Payment Information</h3>
         <p className="text-blue-700">
-          <strong>Application Fee:</strong> ₹500 (Non-refundable)
+          <strong>Application Fee:</strong> ₹60 (Non-refundable)
         </p>
         <p className="text-sm text-blue-600 mt-2">
           After submitting the form, you will be redirected to a secure payment page. 
-          Your admission will be confirmed only after successful payment.
+          Your admission will be confirmed by the college Not your payment .
         </p>
       </div>
 
@@ -98,7 +98,7 @@ const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting }) => 
               <li>All details match with my 10th class certificate and Aadhar card</li>
               <li>I understand that any mismatch will lead to cancellation of my admission</li>
               <li>I have read and understood all the rules and instructions mentioned above</li>
-              <li>I agree to pay the application fee of ₹500</li>
+              <li>I agree to pay the application fee of ₹60</li>
               <li>I will visit the college campus for document verification and fee payment</li>
             </ul>
           </label>

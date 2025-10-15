@@ -214,7 +214,9 @@
 // export default SubmissionSuccess;
 
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
+import icon from '../../assets/icon.png'
+import { IoLocationSharp } from 'react-icons/io5';
 const SubmissionSuccess = ({ formData, admissionId }) => {
   const currentAdmissionId = admissionId || localStorage.getItem('pendingAdmissionId');
   const currentFormData = formData || JSON.parse(localStorage.getItem('pendingFormData') || '{}');
@@ -222,25 +224,94 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
   const handlePrint = () => {
     window.print();
   };
-
-  const handleNewAdmission = () => {
+  const navigate=useNavigate();
+  const handleNewAdmission = (e) => {
+    e.preventDefault();
     localStorage.removeItem('pendingAdmissionId');
     localStorage.removeItem('pendingFormData');
-    window.location.reload();
+    // window.location.reload();
+    navigate("/admission");
+     console.log("Clicked !!")
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+                 <div className='footer'> 
+                {/* Background with grid + dots */}
+                <div
+                  className="absolute inset-0 z-0"
+                  style={{
+                    backgroundImage: `
+                      linear-gradient(to right, rgba(0,0,0,0.06) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px),
+                      radial-gradient(circle, rgba(51,65,85,0.3) 1px, transparent 1px)
+                    `,
+                    backgroundSize: "20px 20px, 20px 20px, 20px 20px",
+                    backgroundPosition: "0 0, 0 0, 0 0",
+                  }}
+                />
+          
+                {/* Content */}
+          
+                <h1 className="relative flex z-10 font-medium  justify-center items-center mt-2 pt-2 text-black text-6xl">Admission Contect us</h1>
+                <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+                  
+                  {/* Top Info Section */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-gray-800">
+                     {/* college name */}
+                    <div>
+                     
+                      <div className="flex justify-center mb-3">
+                        <img src={icon} alt="College icon" className="w-30 h-25 " />
+                      </div>
+                      <h3 className="font-bold text-2xl">BHARAT TECHNICAL COLLEGE  </h3>
+                      <p className="text-lg font-semibold mt-1">OF FIRE ENGINEERING & SAFETY  </p>
+                      <p className="text-lg font-semibold">MANAGEMENT </p>
+                    </div>
+          
+                    {/* address */}
+                    <div>
+                      <div className="flex justify-center mb-3">
+                        {/* <span className="text-6xl">📍</span> */}
+                       <IoLocationSharp className=" text-red-600 text-7xl"/>  
+                      </div>
+                      <h3 className="font-bold text-2xl">Address:</h3>
+                      <p className="text-lg font-semibold mt-1">Robertsganj , Sonbhadra  </p>
+                      <p className="text-lg font-semibold">Utter Pradesh</p>
+                      <p className="text-lg font-semibold">Pin code : 231216 </p>
+                    </div>
+          
+                    {/* Contect  */}
+                    <div>
+                      <div className="flex justify-center mb-3 ">
+                        <span className="text-7xl">📞</span>
+                      </div>
+                      <h3 className="font-bold text-2xl">Contact us:</h3>
+                     
+                        <p className="text-blue-600 font-medium text-lg break-all">
+                           bharattechnicalcollege@gmail.com
+                          </p>
+                      
+                      <p className="text-blue-600 font-medium text-xl"> 📞+91-8840157051</p>
+                    </div>
+                    </div>
+                  </div>
+     </div>
       <div className="max-w-4xl mx-auto px-4">
         {/* Success Header */}
         <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
+          <h2 className="text-3xl items-center text-center font-bold text-rose-400 mb-4">
+            Welcome  Bharat Technical College 
+          </h2>
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            
             <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
             </svg>
           </div>
+          
           <h2 className="text-3xl font-bold text-green-800 mb-4">
-            Admission Submitted Successfully!
+            Admission Form  Submitted Successfully!
           </h2>
           <p className="text-green-700 text-lg mb-4">
             Your admission form has been submitted. Please complete the payment process.
@@ -249,22 +320,6 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
           <div className="bg-white border border-green-300 rounded-lg p-4 inline-block">
             <p className="text-lg font-semibold">Admission Reference ID:</p>
             <p className="text-2xl font-bold text-blue-600">{currentAdmissionId}</p>
-          </div>
-        </div>
-
-        {/* Payment Instructions */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-          <h3 className="text-lg font-semibold text-blue-800 mb-4">Payment Instructions</h3>
-          <div className="space-y-3">
-            <p className="text-blue-700">
-              <strong>Application Fee:</strong> ₹500 (Non-refundable)
-            </p>
-            <p className="text-blue-700">
-              You will be redirected to a secure payment page. Please complete the payment to finalize your admission.
-            </p>
-            <p className="text-blue-600 text-sm">
-              If you are not redirected automatically, please check your browser's pop-up settings or click the payment link.
-            </p>
           </div>
         </div>
 
@@ -296,6 +351,96 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
           </div>
         </div>
 
+
+       {/* Next Steps */}
+      <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+        <h3 className="text-xl font-semibold mb-4">Next Steps</h3>
+        <div className="space-y-4 text-left">
+          <div className="flex items-start">
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
+              <span className="text-blue-600 text-sm font-semibold">1</span>
+            </div>
+            <div>
+              <h4 className="font-semibold">Save Your Admission ID</h4>
+              <p className="text-gray-600">Keep your Admission Reference ID safe for all future communications</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start">
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
+              <span className="text-blue-600 text-sm font-semibold">2</span>
+            </div>
+            <div>
+              <h4 className="font-semibold">Visit College Campus</h4>
+              <p className="text-gray-600">Visit the college within 7 days with all original documents</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start">
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
+              <span className="text-blue-600 text-sm font-semibold">3</span>
+            </div>
+            <div>
+              <h4 className="font-semibold">Document Verification</h4>
+              <p className="text-gray-600">Bring all original documents for verification:
+                <br />- 10th Certificate & Marksheet
+                <br />- 12th Certificate & Marksheet (if applicable)
+                <br />- Aadhar Card
+                <br />- Caste Certificate (if applicable)
+                <br />- Passport Size Photos
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex items-start">
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-1">
+              <span className="text-blue-600 text-sm font-semibold">4</span>
+            </div>
+            <div>
+              <h4 className="font-semibold">Complete Admission Process</h4>
+              <p className="text-gray-600">Complete the remaining formalities and fee payment at the college</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+ {/* Contact Information */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+        <h3 className="text-lg font-semibold mb-2 text-emerald-600">Bharat Technical College Contact Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <strong>Address:</strong>
+            <p className=''>Pusauli, Robertsganj,Sonbhadra
+<br /> Utter Predash, India,Pincode-  231216</p>
+          </div>
+          <div>
+            <strong>Contact:</strong>
+            <p>Phone: +91-8840157051<br />Email: bharattechnicalcollege@gmail.com</p>
+          </div>
+        </div>
+        <p className="text-blue-700 text-sm mt-4">
+          <strong>Office Hours:</strong> Monday to Friday, 9:00 AM - 5:00 PM
+        </p>
+      </div>
+
+        {/* Payment Instructions */}
+        {/* <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+          <h3 className="text-lg font-semibold text-blue-800 mb-4">Payment Instructions</h3>
+          <div className="space-y-3">
+            <p className="text-blue-700">
+              <strong>Application Fee:</strong> ₹60 (Non-refundable)
+            </p>
+            <p className="text-blue-700">
+              You will be redirected to a secure payment page. Please complete the payment to finalize your admission.
+            </p>
+            <p className="text-blue-600 text-sm">
+              If you are not redirected automatically, please check your browser's pop-up settings or click the payment link.
+            </p>
+          </div>
+        </div> */}
+
+
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
@@ -318,6 +463,14 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
             Submit Another Admission
           </button>
         </div>
+           {/* Important Note */}
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
+        <p className="text-yellow-700 text-sm">
+          <strong>Note:</strong> This is only the online application submission. 
+          Your admission will be confirmed only after document verification and fee payment at the college campus.
+          Bring this admission reference ID when you visit the college.
+        </p>
+      </div>
       </div>
     </div>
   );
