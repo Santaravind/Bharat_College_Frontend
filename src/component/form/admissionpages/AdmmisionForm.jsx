@@ -58,19 +58,73 @@ const AdmissionForm = () => {
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  // Check if returning from payment
-  useEffect(() => {
-    const checkPaymentReturn = () => {
-      const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
-      if (pendingAdmissionId) {
-        setAdmissionId(pendingAdmissionId);
-        setSubmissionSuccess(true);
-        setStep(5);
-      }
-    };
+  // Check this update when data not show in client page 
+  // useEffect(() => {
+  //   const checkPaymentReturn = () => {
+  //     const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+  //     if (pendingAdmissionId) {
+  //       setAdmissionId(pendingAdmissionId);
+  //       setSubmissionSuccess(true);
+  //       setStep(5);
+  //     }
+  //   };
 
-    checkPaymentReturn();
-  }, []);
+  //   checkPaymentReturn();
+  // }, []);
+
+
+
+  // In AdmissionForm.jsx - Update the useEffect 18/10/2025
+// In AdmissionForm.jsx
+useEffect(() => {
+  const handlePaymentReturn = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPaymentReturn = urlParams.get('payment_return');
+    const admissionIdFromUrl = urlParams.get('admission_id');
+    
+    if (isPaymentReturn && admissionIdFromUrl) {
+      try {
+        console.log('Payment return detected with admission ID:', admissionIdFromUrl);
+        
+        // ✅ Clear URL parameters to prevent re-triggering
+        window.history.replaceState({}, '', window.location.pathname);
+        
+        // ✅ Set admission ID from URL
+        setAdmissionId(admissionIdFromUrl);
+        
+        // ✅ Try to fetch data from database
+        try {
+          // If you have API to fetch by admission ID
+          const response = await fetch(`/api/admissions/${admissionIdFromUrl}`);
+          if (response.ok) {
+            const data = await response.json();
+            setFormData(data); // Update form data with database data
+          }
+        } catch (dbError) {
+          console.log('Could not fetch from DB, using localStorage fallback');
+        }
+        
+        // ✅ Move to success page
+        setStep(5);
+        
+      } catch (error) {
+        console.error('Error handling payment return:', error);
+      }
+    }
+    
+    // ✅ Original localStorage fallback (for direct submissions without payment)
+    const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+    if (pendingAdmissionId && !admissionIdFromUrl) {
+      setAdmissionId(pendingAdmissionId);
+      setStep(5);
+    }
+  };
+
+  handlePaymentReturn();
+}, []);
+
+
+
 
   const handleInputChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -249,38 +303,78 @@ const AdmissionForm = () => {
 //     }
 //   };
 
+// const handleSubmit = async (e, submissionData = null) => {
+// //   e.preventDefault();
+  
+//   if (!validateStep(4)) return;
+  
+//   setIsSubmitting(true);
+  
+//   try {
+//     // Generate admission ID
+//     const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
+//     setAdmissionId(generatedAdmissionId);
+
+//     // Store in localStorage for payment return
+//     localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
+//     localStorage.setItem('pendingFormData', JSON.stringify(formData));
+
+//     // Prepare data for Google Sheets - use provided data or default
+//     const finalSubmissionData = submissionData || {
+//       ...formData,
+//       admissionId: generatedAdmissionId,
+//       submissionTimestamp: new Date().toISOString(),
+//       status: 'ADMISSION_CONFIRMED',
+//       paymentStatus: 'paid' // Set as paid immediately
+//     };
+
+//     // Submit to Google Sheets directly
+//     const response = await googleSheetsService.submitAdmission(finalSubmissionData);
+    
+//     console.log('Form submitted successfully to Google Sheets:', response);
+    
+//     // Move to success page immediately
+//     setStep(5);
+    
+//   } catch (error) {
+//     console.error('Error submitting form:', error);
+//     setErrors({ submit: error.message || 'Failed to submit form. Please try again.' });
+//   } finally {
+//     setIsSubmitting(false);
+//   }
+// };
+
+
+
+//client data not show 18/10/2025
+
 const handleSubmit = async (e, submissionData = null) => {
-//   e.preventDefault();
+  // if (e) e.preventDefault();
   
   if (!validateStep(4)) return;
   
   setIsSubmitting(true);
   
   try {
-    // Generate admission ID
-    const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
-    setAdmissionId(generatedAdmissionId);
-
-    // Store in localStorage for payment return
-    localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
-    localStorage.setItem('pendingFormData', JSON.stringify(formData));
-
-    // Prepare data for Google Sheets - use provided data or default
+    // Use provided submissionData or create default
     const finalSubmissionData = submissionData || {
       ...formData,
-      admissionId: generatedAdmissionId,
+      admissionId: `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`,
       submissionTimestamp: new Date().toISOString(),
       status: 'ADMISSION_CONFIRMED',
-      paymentStatus: 'paid' // Set as paid immediately
+      paymentStatus: 'paid'
     };
 
-    // Submit to Google Sheets directly
+    // Submit to Google Sheets
     const response = await googleSheetsService.submitAdmission(finalSubmissionData);
     
     console.log('Form submitted successfully to Google Sheets:', response);
     
-    // Move to success page immediately
-    setStep(5);
+    // Only move to success page if not redirecting to payment
+    if (finalSubmissionData.paymentStatus !== 'pending') {
+      setAdmissionId(finalSubmissionData.admissionId);
+      setStep(5);
+    }
     
   } catch (error) {
     console.error('Error submitting form:', error);
@@ -318,14 +412,24 @@ const handleSubmit = async (e, submissionData = null) => {
         );
       case 4:
         return (
+          // <Declaration
+          //   formData={formData}
+          //   errors={errors}
+          //   onChange={handleInputChange}
+          //   onSubmit={handleSubmit}
+          //   isSubmitting={isSubmitting}
+          //   admissionId={admissionId}
+          // />
           <Declaration
-            formData={formData}
-            errors={errors}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-            admissionId={admissionId}
-          />
+              formData={formData}
+              errors={errors}
+               onChange={handleInputChange}
+               onSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+                  admissionId={admissionId}
+                setIsSubmitting={setIsSubmitting} // Add this
+                setErrors={setErrors} // Add this
+/>
         );
       case 5:
         return (

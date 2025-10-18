@@ -52,9 +52,10 @@ const AdmissionSuccess = ({ formData }) => {
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
         <h3 className="text-lg font-semibold mb-2">Admission Reference</h3>
-        <p className="text-blue-700">
-          Your Admission ID: <strong>ADM{formData.aadharNumber.slice(-8)}</strong>
-        </p>
+       <p className="text-blue-700">
+                  Your Admission ID: <strong>ADM{formData?.aadharNumber?.slice(-8) || "N/A"}</strong>
+           </p>
+
         <p className="text-sm text-blue-600 mt-2">
           Please keep this reference number for all future communications
         </p>
