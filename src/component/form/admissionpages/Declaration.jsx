@@ -141,11 +141,16 @@ const Declaration = ({ formData, errors, onChange,  onSubmit, isSubmitting,  set
       source: 'payment_redirect'
     }));
     
-    const successUrl = `${window.location.origin}${window.location.pathname}?payment_success=true&data=${returnData}&admission_id=${generatedAdmissionId}&timestamp=${Date.now()}`;
+    // const successUrl = `${window.location.origin}${window.location.pathname}?payment_success=true&data=${returnData}&admission_id=${generatedAdmissionId}&timestamp=${Date.now()}`;
     
-    // ✅ Redirect to payment
-    const paymentUrl = `https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view?admission_id=${generatedAdmissionId}&success_url=${encodeURIComponent(successUrl)}`;
+    // // ✅ Redirect to payment
+    // const paymentUrl = `https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view?admission_id=${generatedAdmissionId}&success_url=${encodeURIComponent(successUrl)}`;
     
+   
+const successUrl = `${window.location.origin}${window.location.pathname}?payment_success=true&admission_id=${generatedAdmissionId}`;
+
+const paymentUrl = `https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view?admission_id=${generatedAdmissionId}&callback_url=${encodeURIComponent(successUrl)}`;
+
     // Use replace to prevent back button issues
     window.location.replace(paymentUrl);
     

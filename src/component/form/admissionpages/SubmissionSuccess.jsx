@@ -580,75 +580,110 @@
 // export default SubmissionSuccess;
 
 
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 
-const SubmissionSuccess = ({ formData, admissionId }) => {
+// const SubmissionSuccess = ({ formData, admissionId }) => {
+//   const [displayData, setDisplayData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const loadSuccessData = async () => {
+//       try {
+//         setLoading(true);
+        
+//         const urlParams = new URLSearchParams(window.location.search);
+//         const admissionIdFromUrl = urlParams.get('admission_id');
+        
+//         let finalAdmissionId = admissionIdFromUrl || admissionId;
+//         let finalFormData = formData;
+        
+//         if (!finalAdmissionId && typeof localStorage !== 'undefined') {
+//           finalAdmissionId = localStorage.getItem('pendingAdmissionId');
+//           const storedData = localStorage.getItem('pendingFormData');
+//           if (storedData && !finalFormData) {
+//             finalFormData = JSON.parse(storedData);
+//           }
+//         }
+        
+//         if (!finalAdmissionId) {
+//           finalAdmissionId = 'TEMP_' + Date.now().toString().slice(-6);
+//         }
+        
+//         if (!finalFormData || !finalFormData.firstName) {
+//           finalFormData = {
+//             firstName: 'Student',
+//             courseProgram: 'Course information',
+//             mobileNumber: 'Not available',
+//             email: 'Not available',
+//             photoUrl: ''
+//           };
+//         }
+        
+//         setDisplayData({
+//           admissionId: finalAdmissionId,
+//           studentData: finalFormData
+//         });
+        
+//       } catch (error) {
+//         console.error('Error in loadSuccessData:', error);
+//         setDisplayData({
+//           admissionId: 'CONTACT_ADMIN',
+//           studentData: {
+//             firstName: 'Please contact',
+//             lastName: 'college administration',
+//             courseProgram: 'with your payment reference',
+//             mobileNumber: '+91-8840157051',
+//             email: 'bharattechnicalcollege@gmail.com'
+//           }
+//         });
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     loadSuccessData();
+//   }, [admissionId, formData]);
+
+//   const handlePrint = () => {
+//     window.print();
+//   };
+
+//   const handleNewAdmission = () => {
+//     if (typeof localStorage !== 'undefined') {
+//       localStorage.removeItem('pendingAdmissionId');
+//       localStorage.removeItem('pendingFormData');
+//     }
+//     if (typeof sessionStorage !== 'undefined') {
+//       sessionStorage.removeItem('pendingAdmissionId');
+//     }
+//     window.location.href = '/admission';
+//   };
+
+//   if (loading || !displayData) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+//         <div className="text-center">
+//           <div className="animate-spin rounded-full h-16 w-16 md:h-32 md:w-32 border-b-2 border-blue-600 mx-auto mb-4"></div>
+//           <p className="text-base md:text-lg">Preparing your admission details...</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+
+import React, { useState, useEffect } from 'react';
+import { googleSheetsService } from './services/googleSheetsService';
+
+//fetch data form storage 
+const SubmissionSuccess = ({ formData: initialFormData, admissionId: propAdmissionId }) => {
   const [displayData, setDisplayData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const loadSuccessData = async () => {
-      try {
-        setLoading(true);
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const admissionIdFromUrl = urlParams.get('admission_id');
-        
-        let finalAdmissionId = admissionIdFromUrl || admissionId;
-        let finalFormData = formData;
-        
-        if (!finalAdmissionId && typeof localStorage !== 'undefined') {
-          finalAdmissionId = localStorage.getItem('pendingAdmissionId');
-          const storedData = localStorage.getItem('pendingFormData');
-          if (storedData && !finalFormData) {
-            finalFormData = JSON.parse(storedData);
-          }
-        }
-        
-        if (!finalAdmissionId) {
-          finalAdmissionId = 'TEMP_' + Date.now().toString().slice(-6);
-        }
-        
-        if (!finalFormData || !finalFormData.firstName) {
-          finalFormData = {
-            firstName: 'Student',
-            courseProgram: 'Course information',
-            mobileNumber: 'Not available',
-            email: 'Not available',
-            photoUrl: ''
-          };
-        }
-        
-        setDisplayData({
-          admissionId: finalAdmissionId,
-          studentData: finalFormData
-        });
-        
-      } catch (error) {
-        console.error('Error in loadSuccessData:', error);
-        setDisplayData({
-          admissionId: 'CONTACT_ADMIN',
-          studentData: {
-            firstName: 'Please contact',
-            lastName: 'college administration',
-            courseProgram: 'with your payment reference',
-            mobileNumber: '+91-8840157051',
-            email: 'bharattechnicalcollege@gmail.com'
-          }
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadSuccessData();
-  }, [admissionId, formData]);
-
-  const handlePrint = () => {
+const handlePrint = () => {
     window.print();
   };
-
-  const handleNewAdmission = () => {
+const handleNewAdmission = () => {
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem('pendingAdmissionId');
       localStorage.removeItem('pendingFormData');
@@ -658,18 +693,225 @@ const SubmissionSuccess = ({ formData, admissionId }) => {
     }
     window.location.href = '/admission';
   };
+  useEffect(() => {
+    const loadAdmissionData = async () => {
+      try {
+        setLoading(true);
+        
+        // Get admission ID from props or URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const admissionIdFromUrl = urlParams.get('admission_id');
+        const finalAdmissionId = propAdmissionId || admissionIdFromUrl;
+        
+        if (!finalAdmissionId) {
+          throw new Error('No admission ID found');
+        }
 
-  if (loading || !displayData) {
+        console.log('📋 Loading admission data for:', finalAdmissionId);
+
+        // ✅ ALWAYS try to fetch from backend first
+        try {
+          const response = await googleSheetsService.getAdmissionById(finalAdmissionId);
+          if (response.success && response.data) {
+            console.log('✅ Data loaded from backend');
+            setDisplayData({
+              admissionId: finalAdmissionId,
+              studentData: transformBackendData(response.data)
+            });
+            setLoading(false);
+            return;
+          }
+        } catch (backendError) {
+          console.warn('⚠️ Backend fetch failed, trying fallbacks:', backendError);
+        }
+
+        // ✅ FALLBACK 1: Use props data
+        if (initialFormData && initialFormData.firstName) {
+          console.log('✅ Using prop data');
+          setDisplayData({
+            admissionId: finalAdmissionId,
+            studentData: initialFormData
+          });
+          setLoading(false);
+          return;
+        }
+
+        // ✅ FALLBACK 2: Local storage
+        const localData = recoverFromLocalStorage(finalAdmissionId);
+        if (localData) {
+          console.log('✅ Using local storage data');
+          setDisplayData({
+            admissionId: finalAdmissionId,
+            studentData: localData
+          });
+          setLoading(false);
+          return;
+        }
+
+        // ✅ FINAL FALLBACK: Minimal data
+        console.warn('⚠️ Using fallback data');
+        setDisplayData({
+          admissionId: finalAdmissionId,
+          studentData: {
+            firstName: 'Student',
+            courseProgram: 'Course information',
+            mobileNumber: 'Not available',
+            email: 'Not available',
+            photoUrl: ''
+          }
+        });
+
+      } catch (err) {
+        console.error('❌ Error loading admission data:', err);
+        setError(err.message);
+        setDisplayData({
+          admissionId: 'ERROR',
+          studentData: {
+            firstName: 'Error loading data',
+            courseProgram: 'Please contact administration',
+            mobileNumber: '+91-8840157051',
+            email: 'bharattechnicalcollege@gmail.com'
+          }
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAdmissionData();
+  }, [initialFormData, propAdmissionId]);
+
+  // In SubmissionSuccess.jsx - Improved data fetching
+useEffect(() => {
+  const fetchAdmissionData = async () => {
+    try {
+      setLoading(true);
+      
+      // Get admission ID from URL or props
+      const urlParams = new URLSearchParams(window.location.search);
+      const admissionIdFromUrl = urlParams.get('admission_id');
+      const finalAdmissionId = propAdmissionId || admissionIdFromUrl;
+      
+      if (!finalAdmissionId) {
+        throw new Error('No admission ID found');
+      }
+
+      console.log('🔍 Fetching data for admission:', finalAdmissionId);
+
+      // Try multiple data sources in order of reliability
+      let studentData = null;
+
+      // 1. Try backend API first
+      try {
+        const response = await googleSheetsService.getAdmissionById(finalAdmissionId);
+        if (response.success && response.data) {
+          console.log('✅ Data loaded from backend');
+          studentData = transformBackendData(response.data);
+        }
+      } catch (backendError) {
+        console.warn('❌ Backend fetch failed:', backendError);
+      }
+
+      // 2. Fallback to localStorage
+      if (!studentData) {
+        studentData = recoverFromLocalStorage(finalAdmissionId);
+        if (studentData) {
+          console.log('✅ Data loaded from localStorage');
+        }
+      }
+
+      // 3. Fallback to props
+      if (!studentData && initialFormData) {
+        studentData = initialFormData;
+        console.log('✅ Using initial form data');
+      }
+
+      // 4. Final fallback
+      if (!studentData) {
+        console.warn('⚠️ Using fallback data');
+        studentData = createFallbackData();
+      }
+
+      setDisplayData({
+        admissionId: finalAdmissionId,
+        studentData: studentData
+      });
+
+    } catch (error) {
+      console.error('❌ Error loading admission data:', error);
+      setError(error.message);
+      setDisplayData({
+        admissionId: 'ERROR',
+        studentData: createFallbackData()
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchAdmissionData();
+}, [propAdmissionId, initialFormData]);
+
+  // Transform function (same as in AdmissionForm)
+  const transformBackendData = (backendData) => {
+    return {
+      title: backendData.title || '',
+      firstName: backendData.firstName || '',
+      lastName: backendData.lastName || '',
+      dateOfBirth: backendData.dateOfBirth || '',
+      fatherName: backendData.fatherName || '',
+      motherName: backendData.motherName || '',
+      age: backendData.age || '',
+      castCategory: backendData.castCategory || '',
+      aadharNumber: backendData.aadharNumber || '',
+      mobileNumber: backendData.mobileNumber || '',
+      email: backendData.email || '',
+      address: backendData.address || '',
+      city: backendData.city || '',
+      villagePost: backendData.villagePost || '',
+      district: backendData.district || '',
+      state: backendData.state || '',
+      pinCode: backendData.pinCode || '',
+      permanentAddress: backendData.permanentAddress || '',
+      courseProgram: backendData.courseProgram || '',
+      photoUrl: backendData.photoUrl || '',
+      tenth: {
+        collegeName: backendData.tenthCollegeName || backendData.tenth?.collegeName || '',
+        yearOfPassing: backendData.tenthYearOfPassing || backendData.tenth?.yearOfPassing || '',
+        percentage: backendData.tenthPercentage || backendData.tenth?.percentage || ''
+      },
+      // ... include other education levels
+    };
+  };
+
+  // Local storage recovery
+  const recoverFromLocalStorage = (admissionId) => {
+    try {
+      const storedData = localStorage.getItem('admissionFormData');
+      if (storedData) {
+        const parsed = JSON.parse(storedData);
+        if (parsed.admissionId === admissionId && parsed.formData) {
+          return parsed.formData;
+        }
+      }
+    } catch (error) {
+      console.error('Local storage recovery error:', error);
+    }
+    return null;
+  };
+
+  // ... rest of your component remains the same
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 md:h-32 md:w-32 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-base md:text-lg">Preparing your admission details...</p>
+          <p className="text-base md:text-lg">Loading your admission details...</p>
+          <p className="text-sm text-gray-500 mt-2">Admission ID: {propAdmissionId}</p>
         </div>
       </div>
     );
   }
-
   const { admissionId: displayAdmissionId, studentData } = displayData;
 
   return (
