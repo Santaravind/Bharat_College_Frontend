@@ -54,8 +54,9 @@
 
 //This code is working 
 // const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby34M4zPdL0qncjHMdJHK0ytXcFJimlwenorUf-77QLv_CQmP5xPBRhe069zTaRxzBqAQ/exec';
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdqJF32oAtiVOAX_7JQ49n944yd-lsyrVE5nx6_OqT3eKOujrTyPF-CxLQMqI_DUVw9A/exec';
+// const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdqJF32oAtiVOAX_7JQ49n944yd-lsyrVE5nx6_OqT3eKOujrTyPF-CxLQMqI_DUVw9A/exec';
 
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxb3zNWN3GO4vf-JMSEtwGCAYjBEPHF10xAgCVMg5OTwQppy3waV3MQohFuQWifqeTunA/exec'
 // Helper function to handle fetch with retry logic
 const fetchWithRetry = async (url, options = {}, retries = 3, delay = 2000) => {
   try {
@@ -172,25 +173,67 @@ export const googleSheetsService = {
       throw error;
     }
   },
-  getAdmissionById: async (admissionId) => {
-    try {
-      console.log(`📋 Fetching admission data for: ${admissionId}`);
-      
-      const response = await fetchWithRetry(`${SCRIPT_URL}?action=getAdmissionById&admissionId=${admissionId}`, {
-        method: 'GET',
-      });
+getAdmissionById: async (admissionId) => {
+  try {
+    console.log(`📋 Fetching admission data for: ${admissionId}`);
+    
+    const response = await fetchWithRetry(`${SCRIPT_URL}?action=getAdmissionById&admissionId=${admissionId}`, {
+      method: 'GET',
+    });
 
-      const result = await response.json();
-      console.log('📊 Admission data fetched:', result);
-      
-      if (!result.success) {
-        throw new Error(result.error || 'Failed to fetch admission data');
-      }
-      
-      return result;
-    } catch (error) {
-      console.error('❌ Error fetching admission data:', error);
-      throw error;
+    const result = await response.json();
+    console.log('📊 Admission data fetched:', result);
+    
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to fetch admission data');
     }
-  },
+    
+    // Handle both response formats for backward compatibility
+    const admissionData = result.data || result.admission;
+    if (!admissionData) {
+      throw new Error('No admission data found in response');
+    }
+    
+    return {
+      success: true,
+      data: admissionData
+    };
+  } catch (error) {
+    console.error('❌ Error fetching admission data:', error);
+    throw error;
+  }
+},
+
+getAdmissionByEmail: async (email) => {
+  try {
+    console.log(`📧 Searching admission by email: ${email}`);
+    
+    const response = await fetchWithRetry(`${SCRIPT_URL}?action=getAdmissionByEmail&email=${encodeURIComponent(email)}`, {
+      method: 'GET',
+    });
+
+    const result = await response.json();
+    console.log('📊 Email search result:', result);
+    
+    if (!result.success) {
+      throw new Error(result.error || 'No admission found with this email address');
+    }
+    
+    // Handle both response formats for backward compatibility
+    const admissionData = result.data || result.admission;
+    if (!admissionData) {
+      throw new Error('No admission data found in response');
+    }
+    
+    return {
+      success: true,
+      data: admissionData
+    };
+  } catch (error) {
+    console.error('❌ Error searching admission by email:', error);
+    throw error;
+  }
+}
+
+
 };
