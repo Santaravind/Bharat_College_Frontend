@@ -58,19 +58,222 @@ const AdmissionForm = () => {
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
-  // Check if returning from payment
-  useEffect(() => {
-    const checkPaymentReturn = () => {
-      const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
-      if (pendingAdmissionId) {
-        setAdmissionId(pendingAdmissionId);
-        setSubmissionSuccess(true);
-        setStep(5);
-      }
-    };
+  // Check this update when data not show in client page 
+  // useEffect(() => {
+  //   const checkPaymentReturn = () => {
+  //     const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+  //     if (pendingAdmissionId) {
+  //       setAdmissionId(pendingAdmissionId);
+  //       setSubmissionSuccess(true);
+  //       setStep(5);
+  //     }
+  //   };
 
-    checkPaymentReturn();
-  }, []);
+  //   checkPaymentReturn();
+  // }, []);
+
+
+
+  // In AdmissionForm.jsx - Update the useEffect 18/10/2025
+// In AdmissionForm.jsx
+// useEffect(() => {
+//   const handlePaymentReturn = async () => {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const isPaymentReturn = urlParams.get('payment_return');
+//     const admissionIdFromUrl = urlParams.get('admission_id');
+    
+//     if (isPaymentReturn && admissionIdFromUrl) {
+//       try {
+//         console.log('Payment return detected with admission ID:', admissionIdFromUrl);
+        
+//         // ✅ Clear URL parameters to prevent re-triggering
+//         window.history.replaceState({}, '', window.location.pathname);
+        
+//         // ✅ Set admission ID from URL
+//         setAdmissionId(admissionIdFromUrl);
+        
+//         // ✅ Try to fetch data from database
+//         try {
+//           // If you have API to fetch by admission ID
+//           const response = await fetch(`/api/admissions/${admissionIdFromUrl}`);
+//           if (response.ok) {
+//             const data = await response.json();
+//             setFormData(data); // Update form data with database data
+//           }
+//         } catch (dbError) {
+//           console.log('Could not fetch from DB, using localStorage fallback');
+//         }
+        
+//         // ✅ Move to success page
+//         setStep(5);
+        
+//       } catch (error) {
+//         console.error('Error handling payment return:', error);
+//       }
+//     }
+    
+//     // ✅ Original localStorage fallback (for direct submissions without payment)
+//     const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+//     if (pendingAdmissionId && !admissionIdFromUrl) {
+//       setAdmissionId(pendingAdmissionId);
+//       setStep(5);
+//     }
+//   };
+
+//   handlePaymentReturn();
+// }, []);
+
+useEffect(() => {
+  const handlePaymentReturn = async () => {
+    console.log('Checking for payment return...');
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPaymentReturn = urlParams.get('payment_success') || urlParams.get('payment_return');
+    const admissionIdFromUrl = urlParams.get('admission_id');
+    const encodedData = urlParams.get('data');
+    
+    // ✅ METHOD 1: URL Parameters (Highest Priority)
+    if (isPaymentReturn && admissionIdFromUrl) {
+      console.log('Payment return detected with ID:', admissionIdFromUrl);
+      
+      try {
+        // Decode URL data if present
+        let urlFormData = {};
+        if (encodedData) {
+          try {
+            urlFormData = JSON.parse(atob(encodedData));
+            console.log('Decoded URL data:', urlFormData);
+          } catch (e) {
+            console.log('No encoded data in URL');
+          }
+        }
+        
+        // ✅ METHOD 2: Check localStorage for comprehensive data
+        const storedData = localStorage.getItem('admissionFormData');
+        const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+        
+        let finalAdmissionId = admissionIdFromUrl || pendingAdmissionId;
+        let finalFormData = formData;
+        
+        if (storedData) {
+          try {
+            const parsedData = JSON.parse(storedData);
+            console.log('Found stored data:', parsedData);
+            
+            if (parsedData.formData) {
+              finalFormData = { ...finalFormData, ...parsedData.formData };
+            }
+            if (parsedData.admissionId && !finalAdmissionId) {
+              finalAdmissionId = parsedData.admissionId;
+            }
+          } catch (parseError) {
+            console.error('Error parsing stored data:', parseError);
+          }
+        }
+        
+        // ✅ METHOD 3: Fallback - reconstruct from individual localStorage items
+        if (!finalFormData.firstName) {
+          console.log('Reconstructing form from individual storage...');
+          const reconstructedData = {};
+          const formFields = [
+            'title', 'firstName', 'lastName', 'dateOfBirth', 'fatherName', 'motherName', 
+            'age', 'castCategory', 'aadharNumber', 'mobileNumber', 'email', 'address',
+            'city', 'villagePost', 'district', 'state', 'pinCode', 'permanentAddress',
+            'courseProgram', 'photoUrl'
+          ];
+          
+          formFields.forEach(field => {
+            const value = localStorage.getItem(`admission_${field}`);
+            if (value) {
+              reconstructedData[field] = value;
+            }
+          });
+          
+          // Handle nested education objects
+          const educationLevels = ['tenth', 'twelfth', 'diploma', 'graduation', 'postGraduation'];
+          educationLevels.forEach(level => {
+            const collegeName = localStorage.getItem(`admission_${level}_collegeName`);
+            const yearOfPassing = localStorage.getItem(`admission_${level}_yearOfPassing`);
+            const percentage = localStorage.getItem(`admission_${level}_percentage`);
+            
+            if (collegeName || yearOfPassing || percentage) {
+              reconstructedData[level] = {
+                collegeName: collegeName || '',
+                yearOfPassing: yearOfPassing || '',
+                percentage: percentage || ''
+              };
+            }
+          });
+          
+          if (Object.keys(reconstructedData).length > 0) {
+            finalFormData = { ...finalFormData, ...reconstructedData };
+            console.log('Reconstructed data:', reconstructedData);
+          }
+        }
+        
+        // ✅ METHOD 4: SessionStorage fallback
+        if (!finalFormData.firstName) {
+          const sessionData = sessionStorage.getItem('admissionBackup');
+          if (sessionData) {
+            try {
+              const parsedSessionData = JSON.parse(sessionData);
+              if (parsedSessionData.formData) {
+                finalFormData = { ...finalFormData, ...parsedSessionData.formData };
+              }
+            } catch (e) {
+              console.log('No valid session data');
+            }
+          }
+        }
+        
+        // ✅ Update state with recovered data
+        if (finalAdmissionId) {
+          setAdmissionId(finalAdmissionId);
+        }
+        
+        if (finalFormData.firstName) {
+          setFormData(finalFormData);
+          console.log('Form data restored successfully');
+        }
+        
+        // ✅ Clean URL to prevent re-triggering
+        window.history.replaceState({}, '', window.location.pathname);
+        
+        // ✅ Move to success page
+        setStep(5);
+        setSubmissionSuccess(true);
+        
+      } catch (error) {
+        console.error('Error handling payment return:', error);
+      }
+    }
+    
+    // ✅ Handle direct localStorage restoration (page refresh)
+    else {
+      const storedData = localStorage.getItem('admissionFormData');
+      const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+      
+      if (storedData && pendingAdmissionId) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          console.log('Restoring from localStorage (page refresh):', parsedData);
+          
+          if (parsedData.formData && parsedData.admissionId) {
+            setFormData(parsedData.formData);
+            setAdmissionId(parsedData.admissionId);
+            setStep(5);
+            setSubmissionSuccess(true);
+          }
+        } catch (error) {
+          console.error('Error restoring from localStorage:', error);
+        }
+      }
+    }
+  };
+
+  handlePaymentReturn();
+}, []); // Empty dependency array to run only on mount
+
 
   const handleInputChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -249,38 +452,78 @@ const AdmissionForm = () => {
 //     }
 //   };
 
+// const handleSubmit = async (e, submissionData = null) => {
+// //   e.preventDefault();
+  
+//   if (!validateStep(4)) return;
+  
+//   setIsSubmitting(true);
+  
+//   try {
+//     // Generate admission ID
+//     const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
+//     setAdmissionId(generatedAdmissionId);
+
+//     // Store in localStorage for payment return
+//     localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
+//     localStorage.setItem('pendingFormData', JSON.stringify(formData));
+
+//     // Prepare data for Google Sheets - use provided data or default
+//     const finalSubmissionData = submissionData || {
+//       ...formData,
+//       admissionId: generatedAdmissionId,
+//       submissionTimestamp: new Date().toISOString(),
+//       status: 'ADMISSION_CONFIRMED',
+//       paymentStatus: 'paid' // Set as paid immediately
+//     };
+
+//     // Submit to Google Sheets directly
+//     const response = await googleSheetsService.submitAdmission(finalSubmissionData);
+    
+//     console.log('Form submitted successfully to Google Sheets:', response);
+    
+//     // Move to success page immediately
+//     setStep(5);
+    
+//   } catch (error) {
+//     console.error('Error submitting form:', error);
+//     setErrors({ submit: error.message || 'Failed to submit form. Please try again.' });
+//   } finally {
+//     setIsSubmitting(false);
+//   }
+// };
+
+
+
+//client data not show 18/10/2025
+
 const handleSubmit = async (e, submissionData = null) => {
-//   e.preventDefault();
+  // if (e) e.preventDefault();
   
   if (!validateStep(4)) return;
   
   setIsSubmitting(true);
   
   try {
-    // Generate admission ID
-    const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
-    setAdmissionId(generatedAdmissionId);
-
-    // Store in localStorage for payment return
-    localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
-    localStorage.setItem('pendingFormData', JSON.stringify(formData));
-
-    // Prepare data for Google Sheets - use provided data or default
+    // Use provided submissionData or create default
     const finalSubmissionData = submissionData || {
       ...formData,
-      admissionId: generatedAdmissionId,
+      admissionId: `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`,
       submissionTimestamp: new Date().toISOString(),
       status: 'ADMISSION_CONFIRMED',
-      paymentStatus: 'paid' // Set as paid immediately
+      paymentStatus: 'paid'
     };
 
-    // Submit to Google Sheets directly
+    // Submit to Google Sheets
     const response = await googleSheetsService.submitAdmission(finalSubmissionData);
     
     console.log('Form submitted successfully to Google Sheets:', response);
     
-    // Move to success page immediately
-    setStep(5);
+    // Only move to success page if not redirecting to payment
+    if (finalSubmissionData.paymentStatus !== 'pending') {
+      setAdmissionId(finalSubmissionData.admissionId);
+      setStep(5);
+    }
     
   } catch (error) {
     console.error('Error submitting form:', error);
@@ -318,14 +561,24 @@ const handleSubmit = async (e, submissionData = null) => {
         );
       case 4:
         return (
+          // <Declaration
+          //   formData={formData}
+          //   errors={errors}
+          //   onChange={handleInputChange}
+          //   onSubmit={handleSubmit}
+          //   isSubmitting={isSubmitting}
+          //   admissionId={admissionId}
+          // />
           <Declaration
-            formData={formData}
-            errors={errors}
-            onChange={handleInputChange}
-            onSubmit={handleSubmit}
-            isSubmitting={isSubmitting}
-            admissionId={admissionId}
-          />
+              formData={formData}
+              errors={errors}
+               onChange={handleInputChange}
+               onSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+                  admissionId={admissionId}
+                setIsSubmitting={setIsSubmitting} // Add this
+                setErrors={setErrors} // Add this
+/>
         );
       case 5:
         return (
