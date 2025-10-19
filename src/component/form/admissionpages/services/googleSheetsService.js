@@ -53,7 +53,8 @@
 // };
 
 //This code is working 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby34M4zPdL0qncjHMdJHK0ytXcFJimlwenorUf-77QLv_CQmP5xPBRhe069zTaRxzBqAQ/exec';
+// const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby34M4zPdL0qncjHMdJHK0ytXcFJimlwenorUf-77QLv_CQmP5xPBRhe069zTaRxzBqAQ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdqJF32oAtiVOAX_7JQ49n944yd-lsyrVE5nx6_OqT3eKOujrTyPF-CxLQMqI_DUVw9A/exec';
 
 // Helper function to handle fetch with retry logic
 const fetchWithRetry = async (url, options = {}, retries = 3, delay = 2000) => {
@@ -170,5 +171,26 @@ export const googleSheetsService = {
       console.error('Error updating payment status:', error);
       throw error;
     }
-  }
+  },
+  getAdmissionById: async (admissionId) => {
+    try {
+      console.log(`📋 Fetching admission data for: ${admissionId}`);
+      
+      const response = await fetchWithRetry(`${SCRIPT_URL}?action=getAdmissionById&admissionId=${admissionId}`, {
+        method: 'GET',
+      });
+
+      const result = await response.json();
+      console.log('📊 Admission data fetched:', result);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to fetch admission data');
+      }
+      
+      return result;
+    } catch (error) {
+      console.error('❌ Error fetching admission data:', error);
+      throw error;
+    }
+  },
 };
