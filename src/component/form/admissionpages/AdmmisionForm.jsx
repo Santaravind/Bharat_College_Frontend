@@ -277,210 +277,238 @@ const AdmissionForm = () => {
 
 
 
+// useEffect(() => {
+//   // data from google sheet
+//   const handlePaymentReturn = async () => {
+//     console.log('🔄 Checking payment return status...');
+    
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const isPaymentReturn = urlParams.get('payment_success') || urlParams.get('payment_return');
+//     const admissionIdFromUrl = urlParams.get('admission_id');
+    
+//     console.log('📋 URL Parameters:', { isPaymentReturn, admissionIdFromUrl });
+
+//     if (isPaymentReturn && admissionIdFromUrl) {
+//       try {
+//         console.log('💰 Payment return detected with ID:', admissionIdFromUrl);
+        
+//         // ✅ IMMEDIATELY clear URL to prevent re-triggering
+//         window.history.replaceState({}, '', window.location.pathname);
+        
+//         setAdmissionId(admissionIdFromUrl);
+        
+//         // ✅ PRIMARY METHOD: Fetch from backend
+//         console.log('📡 Fetching data from backend...');
+//         const backendData = await fetchAdmissionFromBackend(admissionIdFromUrl);
+        
+//         if (backendData) {
+//           console.log('✅ Data fetched from backend:', backendData);
+//           setFormData(backendData);
+//           setStep(5);
+//           setSubmissionSuccess(true);
+          
+//           // ✅ Update payment status
+//           try {
+//             await googleSheetsService.updatePaymentStatus(admissionIdFromUrl, 'paid');
+//             console.log('✅ Payment status updated to paid');
+//           } catch (paymentError) {
+//             console.error('❌ Payment status update failed:', paymentError);
+//           }
+          
+//           return; // Success - exit early
+//         }
+        
+//         // ✅ FALLBACK METHOD: Local storage recovery
+//         console.log('🔄 Backend fetch failed, trying local storage...');
+//         const localData = await recoverFromLocalStorage(admissionIdFromUrl);
+        
+//         if (localData) {
+//           console.log('✅ Data recovered from local storage');
+//           setFormData(localData);
+//           setStep(5);
+//           setSubmissionSuccess(true);
+//           return;
+//         }
+        
+//         // ✅ FINAL FALLBACK: Show minimal success page
+//         console.warn('⚠️ No data found, showing minimal success page');
+//         setStep(5);
+//         setSubmissionSuccess(true);
+        
+//       } catch (error) {
+//         console.error('❌ Error in payment return handler:', error);
+//         setStep(5); // Always show success page
+//       }
+//     }
+
+//     // ✅ Handle direct access to success page
+//     else {
+//       const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+//       if (pendingAdmissionId) {
+//         console.log('🔍 Direct access detected, admission ID:', pendingAdmissionId);
+//         await handleDirectAccess(pendingAdmissionId);
+//       }
+//     }
+//   };
+
+//   // Fetch admission data from backend
+//   const fetchAdmissionFromBackend = async (admissionId) => {
+//     try {
+//       const response = await googleSheetsService.getAdmissionById(admissionId);
+      
+//       if (response.success && response.data) {
+//         // Transform backend data to match form structure
+//         return transformBackendData(response.data);
+//       }
+//       return null;
+//     } catch (error) {
+//       console.error('❌ Backend fetch error:', error);
+//       return null;
+//     }
+//   };
+
+//   // Transform backend data to match form structure
+//   const transformBackendData = (backendData) => {
+//     return {
+//       // Personal Details
+//       title: backendData.title || '',
+//       firstName: backendData.firstName || '',
+//       lastName: backendData.lastName || '',
+//       dateOfBirth: backendData.dateOfBirth || '',
+//       fatherName: backendData.fatherName || '',
+//       motherName: backendData.motherName || '',
+//       age: backendData.age || '',
+//       castCategory: backendData.castCategory || '',
+//       aadharNumber: backendData.aadharNumber || '',
+      
+//       // Contact Details
+//       mobileNumber: backendData.mobileNumber || '',
+//       email: backendData.email || '',
+//       address: backendData.address || '',
+//       city: backendData.city || '',
+//       villagePost: backendData.villagePost || '',
+//       district: backendData.district || '',
+//       state: backendData.state || '',
+//       pinCode: backendData.pinCode || '',
+//       permanentAddress: backendData.permanentAddress || '',
+      
+//       // Education Details
+//       tenth: {
+//         collegeName: backendData.tenthCollegeName || backendData.tenth?.collegeName || '',
+//         yearOfPassing: backendData.tenthYearOfPassing || backendData.tenth?.yearOfPassing || '',
+//         percentage: backendData.tenthPercentage || backendData.tenth?.percentage || ''
+//       },
+//       twelfth: {
+//         collegeName: backendData.twelfthCollegeName || backendData.twelfth?.collegeName || '',
+//         yearOfPassing: backendData.twelfthYearOfPassing || backendData.twelfth?.yearOfPassing || '',
+//         percentage: backendData.twelfthPercentage || backendData.twelfth?.percentage || ''
+//       },
+//       diploma: {
+//         collegeName: backendData.diplomaCollegeName || backendData.diploma?.collegeName || '',
+//         yearOfPassing: backendData.diplomaYearOfPassing || backendData.diploma?.yearOfPassing || '',
+//         percentage: backendData.diplomaPercentage || backendData.diploma?.percentage || ''
+//       },
+//       graduation: {
+//         collegeName: backendData.graduationCollegeName || backendData.graduation?.collegeName || '',
+//         yearOfPassing: backendData.graduationYearOfPassing || backendData.graduation?.yearOfPassing || '',
+//         percentage: backendData.graduationPercentage || backendData.graduation?.percentage || ''
+//       },
+//       postGraduation: {
+//         collegeName: backendData.postGraduationCollegeName || backendData.postGraduation?.collegeName || '',
+//         yearOfPassing: backendData.postGraduationYearOfPassing || backendData.postGraduation?.yearOfPassing || '',
+//         percentage: backendData.postGraduationPercentage || backendData.postGraduation?.percentage || ''
+//       },
+      
+//       // Course Details
+//       courseProgram: backendData.courseProgram || '',
+//       fillingDate: backendData.fillingDate || new Date().toISOString().split("T")[0],
+      
+//       // Photo
+//       photoUrl: backendData.photoUrl || '',
+      
+//       // Declaration
+//       declarationAccepted: true
+//     };
+//   };
+
+//   // Local storage recovery fallback
+//   const recoverFromLocalStorage = async (admissionId) => {
+//     try {
+//       const storedData = localStorage.getItem('admissionFormData');
+//       if (storedData) {
+//         const parsedData = JSON.parse(storedData);
+//         if (parsedData.admissionId === admissionId && parsedData.formData) {
+//           return parsedData.formData;
+//         }
+//       }
+      
+//       // Try individual field recovery
+//       return recoverIndividualFields();
+//     } catch (error) {
+//       console.error('❌ Local storage recovery error:', error);
+//       return null;
+//     }
+//   };
+
+//   // Handle direct access (page refresh)
+//   const handleDirectAccess = async (admissionId) => {
+//     try {
+//       // Try backend first
+//       const backendData = await fetchAdmissionFromBackend(admissionId);
+//       if (backendData) {
+//         setFormData(backendData);
+//         setAdmissionId(admissionId);
+//         setStep(5);
+//         setSubmissionSuccess(true);
+//         return;
+//       }
+      
+//       // Fallback to local storage
+//       const localData = await recoverFromLocalStorage(admissionId);
+//       if (localData) {
+//         setFormData(localData);
+//         setAdmissionId(admissionId);
+//         setStep(5);
+//         setSubmissionSuccess(true);
+//       }
+//     } catch (error) {
+//       console.error('❌ Direct access error:', error);
+//     }
+//   };
+
+//   // Individual field recovery (existing function)
+//   const recoverIndividualFields = () => {
+//     const recovered = {};
+//     // ... (keep your existing individual field recovery logic)
+//     return Object.keys(recovered).length > 0 ? recovered : null;
+//   };
+
+//   handlePaymentReturn();
+// }, []);
+
+// In AdmissionForm.jsx - Update the payment return handler
 useEffect(() => {
-  // data from google sheet
   const handlePaymentReturn = async () => {
-    console.log('🔄 Checking payment return status...');
+    console.log('Checking for payment return...');
     
     const urlParams = new URLSearchParams(window.location.search);
-    const isPaymentReturn = urlParams.get('payment_success') || urlParams.get('payment_return');
-    const admissionIdFromUrl = urlParams.get('admission_id');
+    const paymentSuccess = urlParams.get('payment_success');
     
-    console.log('📋 URL Parameters:', { isPaymentReturn, admissionIdFromUrl });
-
-    if (isPaymentReturn && admissionIdFromUrl) {
-      try {
-        console.log('💰 Payment return detected with ID:', admissionIdFromUrl);
-        
-        // ✅ IMMEDIATELY clear URL to prevent re-triggering
-        window.history.replaceState({}, '', window.location.pathname);
-        
-        setAdmissionId(admissionIdFromUrl);
-        
-        // ✅ PRIMARY METHOD: Fetch from backend
-        console.log('📡 Fetching data from backend...');
-        const backendData = await fetchAdmissionFromBackend(admissionIdFromUrl);
-        
-        if (backendData) {
-          console.log('✅ Data fetched from backend:', backendData);
-          setFormData(backendData);
-          setStep(5);
-          setSubmissionSuccess(true);
-          
-          // ✅ Update payment status
-          try {
-            await googleSheetsService.updatePaymentStatus(admissionIdFromUrl, 'paid');
-            console.log('✅ Payment status updated to paid');
-          } catch (paymentError) {
-            console.error('❌ Payment status update failed:', paymentError);
-          }
-          
-          return; // Success - exit early
-        }
-        
-        // ✅ FALLBACK METHOD: Local storage recovery
-        console.log('🔄 Backend fetch failed, trying local storage...');
-        const localData = await recoverFromLocalStorage(admissionIdFromUrl);
-        
-        if (localData) {
-          console.log('✅ Data recovered from local storage');
-          setFormData(localData);
-          setStep(5);
-          setSubmissionSuccess(true);
-          return;
-        }
-        
-        // ✅ FINAL FALLBACK: Show minimal success page
-        console.warn('⚠️ No data found, showing minimal success page');
-        setStep(5);
-        setSubmissionSuccess(true);
-        
-      } catch (error) {
-        console.error('❌ Error in payment return handler:', error);
-        setStep(5); // Always show success page
-      }
+    if (paymentSuccess) {
+      // Clear URL parameters
+      window.history.replaceState({}, '', window.location.pathname);
+      
+      // Move to success page - user will enter admission ID manually
+      setStep(5);
+      setSubmissionSuccess(true);
     }
-
-    // ✅ Handle direct access to success page
-    else {
-      const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
-      if (pendingAdmissionId) {
-        console.log('🔍 Direct access detected, admission ID:', pendingAdmissionId);
-        await handleDirectAccess(pendingAdmissionId);
-      }
+    
+    // Handle direct access with existing admission ID
+    const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+    if (pendingAdmissionId && !paymentSuccess) {
+      setAdmissionId(pendingAdmissionId);
+      setStep(5);
     }
-  };
-
-  // Fetch admission data from backend
-  const fetchAdmissionFromBackend = async (admissionId) => {
-    try {
-      const response = await googleSheetsService.getAdmissionById(admissionId);
-      
-      if (response.success && response.data) {
-        // Transform backend data to match form structure
-        return transformBackendData(response.data);
-      }
-      return null;
-    } catch (error) {
-      console.error('❌ Backend fetch error:', error);
-      return null;
-    }
-  };
-
-  // Transform backend data to match form structure
-  const transformBackendData = (backendData) => {
-    return {
-      // Personal Details
-      title: backendData.title || '',
-      firstName: backendData.firstName || '',
-      lastName: backendData.lastName || '',
-      dateOfBirth: backendData.dateOfBirth || '',
-      fatherName: backendData.fatherName || '',
-      motherName: backendData.motherName || '',
-      age: backendData.age || '',
-      castCategory: backendData.castCategory || '',
-      aadharNumber: backendData.aadharNumber || '',
-      
-      // Contact Details
-      mobileNumber: backendData.mobileNumber || '',
-      email: backendData.email || '',
-      address: backendData.address || '',
-      city: backendData.city || '',
-      villagePost: backendData.villagePost || '',
-      district: backendData.district || '',
-      state: backendData.state || '',
-      pinCode: backendData.pinCode || '',
-      permanentAddress: backendData.permanentAddress || '',
-      
-      // Education Details
-      tenth: {
-        collegeName: backendData.tenthCollegeName || backendData.tenth?.collegeName || '',
-        yearOfPassing: backendData.tenthYearOfPassing || backendData.tenth?.yearOfPassing || '',
-        percentage: backendData.tenthPercentage || backendData.tenth?.percentage || ''
-      },
-      twelfth: {
-        collegeName: backendData.twelfthCollegeName || backendData.twelfth?.collegeName || '',
-        yearOfPassing: backendData.twelfthYearOfPassing || backendData.twelfth?.yearOfPassing || '',
-        percentage: backendData.twelfthPercentage || backendData.twelfth?.percentage || ''
-      },
-      diploma: {
-        collegeName: backendData.diplomaCollegeName || backendData.diploma?.collegeName || '',
-        yearOfPassing: backendData.diplomaYearOfPassing || backendData.diploma?.yearOfPassing || '',
-        percentage: backendData.diplomaPercentage || backendData.diploma?.percentage || ''
-      },
-      graduation: {
-        collegeName: backendData.graduationCollegeName || backendData.graduation?.collegeName || '',
-        yearOfPassing: backendData.graduationYearOfPassing || backendData.graduation?.yearOfPassing || '',
-        percentage: backendData.graduationPercentage || backendData.graduation?.percentage || ''
-      },
-      postGraduation: {
-        collegeName: backendData.postGraduationCollegeName || backendData.postGraduation?.collegeName || '',
-        yearOfPassing: backendData.postGraduationYearOfPassing || backendData.postGraduation?.yearOfPassing || '',
-        percentage: backendData.postGraduationPercentage || backendData.postGraduation?.percentage || ''
-      },
-      
-      // Course Details
-      courseProgram: backendData.courseProgram || '',
-      fillingDate: backendData.fillingDate || new Date().toISOString().split("T")[0],
-      
-      // Photo
-      photoUrl: backendData.photoUrl || '',
-      
-      // Declaration
-      declarationAccepted: true
-    };
-  };
-
-  // Local storage recovery fallback
-  const recoverFromLocalStorage = async (admissionId) => {
-    try {
-      const storedData = localStorage.getItem('admissionFormData');
-      if (storedData) {
-        const parsedData = JSON.parse(storedData);
-        if (parsedData.admissionId === admissionId && parsedData.formData) {
-          return parsedData.formData;
-        }
-      }
-      
-      // Try individual field recovery
-      return recoverIndividualFields();
-    } catch (error) {
-      console.error('❌ Local storage recovery error:', error);
-      return null;
-    }
-  };
-
-  // Handle direct access (page refresh)
-  const handleDirectAccess = async (admissionId) => {
-    try {
-      // Try backend first
-      const backendData = await fetchAdmissionFromBackend(admissionId);
-      if (backendData) {
-        setFormData(backendData);
-        setAdmissionId(admissionId);
-        setStep(5);
-        setSubmissionSuccess(true);
-        return;
-      }
-      
-      // Fallback to local storage
-      const localData = await recoverFromLocalStorage(admissionId);
-      if (localData) {
-        setFormData(localData);
-        setAdmissionId(admissionId);
-        setStep(5);
-        setSubmissionSuccess(true);
-      }
-    } catch (error) {
-      console.error('❌ Direct access error:', error);
-    }
-  };
-
-  // Individual field recovery (existing function)
-  const recoverIndividualFields = () => {
-    const recovered = {};
-    // ... (keep your existing individual field recovery logic)
-    return Object.keys(recovered).length > 0 ? recovered : null;
   };
 
   handlePaymentReturn();

@@ -6,7 +6,7 @@ import AdmissionForm from './form/admissionpages/AdmmisionForm'
 function Admission() {
   return (
     <>
-    <div className="min-h-screen w-full bg-white relative mt-5">
+    <div className="min-h-screen w-full bg-white relative mt-5 footer">
           {/* Background with grid + dots */}
           <div
             className="absolute inset-0 z-0"
