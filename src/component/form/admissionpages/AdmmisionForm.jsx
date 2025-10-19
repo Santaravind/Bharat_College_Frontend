@@ -76,54 +76,203 @@ const AdmissionForm = () => {
 
   // In AdmissionForm.jsx - Update the useEffect 18/10/2025
 // In AdmissionForm.jsx
+// useEffect(() => {
+//   const handlePaymentReturn = async () => {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     const isPaymentReturn = urlParams.get('payment_return');
+//     const admissionIdFromUrl = urlParams.get('admission_id');
+    
+//     if (isPaymentReturn && admissionIdFromUrl) {
+//       try {
+//         console.log('Payment return detected with admission ID:', admissionIdFromUrl);
+        
+//         // ✅ Clear URL parameters to prevent re-triggering
+//         window.history.replaceState({}, '', window.location.pathname);
+        
+//         // ✅ Set admission ID from URL
+//         setAdmissionId(admissionIdFromUrl);
+        
+//         // ✅ Try to fetch data from database
+//         try {
+//           // If you have API to fetch by admission ID
+//           const response = await fetch(`/api/admissions/${admissionIdFromUrl}`);
+//           if (response.ok) {
+//             const data = await response.json();
+//             setFormData(data); // Update form data with database data
+//           }
+//         } catch (dbError) {
+//           console.log('Could not fetch from DB, using localStorage fallback');
+//         }
+        
+//         // ✅ Move to success page
+//         setStep(5);
+        
+//       } catch (error) {
+//         console.error('Error handling payment return:', error);
+//       }
+//     }
+    
+//     // ✅ Original localStorage fallback (for direct submissions without payment)
+//     const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+//     if (pendingAdmissionId && !admissionIdFromUrl) {
+//       setAdmissionId(pendingAdmissionId);
+//       setStep(5);
+//     }
+//   };
+
+//   handlePaymentReturn();
+// }, []);
+
 useEffect(() => {
   const handlePaymentReturn = async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const isPaymentReturn = urlParams.get('payment_return');
-    const admissionIdFromUrl = urlParams.get('admission_id');
+    console.log('Checking for payment return...');
     
+    const urlParams = new URLSearchParams(window.location.search);
+    const isPaymentReturn = urlParams.get('payment_success') || urlParams.get('payment_return');
+    const admissionIdFromUrl = urlParams.get('admission_id');
+    const encodedData = urlParams.get('data');
+    
+    // ✅ METHOD 1: URL Parameters (Highest Priority)
     if (isPaymentReturn && admissionIdFromUrl) {
+      console.log('Payment return detected with ID:', admissionIdFromUrl);
+      
       try {
-        console.log('Payment return detected with admission ID:', admissionIdFromUrl);
-        
-        // ✅ Clear URL parameters to prevent re-triggering
-        window.history.replaceState({}, '', window.location.pathname);
-        
-        // ✅ Set admission ID from URL
-        setAdmissionId(admissionIdFromUrl);
-        
-        // ✅ Try to fetch data from database
-        try {
-          // If you have API to fetch by admission ID
-          const response = await fetch(`/api/admissions/${admissionIdFromUrl}`);
-          if (response.ok) {
-            const data = await response.json();
-            setFormData(data); // Update form data with database data
+        // Decode URL data if present
+        let urlFormData = {};
+        if (encodedData) {
+          try {
+            urlFormData = JSON.parse(atob(encodedData));
+            console.log('Decoded URL data:', urlFormData);
+          } catch (e) {
+            console.log('No encoded data in URL');
           }
-        } catch (dbError) {
-          console.log('Could not fetch from DB, using localStorage fallback');
         }
+        
+        // ✅ METHOD 2: Check localStorage for comprehensive data
+        const storedData = localStorage.getItem('admissionFormData');
+        const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+        
+        let finalAdmissionId = admissionIdFromUrl || pendingAdmissionId;
+        let finalFormData = formData;
+        
+        if (storedData) {
+          try {
+            const parsedData = JSON.parse(storedData);
+            console.log('Found stored data:', parsedData);
+            
+            if (parsedData.formData) {
+              finalFormData = { ...finalFormData, ...parsedData.formData };
+            }
+            if (parsedData.admissionId && !finalAdmissionId) {
+              finalAdmissionId = parsedData.admissionId;
+            }
+          } catch (parseError) {
+            console.error('Error parsing stored data:', parseError);
+          }
+        }
+        
+        // ✅ METHOD 3: Fallback - reconstruct from individual localStorage items
+        if (!finalFormData.firstName) {
+          console.log('Reconstructing form from individual storage...');
+          const reconstructedData = {};
+          const formFields = [
+            'title', 'firstName', 'lastName', 'dateOfBirth', 'fatherName', 'motherName', 
+            'age', 'castCategory', 'aadharNumber', 'mobileNumber', 'email', 'address',
+            'city', 'villagePost', 'district', 'state', 'pinCode', 'permanentAddress',
+            'courseProgram', 'photoUrl'
+          ];
+          
+          formFields.forEach(field => {
+            const value = localStorage.getItem(`admission_${field}`);
+            if (value) {
+              reconstructedData[field] = value;
+            }
+          });
+          
+          // Handle nested education objects
+          const educationLevels = ['tenth', 'twelfth', 'diploma', 'graduation', 'postGraduation'];
+          educationLevels.forEach(level => {
+            const collegeName = localStorage.getItem(`admission_${level}_collegeName`);
+            const yearOfPassing = localStorage.getItem(`admission_${level}_yearOfPassing`);
+            const percentage = localStorage.getItem(`admission_${level}_percentage`);
+            
+            if (collegeName || yearOfPassing || percentage) {
+              reconstructedData[level] = {
+                collegeName: collegeName || '',
+                yearOfPassing: yearOfPassing || '',
+                percentage: percentage || ''
+              };
+            }
+          });
+          
+          if (Object.keys(reconstructedData).length > 0) {
+            finalFormData = { ...finalFormData, ...reconstructedData };
+            console.log('Reconstructed data:', reconstructedData);
+          }
+        }
+        
+        // ✅ METHOD 4: SessionStorage fallback
+        if (!finalFormData.firstName) {
+          const sessionData = sessionStorage.getItem('admissionBackup');
+          if (sessionData) {
+            try {
+              const parsedSessionData = JSON.parse(sessionData);
+              if (parsedSessionData.formData) {
+                finalFormData = { ...finalFormData, ...parsedSessionData.formData };
+              }
+            } catch (e) {
+              console.log('No valid session data');
+            }
+          }
+        }
+        
+        // ✅ Update state with recovered data
+        if (finalAdmissionId) {
+          setAdmissionId(finalAdmissionId);
+        }
+        
+        if (finalFormData.firstName) {
+          setFormData(finalFormData);
+          console.log('Form data restored successfully');
+        }
+        
+        // ✅ Clean URL to prevent re-triggering
+        window.history.replaceState({}, '', window.location.pathname);
         
         // ✅ Move to success page
         setStep(5);
+        setSubmissionSuccess(true);
         
       } catch (error) {
         console.error('Error handling payment return:', error);
       }
     }
     
-    // ✅ Original localStorage fallback (for direct submissions without payment)
-    const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
-    if (pendingAdmissionId && !admissionIdFromUrl) {
-      setAdmissionId(pendingAdmissionId);
-      setStep(5);
+    // ✅ Handle direct localStorage restoration (page refresh)
+    else {
+      const storedData = localStorage.getItem('admissionFormData');
+      const pendingAdmissionId = localStorage.getItem('pendingAdmissionId');
+      
+      if (storedData && pendingAdmissionId) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          console.log('Restoring from localStorage (page refresh):', parsedData);
+          
+          if (parsedData.formData && parsedData.admissionId) {
+            setFormData(parsedData.formData);
+            setAdmissionId(parsedData.admissionId);
+            setStep(5);
+            setSubmissionSuccess(true);
+          }
+        } catch (error) {
+          console.error('Error restoring from localStorage:', error);
+        }
+      }
     }
   };
 
   handlePaymentReturn();
-}, []);
-
-
+}, []); // Empty dependency array to run only on mount
 
 
   const handleInputChange = (e) => {

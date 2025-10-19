@@ -32,58 +32,129 @@
 
 
 
-const Declaration = ({ formData, errors, onChange, onSubmit, isSubmitting,  setIsSubmitting, 
-  setErrors }) => {
-  const handlePaymentRedirect = async (e) => {
-    e.preventDefault();
-    //client data not show 18/10/2025
-    if (!formData.declarationAccepted) {
-      setErrors({ declarationAccepted: 'You must accept the declaration to proceed' });
-      return;
-    }
+const Declaration = ({ formData, errors, onChange,  onSubmit, isSubmitting,  setIsSubmitting,  setErrors   }) => {
+  // const handlePaymentRedirect = async (e) => {
+  //   e.preventDefault();
+  //   //client data not show 18/10/2025
+  //   if (!formData.declarationAccepted) {
+  //     setErrors({ declarationAccepted: 'You must accept the declaration to proceed' });
+  //     return;
+  //   }
 
-    try {
-      setIsSubmitting(true);
+  //   try {
+  //     setIsSubmitting(true);
       
-      // Generate admission ID
-      const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
+  //     // Generate admission ID
+  //     const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
       
-      // ✅ FIRST: Save to database with PENDING status
-      const submissionData = {
-        ...formData,
-        admissionId: generatedAdmissionId,
-        paymentStatus: 'pending', // Important: don't set as 'paid' yet
-        status: 'PENDING_PAYMENT',
-        submissionTimestamp: new Date().toISOString()
-      };
+  //     // ✅ FIRST: Save to database with PENDING status
+  //     const submissionData = {
+  //       ...formData,
+  //       admissionId: generatedAdmissionId,
+  //       paymentStatus: 'pending', // Important: don't set as 'paid' yet
+  //       status: 'PENDING_PAYMENT',
+  //       submissionTimestamp: new Date().toISOString()
+  //     };
 
-      // ✅ WAIT for database save to complete
-      await onSubmit(submissionData);
+  //     // ✅ WAIT for database save to complete
+  //     await onSubmit(submissionData);
       
-      // ✅ Store in multiple places for redundancy
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
-        localStorage.setItem('pendingFormData', JSON.stringify(formData));
+  //     // ✅ Store in multiple places for redundancy
+  //     if (typeof localStorage !== 'undefined') {
+  //       localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
+  //       localStorage.setItem('pendingFormData', JSON.stringify(formData));
+  //     }
+  //     if (typeof sessionStorage !== 'undefined') {
+  //       sessionStorage.setItem('pendingAdmissionId', generatedAdmissionId);
+  //     }
+      
+  //     // ✅ Create SUCCESS URL with all necessary parameters
+  //     const successUrl = `${window.location.origin}${window.location.pathname}?payment_return=true&admission_id=${generatedAdmissionId}&timestamp=${Date.now()}`;
+      
+  //     // const successUrl = `${window.location.origin}${window.location.pathname}?payment_success=true&data=${returnData}&admission_id=${generatedAdmissionId}&timestamp=${Date.now()}`;
+
+  //     // ✅ Redirect to payment with success URL
+  //     const paymentUrl = `https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view?admission_id=${generatedAdmissionId}&success_url=${encodeURIComponent(successUrl)}`;
+      
+  //     // ✅ Use location.replace instead of href for better handling
+  //     window.location.replace(paymentUrl);
+      
+  //   } catch (error) {
+  //     console.error("Error in payment redirect:", error);
+  //     setIsSubmitting(false);
+  //     alert("Something went wrong. Please try again.");
+  //   }
+  // };
+ 
+ const handlePaymentRedirect = async (e) => {
+  e.preventDefault();
+   //changes on 19-10-2025
+  if (!formData.declarationAccepted) {
+    setErrors({ declarationAccepted: 'You must accept the declaration to proceed' });
+    return;
+  }
+
+  try {
+    setIsSubmitting(true);
+    
+    // Generate admission ID
+    const generatedAdmissionId = `ADM${formData.aadharNumber.slice(-8)}${Date.now().toString().slice(-4)}`;
+    
+    // ✅ COMPREHENSIVE DATA STORAGE
+    const storageData = {
+      formData: formData,
+      admissionId: generatedAdmissionId,
+      timestamp: new Date().toISOString(),
+      paymentStatus: 'pending'
+    };
+
+    // Store in multiple storage mechanisms for redundancy
+    localStorage.setItem('admissionFormData', JSON.stringify(storageData));
+    localStorage.setItem('pendingAdmissionId', generatedAdmissionId);
+    sessionStorage.setItem('admissionBackup', JSON.stringify(storageData));
+    
+    // Also store individual fields for extra safety
+    Object.keys(formData).forEach(key => {
+      if (formData[key] && typeof formData[key] === 'string') {
+        localStorage.setItem(`admission_${key}`, formData[key]);
       }
-      if (typeof sessionStorage !== 'undefined') {
-        sessionStorage.setItem('pendingAdmissionId', generatedAdmissionId);
-      }
-      
-      // ✅ Create SUCCESS URL with all necessary parameters
-      const successUrl = `${window.location.origin}${window.location.pathname}?payment_return=true&admission_id=${generatedAdmissionId}&timestamp=${Date.now()}`;
-      
-      // ✅ Redirect to payment with success URL
-      const paymentUrl = `https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view?admission_id=${generatedAdmissionId}&success_url=${encodeURIComponent(successUrl)}`;
-      
-      // ✅ Use location.replace instead of href for better handling
-      window.location.replace(paymentUrl);
-      
-    } catch (error) {
-      console.error("Error in payment redirect:", error);
-      setIsSubmitting(false);
-      alert("Something went wrong. Please try again.");
-    }
-  };
+    });
+
+    // ✅ Prepare submission data
+    const submissionData = {
+      ...formData,
+      admissionId: generatedAdmissionId,
+      paymentStatus: 'pending',
+      status: 'PENDING_PAYMENT',
+      submissionTimestamp: new Date().toISOString()
+    };
+
+    // ✅ Submit to Google Sheets
+    await onSubmit(e, submissionData);
+    
+    console.log('Data saved locally:', storageData);
+    
+    // ✅ Create robust return URL with all data encoded
+    const returnData = btoa(JSON.stringify({
+      admissionId: generatedAdmissionId,
+      timestamp: Date.now(),
+      source: 'payment_redirect'
+    }));
+    
+    const successUrl = `${window.location.origin}${window.location.pathname}?payment_success=true&data=${returnData}&admission_id=${generatedAdmissionId}&timestamp=${Date.now()}`;
+    
+    // ✅ Redirect to payment
+    const paymentUrl = `https://pages.razorpay.com/pl_RQcFXEkDBbtWBZ/view?admission_id=${generatedAdmissionId}&success_url=${encodeURIComponent(successUrl)}`;
+    
+    // Use replace to prevent back button issues
+    window.location.replace(paymentUrl);
+    
+  } catch (error) {
+    console.error("Payment redirect error:", error);
+    setIsSubmitting(false);
+    alert("Failed to proceed to payment. Please try again.");
+  }
+};
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Review & Declaration</h2>
