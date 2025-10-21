@@ -761,12 +761,13 @@ const SubmissionSuccess = ({ formData: initialFormData, admissionId: propAdmissi
 
   // Handle email search
   
-// Function to fetch admission data by admission ID
+
+
 const fetchAdmissionDataByAdmissionId = async (admissionId) => {
   try {
     setSearchLoading(true);
     setError(null);
-
+// Function to fetch admission data by admission ID
     console.log('Searching for admission ID:', admissionId);
 
     const response = await googleSheetsService.getAdmissionById(admissionId);
