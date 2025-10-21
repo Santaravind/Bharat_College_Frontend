@@ -65,3 +65,10 @@
 
   }
 }
+
+@media print{
+  br.notprint{
+        display: none !important;
+
+  }
+}
