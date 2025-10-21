@@ -901,7 +901,7 @@ const transformBackendData = (backendData) => {
     lastName: backendData['Last Name'] || backendData.lastName || '',
     dateOfBirth: backendData['Date of Birth'] || backendData.dateOfBirth || '',
     fatherName: backendData["Father's Name "] || backendData.fatherName || '',
-    motherName: backendData["Mother's Name "] || backendData.motherName || '',
+    motherName: backendData["Mother's Name"] || backendData.motherName ||'',
     age: backendData['Age '] || backendData.age || '',
     castCategory: backendData['Cast Category'] || backendData.castCategory || '',
     aadharNumber: backendData['Aadhar Number '] || backendData.aadharNumber || '',
@@ -1166,6 +1166,8 @@ const transformBackendData = (backendData) => {
               <div className="text-center md:text-left order-2 md:order-1">
                 <p className="text-xs md:text-sm print:text-xs">Phone: +91-8840157051</p>
                 <p className="text-xs md:text-sm print:text-xs">Email: bharattechnicalcollege@gmail.com</p>
+                 <p className="text-xs md:text-sm print:text-xs">Website: bharattechnicalcollege.com</p>
+             
               </div>
               <div className="text-center flex-1 order-1 md:order-2">
                 <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold print:text-2xl mb-1 md:mb-2">BHARAT TECHNICAL COLLEGE</h1>
@@ -1173,8 +1175,14 @@ const transformBackendData = (backendData) => {
                 <p className="text-xs md:text-sm print:text-xs mt-1">Robertsganj, Sonbhadra, Uttar Pradesh - 231216</p>
               </div>
               <div className="text-center md:text-right order-3">
-                <p className="text-xs md:text-sm print:text-xs">Website: bharattechnicalcollege.com</p>
-                <p className="text-xs md:text-sm print:text-xs">Approved by: Govt. of India</p>
+                {/* <p className="text-xs md:text-sm print:text-xs">Website: bharattechnicalcollege.com</p> */}
+               <p className="text-xs md:text-sm print:text-xs">
+                An Autonomous Body, Under Govt. <br className='notprint' /> Act Established Under Act 1882,<br />
+                Registered Under Govt. of U.P. <br className='notprint' /> & Ministry of MSME, Govt. of India.<br />
+                 Registration No. SON/01794/2025-2026.<br />
+                    ISO Certified.
+                  </p>
+
               </div>
             </div>
           </div>
@@ -1206,7 +1214,7 @@ const transformBackendData = (backendData) => {
                       <span className="text-gray-500 text-xs print:text-xs">No Photo</span>
                     </div>
                   )}
-                  <p className="text-xs mt-2 font-semibold print:text-xs">Passport Size Photo</p>
+                  {/* <p className="text-xs mt-2 font-semibold print:text-xs">Passport Size Photo</p> */}
                 </div>
                 
                 {/* Student Basic Info */}
@@ -1426,7 +1434,7 @@ const transformBackendData = (backendData) => {
       <style jsx>{`
         @media print {
           body {
-            margin: 2;
+            margin: 1;
             padding: 3;
             background: white;
             -webkit-print-color-adjust: exact;
@@ -1491,6 +1499,8 @@ const transformBackendData = (backendData) => {
           }
         }
       `}</style>
+
+      
     </div>
   );
 };
