@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { setAdminEmail } from "../reduxstore/adminSlice";
 
 const SendNotification = () => {
+
   const [formData, setFormData] = useState({
     id: '',
     title: '',
@@ -12,9 +15,10 @@ const SendNotification = () => {
   const [searchResult, setSearchResult] = useState(null);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
+   const adminEmail = useSelector((state) => state.admin.email);
+   
   // Replace with your actual Google Apps Script URL
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydo0D79SabMb-TVkV6ebU3ln5vghjxtjIYhnBzsxYW3RfiQeeIgkLghQ05t7xpLHINxg/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWQsUR1ZWm13IbOQEr8RAZpTohi_fYgOooQoNnbYQb6VVQeL9KoijsBK6W_ve6tRoUhA/exec';
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -26,11 +30,18 @@ const SendNotification = () => {
   };
 
   // Save data to Google Sheets
-  const handleSaveData = async (e) => {
+   const handleSaveData = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
 
+    // Client-side check for better UX
+  if (adminEmail !== "aravindsant323@gmail.com") {
+    setMessage('Error: Unauthorized access');
+    setLoading(false);
+    return;
+  }
+     
     try {
       const response = await fetch(SCRIPT_URL, {
         method: 'POST',
@@ -40,6 +51,7 @@ const SendNotification = () => {
         },
         body: JSON.stringify({
           action: 'add',
+          adminEmail: adminEmail,
           ...formData
         })
       });
@@ -65,39 +77,11 @@ const SendNotification = () => {
     }
   };
 
-  // Retrieve data by ID
-  const handleGetData = async () => {
-    if (!searchId.trim()) {
-      setMessage('Please enter an ID to search');
-      return;
-    }
-
-    setLoading(true);
-    setMessage('');
-    setSearchResult(null);
-
-    try {
-      const response = await fetch(`${SCRIPT_URL}?action=get&id=${encodeURIComponent(searchId)}`);
-      const result = await response.json();
-
-      if (result.success) {
-        setSearchResult(result.data);
-        setMessage('Data retrieved successfully!');
-      } else {
-        setMessage('Error: ' + result.message);
-      }
-    } catch (error) {
-      setMessage('Error: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Data Manager</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Sent Notifications</h1>
           
         </div>
 
@@ -115,7 +99,7 @@ const SendNotification = () => {
         <div className="grid grid-cols-1  ">
           {/* Save Data Form */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Save New Data</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Set Notification</h2>
             <form onSubmit={handleSaveData} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">

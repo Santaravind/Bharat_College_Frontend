@@ -20,7 +20,6 @@
 //     },
 //   ]);
 
-
 //   // ✅ Fetch from backend
 // //   useEffect(() => {
 // //     fetch("http://localhost:8080/api/notifications") // your backend API
@@ -36,9 +35,9 @@
 //       {/* Scroll container */}
 //       <div className="relative h-[200px] overflow-hidden">
 //         <ul className="animate-scroll space-y-3">
-            
+
 //           {notifications.map((n, index) => (
-            
+
 //             <li
 //               key={index}
 //               className={`p-3 rounded-lg shadow-sm border-l-4 cursor-pointer transition hover:bg-gray-100 ${
@@ -65,7 +64,6 @@
 //   );
 // }
 
-
 import { useEffect, useState } from "react";
 
 export default function Notification() {
@@ -89,7 +87,8 @@ export default function Notification() {
   ]);
 
   // ✅ Replace with your actual Google Apps Script URL
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbydo0D79SabMb-TVkV6ebU3ln5vghjxtjIYhnBzsxYW3RfiQeeIgkLghQ05t7xpLHINxg/exec';
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbydo0D79SabMb-TVkV6ebU3ln5vghjxtjIYhnBzsxYW3RfiQeeIgkLghQ05t7xpLHINxg/exec";
 
   // ✅ Fetch all notifications from Google Sheets
   useEffect(() => {
@@ -97,21 +96,26 @@ export default function Notification() {
       try {
         const response = await fetch(`${SCRIPT_URL}?action=getAll`);
         const result = await response.json();
-        
+        console.log('Raw backend data:', result.data);
         if (result.success && result.data && result.data.length > 0) {
           // Transform Google Sheets data to match your UI format
-          const formattedNotifications = result.data.map(item => ({
-            title: item.title || item.Title || '',
-            link: item.link || item.Link || '',
-            type: item.type || item.Type || 'general'
-          })).filter(notification => notification.title); // Filter out empty titles
-          
+          const formattedNotifications = result.data
+            .map((item) => ({
+              title: item.title || item.Title || "",
+              link: item["Link "]  || item.Link || "",
+              type: item.type || item.Type || "general",
+            }))
+            .filter((notification) => notification.title); // Filter out empty titles
+
           setNotifications(formattedNotifications);
         } else {
           console.log("No data found or using fallback notifications");
         }
       } catch (error) {
-        console.error("Error fetching notifications from Google Sheets:", error);
+        console.error(
+          "Error fetching notifications from Google Sheets:",
+          error
+        );
         // Keep the fallback notifications if fetch fails
       }
     };
@@ -126,9 +130,7 @@ export default function Notification() {
       {/* Scroll container */}
       <div className="relative h-[200px] overflow-hidden">
         <ul className="animate-scroll space-y-3">
-            
           {notifications.map((n, index) => (
-            
             <li
               key={index}
               className={`p-3 rounded-lg shadow-sm border-l-4 cursor-pointer transition hover:bg-gray-100 ${
