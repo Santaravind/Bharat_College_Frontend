@@ -3,9 +3,15 @@ import collage from '../assets/headlogo.jpg'
 import imageCollege from '../assets/icollege.jpg'
 import HeadeGallery from "./HeadeGallery";
 import Navbar from "../Navbar";
+import { useNavigate } from "react-router-dom";
 export default function Header() {
   //const [search, setSearch] = useState("");
+const navigate=useNavigate();
 
+     const handladmission=(e)=>{
+       e.preventDefault();
+          navigate("/admission");
+     }
   return (
     <div className="w-full z-20 footer">
       {/* Responsive styles for Header */}
@@ -78,15 +84,18 @@ export default function Header() {
       <div className="bg-[oklch(62.3%_0.214_259.815)] font-semibold text-white flex items-center overflow-hidden header-notice text-2xl">
         <span className="bg-[oklch(45.5%_0.188_13.697)] text-white px-3 py-2 mr-2 text-2xl header-notice-label">NOTICE</span>
         <div className="overflow-hidden relative w-full">
-          <div className="animate-marquee whitespace-nowrap py-2">
+          <div className="animate-marquee whitespace-nowrap py-2 ">
             Welcome to Bharat Technical College Of Fire Engineering & Safety
             Management
-            <span className="text-yellow-400 ml-2">• Admissions Open </span> 
+            <span className="text-yellow-400 ml-2 cursor-pointer " 
+            onClick={handladmission}
+            >• Admissions Open </span> 
              • Explore Our Courses   
               • Stay Safe 
           </div>
         </div>
       </div>
+
     </div>
   );
 }

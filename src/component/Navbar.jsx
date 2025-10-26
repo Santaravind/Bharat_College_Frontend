@@ -16,6 +16,7 @@ export default function Navbar() {
     { name: "Student", path: "/student" },
     { name: "About", path: "/about" },
     { name: "Verification", path: "/verification" },
+    { name: "Admin", path: "/admin" },
   ];
 
   return (
