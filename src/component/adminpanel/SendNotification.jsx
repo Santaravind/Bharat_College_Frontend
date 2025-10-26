@@ -16,7 +16,7 @@ const SendNotification = () => {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
    const adminEmail = useSelector((state) => state.admin.email);
-   
+  // const adminpassord=useSelector((state)=>state.admin.password);
   // Replace with your actual Google Apps Script URL
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWQsUR1ZWm13IbOQEr8RAZpTohi_fYgOooQoNnbYQb6VVQeL9KoijsBK6W_ve6tRoUhA/exec';
 
