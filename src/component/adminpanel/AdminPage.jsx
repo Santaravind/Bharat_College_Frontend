@@ -14,7 +14,7 @@ function AdminPage() {
   const admin = useSelector((state) => state.admin);
 
   const ADMIN_EMAIL = "aravindsant323@gmail.com";
-  const ADMIN_PASSWORD = "A123";
+  const ADMIN_PASSWORD = "B||??34$@//";
 
   // Debug: Log current state
   console.log("Current Redux state:", admin);
@@ -132,7 +132,8 @@ function AdminPage() {
                         />
                       </svg>
                       <span className="text-green-700 font-medium">
-                        Authenticated as: {admin.email}
+                        {/* admin.email */}
+                        Authenticated as: Admin 
                       </span>
                     </div>
                   </div>
