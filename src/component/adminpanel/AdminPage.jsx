@@ -13,7 +13,7 @@ function AdminPage() {
   const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin);
 
-  const ADMIN_EMAIL = "bharattechnicalcollege@gmail.com"&&"aravindsant323@gmail.com";
+  const ADMIN_EMAIL = "bharattechnicalcollege@gmail.com";
   const ADMIN_PASSWORD = "B||??34$@//";
 
   // Debug: Log current state
