@@ -7,7 +7,17 @@ const AdmissionSuccess = ({ formData }) => {
       window.location.replace(paymentUrl);
   }
 
+  
+  const handleNewAdmission = () => {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('pendingAdmissionId');
+      localStorage.removeItem('admissionFormData');
+    }
+    window.location.href = '/admission';
+  };
+
   return (
+    <>
     <div className="text-center">
       <div className="bg-green-50 border border-green-200 rounded-lg p-8 mb-6">
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -102,6 +112,15 @@ const AdmissionSuccess = ({ formData }) => {
        {/*  */}
       </div>
     </div>
+
+    {/* this for developer only */}
+     {/* <button 
+        onClick={handleNewAdmission}
+        className='border-2 border-neutral-100  px-3 py-2 text-neutral-50 font-semibold hover:text-white hover:bg-neutral-400 rounded-full '> 
+          Refresh page
+        </button>
+         */}
+    </>
   );
 };
 

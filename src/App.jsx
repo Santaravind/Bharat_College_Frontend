@@ -9,11 +9,13 @@ import Footer from './component/Footer'
 import Admission from './component/Admission'
 import Gallery from './component/Gallery'
 import Syllabus from './component/Syllabus'
-import Verification from './component/Verification'
+
 import { Toaster } from 'react-hot-toast'
 import AdmissionSuccess from './component/form/admissionpages/AdmissionSuccess'
 import SubmissionSuccess from './component/form/admissionpages/SubmissionSuccess'
 import Declaration from './component/form/admissionpages/Declaration'
+import Verification from './component/resultverification/Verification'
+import AdminPage from './component/adminpanel/AdminPage.jsx'
 
 
 
@@ -38,6 +40,8 @@ function App() {
       <Route path='/admissionSuccess' element={<AdmissionSuccess/>}/>
       <Route path='/Success' element={<SubmissionSuccess/>}/>
       <Route path='/declaration' element={<Declaration/>}/>
+      <Route path='/admin' element={<AdminPage/>}/>
+
       {/* <Route path='/admisucces' element={<AdmissionSuccess/>}/> */}
 
       

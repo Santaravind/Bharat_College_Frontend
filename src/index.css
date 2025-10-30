@@ -20,7 +20,7 @@
   .animate-marquee {
     display: inline-block;
     min-width: 100%;
-    animation: marquee 15s linear infinite;
+    animation: marquee 30s linear infinite;
   }
 }
 @keyframes blink {
