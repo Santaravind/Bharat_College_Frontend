@@ -15,7 +15,7 @@ import AdmissionSuccess from './component/form/admissionpages/AdmissionSuccess'
 import SubmissionSuccess from './component/form/admissionpages/SubmissionSuccess'
 import Declaration from './component/form/admissionpages/Declaration'
 import Verification from './component/resultverification/Verification'
-import AdminPage from './component/adminpanel/adminpage'
+import AdminPage from './component/adminpanel/AdminPage.jsx'
 
 
 
