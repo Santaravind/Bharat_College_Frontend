@@ -206,7 +206,7 @@ getAdmissionById: async (admissionId) => {
 
 getAdmissionByEmail: async (email) => {
   try {
-    console.log(`📧 Searching admission by email: ${email}`);
+    // console.log(`📧 Searching admission by email: ${email}`);
     
     const response = await fetchWithRetry(`${SCRIPT_URL}?action=getAdmissionByEmail&email=${encodeURIComponent(email)}`, {
       method: 'GET',

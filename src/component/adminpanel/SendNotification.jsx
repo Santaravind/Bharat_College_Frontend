@@ -18,7 +18,7 @@ const SendNotification = () => {
    const adminEmail = useSelector((state) => state.admin.email);
   // const adminpassord=useSelector((state)=>state.admin.password);
   // Replace with your actual Google Apps Script URL
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWQsUR1ZWm13IbOQEr8RAZpTohi_fYgOooQoNnbYQb6VVQeL9KoijsBK6W_ve6tRoUhA/exec';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxV0-xe92AU52i908sUlXfJH8oLjTtsA3UnVJzzFFiaEeetetegms7aud_AZj09wZdWmg/exec';
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -36,7 +36,7 @@ const SendNotification = () => {
     setMessage('');
 
     // Client-side check for better UX
-  if (adminEmail !== "aravindsant323@gmail.com") {
+  if (adminEmail !== "aravindsant323@gmail.com"&&adminEmail !=="bharattechnicalcollege@gmail.com") {
     setMessage('Error: Unauthorized access');
     setLoading(false);
     return;

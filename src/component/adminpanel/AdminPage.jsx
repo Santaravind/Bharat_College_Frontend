@@ -13,25 +13,25 @@ function AdminPage() {
   const dispatch = useDispatch();
   const admin = useSelector((state) => state.admin);
 
-  const ADMIN_EMAIL = "aravindsant323@gmail.com";
+  const ADMIN_EMAIL = "bharattechnicalcollege@gmail.com"&&"aravindsant323@gmail.com";
   const ADMIN_PASSWORD = "B||??34$@//";
 
   // Debug: Log current state
-  console.log("Current Redux state:", admin);
-  console.log("Email input:", email);
-  console.log("Password input:", password);
+  // console.log("Current Redux state:", admin);
+  // console.log("Email input:", email);
+  // console.log("Password input:", password);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submit clicked - Email:", email, "Password:", password);
+    // console.log("Submit clicked - Email:", email, "Password:", password);
     
     if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      console.log("Credentials matched - dispatching actions");
+      // console.log("Credentials matched - dispatching actions");
       dispatch(setAdminEmail(email));
       dispatch(setAdminPassword(password));
       toast.success("Admin authentication successful!");
     } else {
-      console.log("Credentials DID NOT match");
+      // console.log("Credentials DID NOT match");
       toast.error("Access Denied: Invalid email or password.");
       setEmail("");
       setPassword("");
@@ -67,9 +67,9 @@ function AdminPage() {
 
   // Debug authentication condition
   const isAuthenticated = admin.isAuthenticated && admin.email === ADMIN_EMAIL;
-  console.log("Is authenticated:", isAuthenticated);
-  console.log("Admin isAuthenticated:", admin.isAuthenticated);
-  console.log("Admin email:", admin.email);
+  // console.log("Is authenticated:", isAuthenticated);
+  // console.log("Admin isAuthenticated:", admin.isAuthenticated);
+  // console.log("Admin email:", admin.email);
 
   // If authenticated with the specific email and password, show admin tools
   if (isAuthenticated) {
@@ -133,11 +133,15 @@ function AdminPage() {
                       </svg>
                       <span className="text-green-700 font-medium">
                         {/* admin.email */}
-                        Authenticated as: Admin 
+                        Authenticated as: Admin                        
                       </span>
+
                     </div>
+                    
                   </div>
+                  
                 </div>
+                 <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-800 focus:ring-4 focus:ring-blue-200 transition-all duration-200 transform hover:-translate-y-0.5 mt-2" > Logout </button>
               </div>
             </div>
 
@@ -213,7 +217,7 @@ function AdminPage() {
     );
   }
 
-  console.log("Rendering login view");
+  // console.log("Rendering login view");
   // Show email and password input form if not authenticated
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
