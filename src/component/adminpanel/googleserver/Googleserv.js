@@ -4,6 +4,7 @@ const BASE_URL =
 
 export const googleserv = {
   // Save new result data
+  //this is working code 100%
   saveResultData: async (resultData) => {
     try {
       // Add action to the data
@@ -57,67 +58,100 @@ export const googleserv = {
     }
   },
 
+  //this is not wroking 
   // Get result by serial number
-  getResultBySerial: async (serialNo) => {
-    try {
-      const response = await fetch(
-        `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(
-          serialNo,{
-        method:"no cross"
+  // getResultBySerial: async (serialNo) => {
+  //   try {
+  //     const response = await fetch(
+  //       `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(
+  //         serialNo,{
+  //       method:"no cross"
 
-      }
-        )}`
-      );
-      const result = await response.json();
+  //     }
+  //       )}`
+  //     );
+  //     const result = await response.json();
 
-      if (!result.success) {
-        throw new Error(result.message || "Failed to fetch result data");
-      }
+  //     if (!result.success) {
+  //       throw new Error(result.message || "Failed to fetch result data");
+  //     }
 
-      return result;
-    } catch (error) {
-      throw new Error("Failed to fetch result: " + error.message);
-    }
-  },
+  //     return result;
+  //   } catch (error) {
+  //     throw new Error("Failed to fetch result: " + error.message);
+  //   }
+  // },
 
-   // Get result by serial number
-  getResultBySerial: async (serialNo) => {
-    try {
-      const response = await fetch(
-        `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(serialNo)}`,{
-        method:"no cross"
+  //  // Get result by serial number
+  // getResultBySerial: async (serialNo) => {
+  //   try {
+  //     const response = await fetch(
+  //       `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(serialNo)}`,{
+  //       method:"no cross"
 
-      }
-      );
-      const result = await response.json();
+  //     }
+  //     );
+  //     const result = await response.json();
 
-      if (!result.success) {
-        throw new Error(result.message || "Failed to fetch result data");
-      }
+  //     if (!result.success) {
+  //       throw new Error(result.message || "Failed to fetch result data");
+  //     }
 
-      return result;
-    } catch (error) {
-      throw new Error("Failed to fetch result: " + error.message);
-    }
-  },
+  //     return result;
+  //   } catch (error) {
+  //     throw new Error("Failed to fetch result: " + error.message);
+  //   }
+  // },
 
   // ✅ NEW: Get result by enrollment number
-  getResultByEnrollment: async (enrollmentNo) => {
-    try {
-      const response = await fetch(
-        `${BASE_URL}?action=getResultByEnrollment&enrollmentNo=${encodeURIComponent(enrollmentNo)}`
+  // getResultByEnrollment: async (enrollmentNo) => {
+  //   try {
+  //     const response = await fetch(
+  //       `${BASE_URL}?action=getResultByEnrollment&enrollmentNo=${encodeURIComponent(enrollmentNo)}`
         
-      );
-      const result = await response.json();
+  //     );
+  //     const result = await response.json();
 
-      if (!result.success) {
-        throw new Error(result.message || "Failed to fetch result data");
-      }
+  //     if (!result.success) {
+  //       throw new Error(result.message || "Failed to fetch result data");
+  //     }
 
-      return result;
-    } catch (error) {
-      throw new Error("Failed to fetch result: " + error.message);
+  //     return result;
+  //   } catch (error) {
+  //     throw new Error("Failed to fetch result: " + error.message);
+  //   }
+  // },
+
+  
+getResultByEnrollment: async (admissionId) => {
+  try {
+    // console.log(`📋 Fetching admission data for: ${admissionId}`);
+    
+    const response = await fetch(`${BASE_URL}?action=getAdmissionById&admissionId=${admissionId}`, {
+      method: 'GET',
+    });
+
+    const result = await response.json();
+    // console.log('📊 Admission data fetched:', result);
+    
+    if (!result.success) {
+      throw new Error(result.error || 'Failed to fetch admission data');
     }
-  },
+    
+    // Handle both response formats for backward compatibility
+    const admissionData = result.data || result.admission;
+    if (!admissionData) {
+      throw new Error('No admission data found in response');
+    }
+    
+    return {
+      success: true,
+      data: admissionData
+    };
+  } catch (error) {
+    console.error('❌ Error fetching admission data:', error);
+    throw error;
+  }
+},
 
 };

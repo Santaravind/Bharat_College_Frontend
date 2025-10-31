@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdminEmail, setAdminPassword } from "../reduxstore/adminSlice";
+import { setAdminEmail, setAdminPassword,clearAdmin } from "../reduxstore/adminSlice";
 import SendNotification from "./SendNotification";
 import ResultDeclared from "./ResultDeclared";
 import toast from "react-hot-toast";
@@ -15,12 +15,6 @@ function AdminPage() {
 
   const ADMIN_EMAIL = "bharattechnicalcollege@gmail.com";
   const ADMIN_PASSWORD = "B||??34$@//";
-
-  // Debug: Log current state
-  // console.log("Current Redux state:", admin);
-  // console.log("Email input:", email);
-  // console.log("Password input:", password);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log("Submit clicked - Email:", email, "Password:", password);
@@ -31,13 +25,19 @@ function AdminPage() {
       dispatch(setAdminPassword(password));
       toast.success("Admin authentication successful!");
     } else {
-      // console.log("Credentials DID NOT match");
       toast.error("Access Denied: Invalid email or password.");
       setEmail("");
       setPassword("");
     }
   };
 
+     const handleLogout = (e) => {
+    e.preventDefault(); 
+    dispatch(clearAdmin()); //  clear the Redux state
+    toast.success("Logged out successfully!");
+     setEmail("");
+      setPassword("");
+  };
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -141,7 +141,7 @@ function AdminPage() {
                   </div>
                   
                 </div>
-                 <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-800 focus:ring-4 focus:ring-blue-200 transition-all duration-200 transform hover:-translate-y-0.5 mt-2" > Logout </button>
+                 <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-800 focus:ring-4 focus:ring-blue-200 transition-all duration-200 transform hover:-translate-y-0.5 mt-2"onClick={handleLogout} > Logout </button>
               </div>
             </div>
 
