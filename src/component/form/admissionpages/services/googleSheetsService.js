@@ -175,14 +175,14 @@ export const googleSheetsService = {
   },
 getAdmissionById: async (admissionId) => {
   try {
-    console.log(`📋 Fetching admission data for: ${admissionId}`);
+    // console.log(`📋 Fetching admission data for: ${admissionId}`);
     
     const response = await fetchWithRetry(`${SCRIPT_URL}?action=getAdmissionById&admissionId=${admissionId}`, {
       method: 'GET',
     });
 
     const result = await response.json();
-    console.log('📊 Admission data fetched:', result);
+    // console.log('📊 Admission data fetched:', result);
     
     if (!result.success) {
       throw new Error(result.error || 'Failed to fetch admission data');
