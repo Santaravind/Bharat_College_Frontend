@@ -288,7 +288,7 @@ function ResultDeclared() {
       fatherName: backendData["Father's Name "] || backendData.fatherName || "",
       courseName:
         backendData["Course Program"] || backendData.courseProgram || "",
-          photoUrl: backendData["Photo URL"] || backendData.photoUrl || "",
+      photoUrl: backendData["Photo URL"] || backendData.photoUrl || "",
     };
   };
 
@@ -418,13 +418,13 @@ function ResultDeclared() {
       }
 
       const resultData = {
-        serialNo: formData.serialNo || `RES-${Date.now()}`,
+        serialNo: formData.serialNo || `BT01A${Date.now()}`,
         enrollmentNo: formData.enrollmentNo,
         studentName,
         firstName: formData.firstName,
         lastName: formData.lastName,
         fatherName: formData.fatherName,
-        dateOfBirth: new Date(formData.dateOfBirth).toLocaleDateString('en-CA'),
+        dateOfBirth: new Date(formData.dateOfBirth).toLocaleDateString("en-CA"),
 
         // dateOfBirth: formData.dateOfBirth,
         courseName: formData.courseName,
@@ -434,7 +434,7 @@ function ResultDeclared() {
         grade: formData.grade,
         session: formData.session,
         issueDate: formData.issueDate,
-        photoUrl:formData.photoUrl
+        photoUrl: formData.photoUrl,
       };
 
       // console.log("handle submit ", resultData);
@@ -460,7 +460,7 @@ function ResultDeclared() {
           session:
             new Date().getFullYear() + "-" + (new Date().getFullYear() + 1),
           issueDate: new Date().toISOString().split("T")[0],
-          photoUrl:""
+          photoUrl: "",
         });
       } else {
         throw new Error(response.message || "Failed to save result");
@@ -487,7 +487,7 @@ function ResultDeclared() {
       percentage: "",
       grade: "",
       session: "",
-      photoUrl:"",
+      photoUrl: "",
       issueDate: new Date().toISOString().split("T")[0],
     });
     setIsEditing(false);
@@ -665,26 +665,31 @@ function ResultDeclared() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-                     
-                     <div className="   ">
-                      <div>
-                         <label    htmlFor="photoUrl"
-                    className="block text-sm font-medium text-gray-700 mb-2"> Student Photo </label>
-                      </div>
-                     
-  {formData.photoUrl ? (
-  <img 
-    src={formData.photoUrl} 
-    alt="Student" 
-    className="h-24 w-24 rounded-full object-cover border-2 border-gray-300"
-  />
-) : (
-  <div className="h-24 w-24 rounded-full bg-gray-200 border-2 border-dashed border-gray-300 flex items-center justify-center">
-    <span className="text-gray-500 text-sm">No Photo</span>
-  </div>
-)}
 
-  {/* <div className="flex items-center space-x-4">
+                <div className="   ">
+                  <div>
+                    <label
+                      htmlFor="photoUrl"
+                      className="block text-sm font-medium text-gray-700 mb-2"
+                    >
+                      {" "}
+                      Student Photo{" "}
+                    </label>
+                  </div>
+
+                  {formData.photoUrl ? (
+                    <img
+                      src={formData.photoUrl}
+                      alt="Student"
+                      className="h-24 w-24 rounded-full object-cover border-2 border-gray-300"
+                    />
+                  ) : (
+                    <div className="h-24 w-24 rounded-full bg-gray-200 border-2 border-dashed border-gray-300 flex items-center justify-center">
+                      <span className="text-gray-500 text-sm">No Photo</span>
+                    </div>
+                  )}
+
+                  {/* <div className="flex items-center space-x-4">
     <div className="flex-shrink-0">
       {formData.photoUrl ? (
         <img 
@@ -719,7 +724,7 @@ function ResultDeclared() {
       </p>
     </div>
   </div> */}
-</div>
+                </div>
 
                 <div>
                   <label

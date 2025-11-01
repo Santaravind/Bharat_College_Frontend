@@ -182,7 +182,7 @@ getAdmissionById: async (admissionId) => {
     });
 
     const result = await response.json();
-    // console.log('📊 Admission data fetched:', result);
+    //  console.log('📊 Admission data fetched:', result);
     
     if (!result.success) {
       throw new Error(result.error || 'Failed to fetch admission data');
@@ -206,7 +206,7 @@ getAdmissionById: async (admissionId) => {
 
 getAdmissionByEmail: async (email) => {
   try {
-    // console.log(`📧 Searching admission by email: ${email}`);
+    //  console.log(`📧 Searching admission by email: ${email}`);
     
     const response = await fetchWithRetry(`${SCRIPT_URL}?action=getAdmissionByEmail&email=${encodeURIComponent(email)}`, {
       method: 'GET',

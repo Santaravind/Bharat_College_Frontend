@@ -1,6 +1,6 @@
 
 const BASE_URL =
-  "https://script.google.com/macros/s/AKfycbzpYDDcGnJiv-DnF-27A3y6nnSyxD_-BiCHudtWRpEa60neZbKi6R0fiVnL8ElS8ZOH0w/exec";
+  "https://script.google.com/macros/s/AKfycbwf_fi0AE-I1hh0Y8eZ6xcdayCF9v7yDB0TNbLc-UyFf5BGGS3CpiWStr9BEqlpGLSrtg/exec";
 
 export const googleserv = {
   // Save new result data
@@ -121,37 +121,102 @@ export const googleserv = {
   //     throw new Error("Failed to fetch result: " + error.message);
   //   }
   // },
-
-  
-getResultByEnrollment: async (admissionId) => {
+// ✅ Use JSONP for GET requests to avoid CORS
+getResultByEnrollment: async (enrollmentNo) => {
   try {
-    // console.log(`📋 Fetching admission data for: ${admissionId}`);
+    // console.log(`📋 Fetching result data for enrollment: ${enrollmentNo}`);
     
-    const response = await fetch(`${BASE_URL}?action=getAdmissionById&admissionId=${admissionId}`, {
-      method: 'GET',
+    // Use JSONP approach for GET request
+    const url = `${BASE_URL}?action=getResultByEnrollment&enrollmentNo=${encodeURIComponent(enrollmentNo)}&callback=handleResponse`;
+    
+    return new Promise((resolve, reject) => {
+      // Create a temporary function to handle the response
+      window.handleResponse = (response) => {
+        delete window.handleResponse;
+        document.head.removeChild(script);
+        
+        // console.log('📊 Result data fetched:', response);
+        
+        if (!response.success) {
+          reject(new Error(response.message || 'Failed to fetch result data'));
+          return;
+        }
+        
+        if (!response.data) {
+          reject(new Error('No result data found'));
+          return;
+        }
+        
+        resolve({
+          success: true,
+          data: response.data
+        });
+      };
+
+      // Create and append script tag
+      const script = document.createElement('script');
+      script.src = url;
+      script.onerror = () => {
+        delete window.handleResponse;
+        document.head.removeChild(script);
+        reject(new Error('Network error - failed to fetch data'));
+      };
+      
+      document.head.appendChild(script);
     });
 
-    const result = await response.json();
-    // console.log('📊 Admission data fetched:', result);
-    
-    if (!result.success) {
-      throw new Error(result.error || 'Failed to fetch admission data');
-    }
-    
-    // Handle both response formats for backward compatibility
-    const admissionData = result.data || result.admission;
-    if (!admissionData) {
-      throw new Error('No admission data found in response');
-    }
-    
-    return {
-      success: true,
-      data: admissionData
-    };
   } catch (error) {
-    console.error('❌ Error fetching admission data:', error);
+    console.error('❌ Error fetching result data:', error);
     throw error;
   }
 },
 
+getResultBySerial: async (serialNo) => {
+  try {
+    // console.log(`📋 Fetching result data for serial: ${serialNo}`);
+    
+    // Use JSONP approach for GET request
+    const url = `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(serialNo)}&callback=handleResponse`;
+    
+    return new Promise((resolve, reject) => {
+      // Create a temporary function to handle the response
+      window.handleResponse = (response) => {
+        delete window.handleResponse;
+        document.head.removeChild(script);
+        
+        // console.log('📊 Result data fetched:', response);
+        
+        if (!response.success) {
+          reject(new Error(response.message || 'Failed to fetch result data'));
+          return;
+        }
+        
+        if (!response.data) {
+          reject(new Error('No result data found'));
+          return;
+        }
+        
+        resolve({
+          success: true,
+          data: response.data
+        });
+      };
+
+      // Create and append script tag
+      const script = document.createElement('script');
+      script.src = url;
+      script.onerror = () => {
+        delete window.handleResponse;
+        document.head.removeChild(script);
+        reject(new Error('Network error - failed to fetch data'));
+      };
+      
+      document.head.appendChild(script);
+    });
+
+  } catch (error) {
+    console.error('❌ Error fetching result data:', error);
+    throw error;
+  }
+}
 };
