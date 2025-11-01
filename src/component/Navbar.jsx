@@ -13,7 +13,7 @@ export default function Navbar() {
     { name: "Admission", path: "/admission" },
     { name: "Gallery", path: "/gallery" },
     { name: "Syllabus", path: "/syllabus" },
-    { name: "Student", path: "/student" },
+    { name: "Result", path: "/result" },
     { name: "About", path: "/about" },
     { name: "Verification", path: "/verification" },
     { name: "Admin", path: "/admin" },
