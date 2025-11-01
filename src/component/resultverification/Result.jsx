@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import icon from '../assets/icon.png'
+import { IoLocationSharp } from "react-icons/io5";
 import logo from '../assets/logo2.png'
 import {
   Search,
@@ -8,8 +10,9 @@ import {
   Printer,
 } from "lucide-react";
 import { googleserv } from "../adminpanel/googleserver/Googleserv.js";
+import toast from "react-hot-toast";
 
-const Verification = () => {
+const Result = () => {
   const [searchType, setSearchType] = useState("enrollment");
   const [searchValue, setSearchValue] = useState("");
   const [result, setResult] = useState(null);
@@ -54,7 +57,7 @@ const Verification = () => {
       window.print();
     } catch (error) {
       // console.error("Print failed:", error);
-      alert("Printing failed. Please use browser print (Ctrl+P)");
+      toast.success("Printing failed. Please use browser print (Ctrl+P)");
     }
   };
 
@@ -80,20 +83,82 @@ const Verification = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 print:py-0 print:px-0 print:bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 to-indigo-100 py-8 px-4 print:py-0 print:px-0 print:bg-white">
       <div className="max-w-4xl mx-auto print:max-w-none print:mx-0">
+          <div
+            className="absolute inset-0 z-0 footer"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, rgba(0,0,0,0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px),
+                radial-gradient(circle, rgba(51,65,85,0.3) 1px, transparent 1px)
+              `,
+              backgroundSize: "20px 20px, 20px 20px, 20px 20px",
+              backgroundPosition: "0 0, 0 0, 0 0",
+            }}
+          />
+    
+          {/* Content */}
+    
+          <h1 className="relative flex z-10 font-medium  justify-center items-center mt-2 pt-2 text-black text-6xl footer">Student Result </h1>
+          <div className="relative z-10 max-w-7xl mx-auto px-6 py-12 footer">
+            
+            {/* Top Info Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-gray-800">
+               {/* college name */}
+              <div>
+               
+                <div className="flex justify-center mb-3">
+                  <img src={icon} alt="College icon" className="w-30 h-25 " />
+                </div>
+                <h3 className="font-bold text-2xl">BHARAT TECHNICAL COLLEGE  </h3>
+                <p className="text-lg font-semibold mt-1">OF FIRE ENGINEERING & SAFETY  </p>
+                <p className="text-lg font-semibold">MANAGEMENT </p>
+              </div>
+    
+              {/* address */}
+              <div>
+                <div className="flex justify-center mb-3">
+                  {/* <span className="text-6xl">📍</span> */}
+                 <IoLocationSharp className=" text-red-600 text-7xl"/>  
+                </div>
+                <h3 className="font-bold text-2xl">Address:</h3>
+                <p className="text-lg font-semibold mt-1">Robertsganj , Sonbhadra  </p>
+                <p className="text-lg font-semibold">Utter Pradesh</p>
+                <p className="text-lg font-semibold">Pin code : 231216 </p>
+              </div>
+    
+              {/* Contect  */}
+              <div>
+                <div className="flex justify-center mb-3">
+                  <span className="text-7xl">📞</span>
+                </div>
+                <h3 className="font-bold text-2xl">Contact us:</h3>
+               
+                  <p className="text-blue-600 font-medium text-xl fl ">
+                      
+                   bharattechnicalcollege@gmail.com
+                    </p>
+                
+                <p className="text-blue-600 font-medium text-xl"> 📞+91-8840157051</p>
+              </div>
+
+              
+
+            </div>
+            </div>
         {/* Header */}
         <div className="text-center mb-8 print:hidden">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            Student Result Verification
+            Studen print their result 
           </h1>
           <p className="text-gray-600">
-            Verify student results using Enrollment Number or Serial Number
+            Print student results using Enrollment Number or Serial Number
           </p>
         </div>
 
         {/* Search Card */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6 print:hidden">
+        <div className=" bg-gradient-to-br from-rose-200 to-indigo-200  rounded-xl shadow-lg p-6 mb-6 print:hidden">
           <form onSubmit={handleSearch} className="space-y-4">
             {/* Search Type Toggle */}
             <div className="flex space-x-4 mb-4">
@@ -115,7 +180,7 @@ const Verification = () => {
                 className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
                   searchType === "serial"
                     ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-gray-100 text-rose-700 hover:bg-gray-200"
                 }`}
               >
                 <Hash className="w-4 h-4 mr-2" />
@@ -125,7 +190,7 @@ const Verification = () => {
 
             {/* Search Input */}
             <div className="flex space-x-4">
-              <div className="flex-1 relative">
+              <div className="flex-1 relative ">
                 <input
                   type="text"
                   value={searchValue}
@@ -135,7 +200,7 @@ const Verification = () => {
                       ? "Enter Enrollment Number..."
                       : "Enter Serial Number..."
                   }
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-red-500 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
                 <Search className="w-5 h-5 text-gray-400 absolute left-3 top-3.5" />
               </div>
@@ -169,7 +234,7 @@ const Verification = () => {
           {result && (
             <button
               onClick={clearSearch}
-              className="mt-4 px-4 py-2 text-white hover:text-white hover:bg-rose-300 transition-colors cursor-pointer border-2 bg-neutral-200 rounded-full"
+              className="mt-4 px-4 py-2 text-rose-400 hover:text-white hover:bg-rose-300 transition-colors cursor-pointer border-2 bg-neutral-200 rounded-full font-semibold"
             >
               Clear Search
             </button>
@@ -382,4 +447,5 @@ const Verification = () => {
   );
 };
 
-export default Verification;
+
+export default Result
