@@ -1,47 +1,63 @@
 // components/ResultVerification.jsx
-import React, { useState } from 'react';
-import { Search, User, BookOpen, Calendar, Award, Hash, FileText } from 'lucide-react';
-import { googleserv } from '../adminpanel/googleserver/Googleserv.js';
+import React, { useState } from "react";
+import {
+  Search,
+  User,
+  BookOpen,
+  Calendar,
+  Award,
+  Hash,
+  FileText,
+} from "lucide-react";
+import { googleserv } from "../adminpanel/googleserver/Googleserv.js";
 
 const Verification = () => {
-  const [searchType, setSearchType] = useState('enrollment'); // 'enrollment' or 'serial'
-  const [searchValue, setSearchValue] = useState('');
+  const [searchType, setSearchType] = useState("enrollment"); // 'enrollment' or 'serial'
+  const [searchValue, setSearchValue] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    
+
     if (!searchValue.trim()) {
-      setError('Please enter a search value');
+      setError("Please enter a search value");
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError("");
     setResult(null);
 
     try {
+      // console.log(`🔍 Searching by ${searchType}: ${searchValue}`);
+
       let response;
-      if (searchType === 'enrollment') {
-        response = await googleserv.getResultByEnrollment(searchValue);
+      if (searchType === "enrollment") {
+        response = await googleserv.getResultByEnrollment(searchValue.trim());
       } else {
-        response = await googleserv.getResultBySerial(searchValue);
+        response = await googleserv.getResultBySerial(searchValue.trim());
       }
-      
-      setResult(response.data);
+
+      if (response.success) {
+        setResult(response.data);
+        setError("");
+      } else {
+        setError("No record found");
+      }
     } catch (err) {
-      setError(err.message);
+      // console.error("Search error:", err);
+      setError(err.message || "Failed to search. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   const clearSearch = () => {
-    setSearchValue('');
+    setSearchValue("");
     setResult(null);
-    setError('');
+    setError("");
   };
 
   return (
@@ -64,11 +80,11 @@ const Verification = () => {
             <div className="flex space-x-4 mb-4">
               <button
                 type="button"
-                onClick={() => setSearchType('enrollment')}
+                onClick={() => setSearchType("enrollment")}
                 className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                  searchType === 'enrollment'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  searchType === "enrollment"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 <FileText className="w-4 h-4 mr-2" />
@@ -76,11 +92,11 @@ const Verification = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setSearchType('serial')}
+                onClick={() => setSearchType("serial")}
                 className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                  searchType === 'serial'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  searchType === "serial"
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
                 <Hash className="w-4 h-4 mr-2" />
@@ -96,9 +112,9 @@ const Verification = () => {
                   value={searchValue}
                   onChange={(e) => setSearchValue(e.target.value)}
                   placeholder={
-                    searchType === 'enrollment' 
-                      ? 'Enter Enrollment Number...' 
-                      : 'Enter Serial Number...'
+                    searchType === "enrollment"
+                      ? "Enter Enrollment Number..."
+                      : "Enter Serial Number..."
                   }
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
@@ -145,7 +161,9 @@ const Verification = () => {
         {result && (
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Student Result</h2>
+              <h2 className="text-2xl font-bold text-gray-800">
+                Student Result
+              </h2>
               <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
                 Verified
               </div>
@@ -157,31 +175,37 @@ const Verification = () => {
                 <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
                   Student Information
                 </h3>
-                
-                <InfoRow 
+
+                <InfoRow
                   icon={<User className="w-4 h-4" />}
                   label="Student Name"
-                  value={result['Student Name'] || result.studentName}
+                  value={result["Student Name"] || result.studentName}
                 />
-                <InfoRow 
+                <InfoRow
                   icon={<User className="w-4 h-4" />}
                   label="Father's Name"
-                  value={result['Father Name'] || result.fatherName}
+                  value={result["Father Name"] || result.fatherName}
                 />
-                <InfoRow 
+                <InfoRow
                   icon={<FileText className="w-4 h-4" />}
                   label="Enrollment No"
-                  value={result['Enrollment No'] || result.enrollmentNo}
+                  value={result["Enrollment No"] || result.enrollmentNo}
                 />
-                <InfoRow 
+                <InfoRow
                   icon={<Hash className="w-4 h-4" />}
                   label="Serial No"
-                  value={result['Serial No'] || result.serialNo}
+                  value={result["Serial No"] || result.serialNo}
                 />
-                <InfoRow 
+                <InfoRow
                   icon={<Calendar className="w-4 h-4" />}
                   label="Date of Birth"
-                  value={result['Date of Birth'] || result.dateOfBirth}
+                  value={
+                    result["Date of Birth"]
+                      ? result["Date of Birth"].split("T")[0]
+                      : result.dateOfBirth
+                      ? result.dateOfBirth.split("T")[0]
+                      : ""
+                  }
                 />
               </div>
 
@@ -190,45 +214,58 @@ const Verification = () => {
                 <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
                   Academic Information
                 </h3>
-                
-                <InfoRow 
+
+                <InfoRow
                   icon={<BookOpen className="w-4 h-4" />}
                   label="Course Name"
-                  value={result['Course Name'] || result.courseName}
+                  value={result["Course Name"] || result.courseName}
                 />
-                <InfoRow 
+                <InfoRow
                   icon={<Award className="w-4 h-4" />}
                   label="Session"
                   value={result.Session || result.session}
                 />
-                <InfoRow 
+                <InfoRow
                   icon={<Calendar className="w-4 h-4" />}
                   label="Issue Date"
-                  value={result['Issue Date'] || result.issueDate}
+                  value={
+                    result["Issue Date"]
+                      ? result["Issue Date"].split("T")[0]
+                      : result.issueDate
+                      ? result.issueDate.split("T")[0]
+                      : ""
+                  }
                 />
-                
                 {/* Marks and Grade */}
                 <div className="grid grid-cols-2 gap-4 pt-2">
                   <div className="bg-blue-50 p-3 rounded-lg">
-                    <div className="text-sm text-blue-600 font-medium">Total Marks</div>
+                    <div className="text-sm text-blue-600 font-medium">
+                      Total Marks
+                    </div>
                     <div className="text-xl font-bold text-blue-800">
-                      {result['Total Marks'] || result.totalMarks}
+                      {result["Total Marks"] || result.totalMarks}
                     </div>
                   </div>
                   <div className="bg-green-50 p-3 rounded-lg">
-                    <div className="text-sm text-green-600 font-medium">Obtained Marks</div>
+                    <div className="text-sm text-green-600 font-medium">
+                      Obtained Marks
+                    </div>
                     <div className="text-xl font-bold text-green-800">
-                      {result['Obtained Marks'] || result.obtainedMarks}
+                      {result["Obtained Marks"] || result.obtainedMarks}
                     </div>
                   </div>
                   <div className="bg-purple-50 p-3 rounded-lg">
-                    <div className="text-sm text-purple-600 font-medium">Percentage</div>
+                    <div className="text-sm text-purple-600 font-medium">
+                      Percentage
+                    </div>
                     <div className="text-xl font-bold text-purple-800">
                       {result.Percentage || result.percentage}%
                     </div>
                   </div>
                   <div className="bg-orange-50 p-3 rounded-lg">
-                    <div className="text-sm text-orange-600 font-medium">Grade</div>
+                    <div className="text-sm text-orange-600 font-medium">
+                      Grade
+                    </div>
                     <div className="text-xl font-bold text-orange-800">
                       {result.Grade || result.grade}
                     </div>
@@ -238,16 +275,18 @@ const Verification = () => {
             </div>
 
             {/* Photo Display */}
-            {(result['Photo Url'] || result.photoUrl) && (
+            {(result["Photo Url"] || result.photoUrl) && (
               <div className="mt-6 border-t pt-6">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">Student Photo</h3>
+                <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                  Student Photo
+                </h3>
                 <div className="flex justify-center">
-                  <img 
-                    src={result['Photo Url'] || result.photoUrl} 
-                    alt="Student" 
+                  <img
+                    src={result["Photo Url"] || result.photoUrl}
+                    alt="Student"
                     className="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"
                     onError={(e) => {
-                      e.target.style.display = 'none';
+                      e.target.style.display = "none";
                     }}
                   />
                 </div>
@@ -267,8 +306,8 @@ const InfoRow = ({ icon, label, value }) => (
       {icon}
       <span className="font-medium">{label}</span>
     </div>
-    <span className="text-gray-800 font-semibold">{value || 'N/A'}</span>
+    <span className="text-gray-800 font-semibold">{value || "N/A"}</span>
   </div>
 );
 
-export default Verification
+export default Verification;
