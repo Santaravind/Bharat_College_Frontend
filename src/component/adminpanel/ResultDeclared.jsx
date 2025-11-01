@@ -258,7 +258,6 @@ function ResultDeclared() {
       const response = await googleSheetsService.getAdmissionById(enrollmentNo);
 
       if (response.success && response.data) {
-        console.log(response.data);
         const studentData = transformBackendData(response.data);
 
         setFormData((prev) => ({
