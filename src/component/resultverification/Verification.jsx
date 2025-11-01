@@ -306,7 +306,7 @@ const Verification = () => {
               {/* Signatures Section - Optimized */}
               <div className="flex justify-between items-end mt-8 print:mt-6">
                 <div className="text-center">
-                  <div className="mb-2 print:mb-1 font-semibold text-gray-800 print:text-sm">Teacher / Trainer</div>
+                  <div className="mb-2 print:mb-1 font-semibold text-gray-800 print:text-sm">Controller of Examination</div>
                   <div className="mb-4 print:mb-3 text-gray-600 print:text-xs">Signature</div>
                   <div className="border-t-2 border-gray-800 print:border-black pt-1 w-40 mx-auto"></div>
                 </div>
