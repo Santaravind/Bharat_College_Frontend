@@ -1,18 +1,16 @@
-// components/ResultVerification.jsx
 import React, { useState } from "react";
+import logo from '../assets/logo2.png'
 import {
   Search,
   User,
-  BookOpen,
-  Calendar,
-  Award,
   Hash,
   FileText,
+  Printer,
 } from "lucide-react";
 import { googleserv } from "../adminpanel/googleserver/Googleserv.js";
 
 const Verification = () => {
-  const [searchType, setSearchType] = useState("enrollment"); // 'enrollment' or 'serial'
+  const [searchType, setSearchType] = useState("enrollment");
   const [searchValue, setSearchValue] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -31,8 +29,6 @@ const Verification = () => {
     setResult(null);
 
     try {
-      // console.log(`🔍 Searching by ${searchType}: ${searchValue}`);
-
       let response;
       if (searchType === "enrollment") {
         response = await googleserv.getResultByEnrollment(searchValue.trim());
@@ -47,10 +43,18 @@ const Verification = () => {
         setError("No record found");
       }
     } catch (err) {
-      // console.error("Search error:", err);
       setError(err.message || "Failed to search. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePrint = () => {
+    try {
+      window.print();
+    } catch (error) {
+      // console.error("Print failed:", error);
+      alert("Printing failed. Please use browser print (Ctrl+P)");
     }
   };
 
@@ -60,11 +64,26 @@ const Verification = () => {
     setError("");
   };
 
+  // Format date for display
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }).toUpperCase();
+    } catch {
+      return dateString;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 print:py-0 print:px-0 print:bg-white">
+      <div className="max-w-4xl mx-auto print:max-w-none print:mx-0">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 print:hidden">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Student Result Verification
           </h1>
@@ -74,7 +93,7 @@ const Verification = () => {
         </div>
 
         {/* Search Card */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6 print:hidden">
           <form onSubmit={handleSearch} className="space-y-4">
             {/* Search Type Toggle */}
             <div className="flex space-x-4 mb-4">
@@ -83,7 +102,7 @@ const Verification = () => {
                 onClick={() => setSearchType("enrollment")}
                 className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
                   searchType === "enrollment"
-                    ? "bg-blue-500 text-white"
+                    ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -95,7 +114,7 @@ const Verification = () => {
                 onClick={() => setSearchType("serial")}
                 className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
                   searchType === "serial"
-                    ? "bg-blue-500 text-white"
+                    ? "bg-blue-600 text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -123,7 +142,7 @@ const Verification = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors flex items-center"
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed transition-colors flex items-center"
               >
                 {loading ? (
                   <>
@@ -157,157 +176,210 @@ const Verification = () => {
           )}
         </div>
 
-        {/* Result Display */}
+        {/* Certificate Display - Optimized for Single Page Print */}
         {result && (
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">
-                Student Result
+          <div className="bg-white border-4 border-yellow-600 print:border-4 print:border-yellow-600 shadow-2xl print:shadow-none print:min-h-[27.9cm]">
+            {/* Certificate Header - Compact */}
+            <div className="border-b-4 border-yellow-600 print:border-b-4 print:border-yellow-600 p-6 print:p-4 text-center print:bg-white">
+              {/* Compact Decorative elements */}
+              <div className="flex justify-between items-center mb-3 print:mb-2">
+                <div className="w-12 h-12 border-4 border-yellow-600 rounded-full print:w-10 print:h-10 print:border-2 print:border-yellow-600"></div>
+                <div className="w-12 h-12 border-4 border-yellow-600 rounded-full print:w-10 print:h-10 print:border-2 print:border-yellow-600"></div>
+              </div>
+              
+              <h1 className="text-2xl font-bold text-gray-900 mb-2 print:text-xl print:text-black font-serif">
+                BHARAT TECHNICAL COLLEGE
+              </h1>
+              <p className="text-base font-semibold text-gray-800 mb-1 print:text-sm print:text-black">
+                Of Fire Engineering & Management
+              </p>
+              <p className="text-xs text-gray-700 mb-1 print:text-[10px]">
+                An Autonomous Body, Under Govt.Act Established Under Act 1882
+              </p>
+              <p className="text-xs font-semibold text-gray-800 mb-1 print:text-[10px]">
+                Registration No. SON/01794/2025-2026 • ISO Certified
+              </p>
+              <p className="text-xs text-gray-700 print:text-[10px]">
+                Pusanli, Robertsganj Sonbhadra, Uttar Pradesh, India - 231216
+              </p>
+              <p className="text-xs text-blue-700 font-medium mt-1 print:text-[10px]">
+                www.bharatechnicalcollege.com | bharatechnicalcollege@gmail.com
+              </p>
+            </div>
+
+            {/* Certificate Title - Compact */}
+            <div className="border-b-2 border-yellow-500 print:border-b-2 print:border-yellow-500 p-4 print:p-3 text-center print:bg-white">
+              <h2 className="text-xl font-bold uppercase text-gray-900 print:text-lg print:text-black tracking-wide font-serif">
+                CERTIFICATE OF TRAINING
               </h2>
-              <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                Verified
-              </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Student Information */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
-                  Student Information
-                </h3>
-
-                <InfoRow
-                  icon={<User className="w-4 h-4" />}
-                  label="Student Name"
-                  value={result["Student Name"] || result.studentName}
-                />
-                <InfoRow
-                  icon={<User className="w-4 h-4" />}
-                  label="Father's Name"
-                  value={result["Father Name"] || result.fatherName}
-                />
-                <InfoRow
-                  icon={<FileText className="w-4 h-4" />}
-                  label="Enrollment No"
-                  value={result["Enrollment No"] || result.enrollmentNo}
-                />
-                <InfoRow
-                  icon={<Hash className="w-4 h-4" />}
-                  label="Serial No"
-                  value={result["Serial No"] || result.serialNo}
-                />
-                <InfoRow
-                  icon={<Calendar className="w-4 h-4" />}
-                  label="Date of Birth"
-                  value={
-                    result["Date of Birth"]
-                      ? result["Date of Birth"].split("T")[0]
-                      : result.dateOfBirth
-                      ? result.dateOfBirth.split("T")[0]
-                      : ""
-                  }
-                />
-              </div>
-
-              {/* Academic Information */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
-                  Academic Information
-                </h3>
-
-                <InfoRow
-                  icon={<BookOpen className="w-4 h-4" />}
-                  label="Course Name"
-                  value={result["Course Name"] || result.courseName}
-                />
-                <InfoRow
-                  icon={<Award className="w-4 h-4" />}
-                  label="Session"
-                  value={result.Session || result.session}
-                />
-                <InfoRow
-                  icon={<Calendar className="w-4 h-4" />}
-                  label="Issue Date"
-                  value={
-                    result["Issue Date"]
-                      ? result["Issue Date"].split("T")[0]
-                      : result.issueDate
-                      ? result.issueDate.split("T")[0]
-                      : ""
-                  }
-                />
-                {/* Marks and Grade */}
-                <div className="grid grid-cols-2 gap-4 pt-2">
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <div className="text-sm text-blue-600 font-medium">
-                      Total Marks
-                    </div>
-                    <div className="text-xl font-bold text-blue-800">
-                      {result["Total Marks"] || result.totalMarks}
-                    </div>
+            {/* Main Certificate Content - Compact */}
+            <div className="p-6 print:p-4 bg-white">
+              {/* Student Photo and Name Section - Compact */}
+              <div className="flex items-start justify-between mb-6 print:mb-4">
+                {/* Student Photo - Optimized */}
+                <div className="w-32 h-40 print:w-28 print:h-36 border-3 border-yellow-600 print:border-2 print:border-yellow-600 overflow-hidden bg-white print:shadow-none">
+                  {(result["Photo Url"] || result.photoUrl) ? (
+                    <img
+                      src={result["Photo Url"] || result.photoUrl}
+                      alt="Student"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'flex';
+                      }}
+                    />
+                  ) : null}
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-gray-100 text-gray-500 print:text-gray-600 ">
+                    <User className="w-12 h-12 mb-1 print:w-10 print:h-10 text-yellow-600" />
+                    <span className="text-xs print:text-[10px] text-center font-medium">Student Photo</span>
                   </div>
-                  <div className="bg-green-50 p-3 rounded-lg">
-                    <div className="text-sm text-green-600 font-medium">
-                      Obtained Marks
-                    </div>
-                    <div className="text-xl font-bold text-green-800">
-                      {result["Obtained Marks"] || result.obtainedMarks}
-                    </div>
+                </div>
+
+                {/* Student Name Section - Optimized */}
+                <div className="flex-1 text-center mx-6 print:mx-4">
+                  <p className="text-lg mb-6 print:text-base print:mb-4 text-gray-700 italic">
+                    This is to Certify that
+                  </p>
+                  
+                  <div className="mb-6 print:mb-4">
+                    <h3 className="text-2xl font-bold uppercase mb-3 print:text-xl print:text-black tracking-wide font-serif border-b-2 border-yellow-500 pb-2">
+                      {result["Student Name"] || result.studentName}
+                    </h3>
+                    <p className="text-lg font-semibold text-gray-800 print:text-base print:text-black">
+                      S/O: {result["Father Name"] || result.fatherName}
+                    </p>
                   </div>
-                  <div className="bg-purple-50 p-3 rounded-lg">
-                    <div className="text-sm text-purple-600 font-medium">
-                      Percentage
-                    </div>
-                    <div className="text-xl font-bold text-purple-800">
-                      {result.Percentage || result.percentage}%
-                    </div>
+
+                  <p className="text-lg mb-6 print:text-base print:mb-4 text-gray-700 italic">
+                    has successfully completed the course
+                  </p>
+
+                  {/* Course Name - Optimized */}
+                  <div className="mt-4">
+                    <h4 className="text-xl font-bold uppercase print:text-lg print:text-black tracking-wide bg-yellow-100 print:bg-yellow-50 py-3 px-6 rounded-lg border-2 border-yellow-500 font-serif">
+                      {result["Course Name"] || result.courseName}
+                    </h4>
                   </div>
-                  <div className="bg-orange-50 p-3 rounded-lg">
-                    <div className="text-sm text-orange-600 font-medium">
-                      Grade
+                </div>
+
+                {/* College Seal - Optimized */}
+                <div className="w-38 h-40 print:w-28 print:h-36 border-1 border-yellow-600 print:border-2 print:border-yellow-600 bg-white flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-fit h-20 print:w-16 print:h-16  mx-auto mb-2 print:mb-1 print:border print:border-yellow-600 flex items-center justify-center">
+                      {/* <span className="text-xs print:text-[10px] font-bold text-yellow-600">COLLEGE SEAL</span> */}
+                      <img src={logo} alt="college image" className="w-full h-full "/>
                     </div>
-                    <div className="text-xl font-bold text-orange-800">
-                      {result.Grade || result.grade}
-                    </div>
+                    {/* <p className="text-xs print:text-[10px] text-gray-600 font-medium">Official Seal</p> */}
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Photo Display */}
-            {(result["Photo Url"] || result.photoUrl) && (
-              <div className="mt-6 border-t pt-6">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">
-                  Student Photo
+              {/* Academic Details - Optimized */}
+              <div className="bg-gray-50 print:bg-gray-100 p-4 print:p-3 rounded-lg border-2 border-yellow-500 mb-6 print:mb-4">
+                <h3 className="text-lg font-bold text-center mb-3 print:text-base print:text-black border-b-2 border-yellow-500 pb-2 font-serif">
+                  ACADEMIC DETAILS
                 </h3>
-                <div className="flex justify-center">
-                  <img
-                    src={result["Photo Url"] || result.photoUrl}
-                    alt="Student"
-                    className="w-32 h-32 object-cover rounded-lg border-2 border-gray-200"
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                    }}
-                  />
+                
+                <div className="grid grid-cols-2 gap-3 print:gap-2 text-sm print:text-xs">
+                  {[
+                    { label: "Serial Number", value: result["Serial No"] || result.serialNo },
+                    { label: "Enrollment Number", value: result["Enrollment No"] || result.enrollmentNo },
+                    { label: "Total Marks", value: result["Total Marks"] || result.totalMarks },
+                    { label: "Obtained Marks", value: result["Obtained Marks"] || result.obtainedMarks },
+                    { label: "Percentage", value: `${result.Percentage || result.percentage}%` },
+                    { label: "Grade", value: result.Grade || result.grade },
+                    { label: "Academic Session", value: result.Session || result.session },
+                    { label: "Course", value: result["Course Name"] || result.courseName },
+                    { label: "College Branch", value: "Bharat Technical College Robertsganj" },
+                    { label: "Certificate Issue Date", value: formatDate(result["Issue Date"] || result.issueDate) },
+                  ].map((item, index) => (
+                    <div key={index} className="flex justify-between items-center py-2 print:py-1 border-b border-gray-200">
+                      <span className="font-semibold text-gray-700">{item.label}:</span>
+                      <span className="font-bold text-gray-900">{item.value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            )}
+
+              {/* Signatures Section - Optimized */}
+              <div className="flex justify-between items-end mt-8 print:mt-6">
+                <div className="text-center">
+                  <div className="mb-2 print:mb-1 font-semibold text-gray-800 print:text-sm">Teacher / Trainer</div>
+                  <div className="mb-4 print:mb-3 text-gray-600 print:text-xs">Signature</div>
+                  <div className="border-t-2 border-gray-800 print:border-black pt-1 w-40 mx-auto"></div>
+                </div>
+
+                <div className="text-center">
+                  <div className="mb-2 print:mb-1 font-semibold text-gray-800 print:text-sm">Authorized Signatory</div>
+                  <div className="mb-4 print:mb-3 text-gray-600 print:text-xs">Director Signature</div>
+                  <div className="border-t-2 border-gray-800 print:border-black pt-1 w-40 mx-auto"></div>
+                  <div className="mt-2 font-bold text-gray-900 print:text-sm">Rk Mishra</div>
+                  <div className="text-sm text-gray-700 print:text-xs">Director</div>
+                </div>
+              </div>
+
+              {/* Certificate Footer - Optimized */}
+              <div className="text-center mt-6 print:mt-4 pt-4 border-t-2 border-yellow-500">
+                <p className="text-sm text-gray-600 print:text-xs italic">
+                  This certificate is issued under the authority of Bharat Technical College and is verifiable through official college records
+                </p>
+                <p className="text-xs text-gray-500 mt-2 print:text-[10px]">
+                  Certificate Generated on: {new Date().toLocaleDateString('en-IN', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric' 
+                  })}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Print Button */}
+        {result && (
+          <div className="flex justify-center mt-8 print:hidden">
+            <button
+              onClick={handlePrint}
+              className="px-10 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all duration-300 flex items-center text-lg font-semibold shadow-lg hover:shadow-xl"
+            >
+              <Printer className="w-6 h-6 mr-3" />
+              Print Certificate
+            </button>
           </div>
         )}
       </div>
+
+      {/* Global Print Styles */}
+      <style jsx global>{`
+        @media print {
+          @page {
+            size: A4 portrait;
+            margin: 0.8cm;
+          }
+          body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            background: white !important;
+          }
+          .print\\:bg-white {
+            background: white !important;
+          }
+          .print\\:bg-yellow-50 {
+            background: #fffbeb !important;
+          }
+          .print\\:bg-gray-100 {
+            background: #f3f4f6 !important;
+          }
+          * {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+        }
+      `}</style>
     </div>
   );
 };
-
-// Reusable Info Row Component
-const InfoRow = ({ icon, label, value }) => (
-  <div className="flex items-center justify-between py-2 border-b border-gray-100">
-    <div className="flex items-center space-x-3 text-gray-600">
-      {icon}
-      <span className="font-medium">{label}</span>
-    </div>
-    <span className="text-gray-800 font-semibold">{value || "N/A"}</span>
-  </div>
-);
 
 export default Verification;
