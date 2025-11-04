@@ -212,7 +212,7 @@ useEffect(() => {
 
     if (step === 1) {
       if (!formData.firstName) newErrors.firstName = 'First name is required';
-      if (!formData.lastName) newErrors.lastName = 'Last name is required';
+     // if (!formData.lastName) newErrors.lastName = 'Last name is required';
       if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
       if (!formData.fatherName) newErrors.fatherName = "Father's name is required";
       if (!formData.motherName) newErrors.motherName = "Mother's name is required";

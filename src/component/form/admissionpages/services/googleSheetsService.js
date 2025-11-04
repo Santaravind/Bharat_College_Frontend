@@ -56,7 +56,7 @@
 // const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby34M4zPdL0qncjHMdJHK0ytXcFJimlwenorUf-77QLv_CQmP5xPBRhe069zTaRxzBqAQ/exec';
 // const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdqJF32oAtiVOAX_7JQ49n944yd-lsyrVE5nx6_OqT3eKOujrTyPF-CxLQMqI_DUVw9A/exec';
 
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxb3zNWN3GO4vf-JMSEtwGCAYjBEPHF10xAgCVMg5OTwQppy3waV3MQohFuQWifqeTunA/exec'
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbyFFCaOkko2eBsd2l1tvLAR0Qie1ZFKqePJejHdquY0dnJUHLl05tQA6IPTuTDgZCSpSw/exec'
 // Helper function to handle fetch with retry logic
 const fetchWithRetry = async (url, options = {}, retries = 3, delay = 2000) => {
   try {
