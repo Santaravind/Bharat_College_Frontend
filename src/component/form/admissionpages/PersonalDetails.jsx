@@ -49,7 +49,7 @@ const PersonalDetails = ({ formData, errors, onChange, uploadingPhoto }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Last Name *
+            Last Name 
           </label>
           <input
             type="text"
