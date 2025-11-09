@@ -1,7 +1,6 @@
 import React from 'react'
 import { FaLaptopCode, FaFire } from "react-icons/fa";
-import { FaBowlFood,FaComputer } from "react-icons/fa6";
-
+import { FaBowlFood, } from "react-icons/fa6";
 import { DiHtml5Multimedia } from "react-icons/di";
 import { MdOutlineConstruction } from "react-icons/md";
 import { PiFireTruckDuotone } from "react-icons/pi";
@@ -163,10 +162,7 @@ function CourseHome() {
     </div>
          
         </div>
- {/* <div className="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 border border-gray-400 rounded-xl bg-white  p-6 mr-0.5">
- 
-        <AdmissionForm/>
-        </div> */}
+
       </div>
     
 
