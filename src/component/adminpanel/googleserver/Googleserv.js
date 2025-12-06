@@ -1,6 +1,6 @@
 
 const BASE_URL =
-  "https://script.google.com/macros/s/AKfycbwf_fi0AE-I1hh0Y8eZ6xcdayCF9v7yDB0TNbLc-UyFf5BGGS3CpiWStr9BEqlpGLSrtg/exec";
+  "https://script.google.com/macros/s/AKfycbwsbSCzuYxF4YjkQ7JAMDkthI82A1XmPR_Yovy5wuQ_WV8Jo2_lc4emp4t7vL-vkenDpQ/exec";
 
 export const googleserv = {
   // Save new result data
