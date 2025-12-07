@@ -1089,7 +1089,7 @@ function ResultDeclared() {
 
       // Prepare data for database
       const resultData = {
-        serialNo: formData.serialNo || `RES-${Date.now().toString().slice(-8)}`,
+        serialNo: formData.serialNo || ` BT01A${Date.now().toString().slice(-8)}`,
         enrollmentNo: formData.enrollmentNo,
         studentName,
         firstName: formData.firstName,
