@@ -739,6 +739,7 @@
 //   );
 // }
 // export default ResultDeclared;
+
 import React, { useState, useEffect } from "react";
 import { googleSheetsService } from "../form/admissionpages/services/googleSheetsService.js";
 import { googleserv } from "./googleserver/Googleserv.js";
@@ -1089,7 +1090,7 @@ function ResultDeclared() {
 
       // Prepare data for database
       const resultData = {
-        serialNo: formData.serialNo || ` BT01A${Date.now().toString().slice(-8)}`,
+        serialNo: formData.serialNo || `BT01A${Date.now().toString().slice(-8)}`,
         enrollmentNo: formData.enrollmentNo,
         studentName,
         firstName: formData.firstName,

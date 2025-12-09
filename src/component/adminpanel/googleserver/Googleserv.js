@@ -1,6 +1,8 @@
 
-const BASE_URL =
-  "https://script.google.com/macros/s/AKfycbyxiVThFqVZSb0oogFHPLG4U8AlbVHgm1b9aPCDAPVRdHGRG2Dv0ZxUUPG1-lcmDnkTnQ/exec";
+// const BASE_URL =
+//   "https://script.google.com/macros/s/AKfycbyxiVThFqVZSb0oogFHPLG4U8AlbVHgm1b9aPCDAPVRdHGRG2Dv0ZxUUPG1-lcmDnkTnQ/exec";
+
+const BASE_URL ="https://script.google.com/macros/s/AKfycbwzVBrWX1vL76wP6KSgmVuGZVGVm3fhFXvdPLRpqgRkXBvsHaopkrtEkfcGFsy-wA/exec"
 
 export const googleserv = {
   // Save new result data
@@ -58,232 +60,169 @@ export const googleserv = {
     }
   },
 
-  //this is not wroking 
-  // Get result by serial number
-  // getResultBySerial: async (serialNo) => {
-  //   try {
-  //     const response = await fetch(
-  //       `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(
-  //         serialNo,{
-  //       method:"no cross"
+  
 
-  //     }
-  //       )}`
-  //     );
-  //     const result = await response.json();
-
-  //     if (!result.success) {
-  //       throw new Error(result.message || "Failed to fetch result data");
-  //     }
-
-  //     return result;
-  //   } catch (error) {
-  //     throw new Error("Failed to fetch result: " + error.message);
-  //   }
-  // },
-
-  //  // Get result by serial number
-  // getResultBySerial: async (serialNo) => {
-  //   try {
-  //     const response = await fetch(
-  //       `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(serialNo)}`,{
-  //       method:"no cross"
-
-  //     }
-  //     );
-  //     const result = await response.json();
-
-  //     if (!result.success) {
-  //       throw new Error(result.message || "Failed to fetch result data");
-  //     }
-
-  //     return result;
-  //   } catch (error) {
-  //     throw new Error("Failed to fetch result: " + error.message);
-  //   }
-  // },
-
-  // ✅ NEW: Get result by enrollment number
+// Get result by enrollment - FIXED VERSION
   // getResultByEnrollment: async (enrollmentNo) => {
   //   try {
-  //     const response = await fetch(
-  //       `${BASE_URL}?action=getResultByEnrollment&enrollmentNo=${encodeURIComponent(enrollmentNo)}`
-        
-  //     );
+  //     // Use fetch instead of JSONP (simpler and more reliable)
+  //     const response = await fetch(`${BASE_URL}?action=getResultByEnrollment&enrollmentNo=${encodeURIComponent(enrollmentNo)}`, {
+  //       method: "GET",
+  //       mode: "no-cors",
+ 
+  //       headers: {
+  //         "Accept": "application/json"
+  //       }
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+
   //     const result = await response.json();
 
   //     if (!result.success) {
-  //       throw new Error(result.message || "Failed to fetch result data");
+  //       throw new Error(result.message || "Failed to fetch enrollment result");
   //     }
 
+  //     console.log('📊 Result data fetched:', result);
   //     return result;
+
   //   } catch (error) {
-  //     throw new Error("Failed to fetch result: " + error.message);
+  //     console.error("❌ Enrollment fetch failed:", error);
+  //     throw error;
   //   }
   // },
-// ✅ Use JSONP for GET requests to avoid CORS
-// getResultByEnrollment: async (enrollmentNo) => {
-//   try {
-//    //  console.log(`📋 Fetching result data for enrollment: ${enrollmentNo}`);
-    
-//     // Use JSONP approach for GET request
-//     const url = `${BASE_URL}?action=getResultByEnrollment&enrollmentNo=${encodeURIComponent(enrollmentNo)}&callback=handleResponse`;
-    
-//     return new Promise((resolve, reject) => {
-//       // Create a temporary function to handle the response
-//       window.handleResponse = (response) => {
-//         delete window.handleResponse;
-//         document.head.removeChild(script);
-        
-//         // console.log('📊 Result data fetched:', response);
-        
-//         if (!response.success) {
-//           reject(new Error(response.message || 'Failed to fetch result data'));
-//           return;
-//         }
-        
-//         if (!response.data) {
-//           reject(new Error('No result data found'));
-//           return;
-//         }
-        
-//         resolve({
-//           success: true,
-//           data: response.data
-//         });
-//       };
 
-//       // Create and append script tag
-//       const script = document.createElement('script');
-//       script.src = url;
-//       script.onerror = () => {
-//         delete window.handleResponse;
-//         document.head.removeChild(script);
-//         reject(new Error('Network error - failed to fetch data'));
-//       };
+  // // Get result by serial - FIXED VERSION
+  // getResultBySerial: async (serialNo) => {
+  //   try {
+  //     const response = await fetch(`${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(serialNo)}`, {
+  //       method: "GET",
+  //       mode: "no-cors",
+ 
+  //       headers: {
+  //         "Accept": "application/json"
+  //       }
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+
+  //     const result = await response.json();
+
+  //     if (!result.success) {
+  //       throw new Error(result.message || "Failed to fetch serial result");
+  //     }
       
-//       document.head.appendChild(script);
-//     });
-
-//   } catch (error) {
-//     console.error('❌ Error fetching result data:', error);
-//     throw error;
-//   }
-// },
-
-// getResultBySerial: async (serialNo) => {
-//   try {
-//     // console.log(`📋 Fetching result data for serial: ${serialNo}`);
-    
-//     // Use JSONP approach for GET request
-//     const url = `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(serialNo)}&callback=handleResponse`;
-    
-//     return new Promise((resolve, reject) => {
-//       // Create a temporary function to handle the response
-//       window.handleResponse = (response) => {
-//         delete window.handleResponse;
-//         document.head.removeChild(script);
-        
-//         // console.log('📊 Result data fetched:', response);
-        
-//         if (!response.success) {
-//           reject(new Error(response.message || 'Failed to fetch result data'));
-//           return;
-//         }
-        
-//         if (!response.data) {
-//           reject(new Error('No result data found'));
-//           return;
-//         }
-        
-//         resolve({
-//           success: true,
-//           data: response.data
-//         });
-//       };
-
-//       // Create and append script tag
-//       const script = document.createElement('script');
-//       script.src = url;
-//       script.onerror = () => {
-//         delete window.handleResponse;
-//         document.head.removeChild(script);
-//         reject(new Error('Network error - failed to fetch data'));
-//       };
+  //     console.log('📊 Result data fetched:', result);
+  //     return result;
+  //   } catch (error) {
+  //     console.error("❌ Serial fetch failed:", error);
+  //     throw error;
+  //   }
+  // },
+  getResultByEnrollment: (enrollmentNo) => {
+    return new Promise((resolve, reject) => {
+      // Generate unique callback name
+      const callbackName = 'callback_' + Date.now() + '_' + Math.random().toString(36).substr(2);
       
-//       document.head.appendChild(script);
-//     });
+      // Create the URL with callback parameter
+      const url = `${BASE_URL}?action=getResultByEnrollment&enrollmentNo=${encodeURIComponent(enrollmentNo)}&callback=${callbackName}`;
+      
+      // console.log("📡 Request URL:", url);
+      
+      // Create script element
+      const script = document.createElement('script');
+      script.src = url;
+      script.async = true;
+      
+      // Set timeout for request
+      const timeoutId = setTimeout(() => {
+        cleanup();
+        reject(new Error('Request timeout'));
+      }, 15000); // 15 second timeout
+      
+      // Define cleanup function
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        delete window[callbackName];
+        if (script.parentNode) {
+          document.body.removeChild(script);
+        }
+      };
+      
+      // Define the callback function
+      window[callbackName] = (response) => {
+        cleanup();
+        
+        if (response && response.success) {
+          console.log('✅ Success response:', response);
+          resolve(response);
+        } else {
+          const errorMsg = response ? response.message : 'Unknown error';
+          reject(new Error(errorMsg || 'Failed to fetch enrollment result'));
+        }
+      };
+      
+      // Handle script load error
+      script.onerror = (error) => {
+        cleanup();
+        console.error('❌ Script load error:', error);
+        reject(new Error('Network error - failed to load script'));
+      };
+      
+      // Add script to document
+      document.body.appendChild(script);
+    });
+  },
 
-//   } catch (error) {
-//     console.error('❌ Error fetching result data:', error);
-//     throw error;
-//   }
-// }
-
-
-getResultByEnrollment: async (enrollmentNo) => {
-  const url = `${BASE_URL}?action=getResultByEnrollment&enrollmentNo=${encodeURIComponent(enrollmentNo)}`;
-  console.log("Final JSONP URL:", url);
-
-  try {
-     console.log("Final JSONP URL:22", url);
-    const response = await jsonpRequest(url);
-
-    if (!response.success) {
-      throw new Error(response.message || "Failed to fetch enrollment result");
-    }
-console.log('📊 Result data fetched:', response);
-    return response;
-   // console.log('📊 Result data fetched:', response);
-  } catch (error) {
-    console.error("❌ Enrollment fetch failed:", error);
-    throw error;
+  // Similar for serial number
+  getResultBySerial: (serialNo) => {
+    return new Promise((resolve, reject) => {
+      const callbackName = 'callback_' + Date.now() + '_' + Math.random().toString(36).substr(2);
+      const url = `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(serialNo)}&callback=${callbackName}`;
+      
+      // console.log("📡 Request URL:", url);
+      
+      const script = document.createElement('script');
+      script.src = url;
+      script.async = true;
+      
+      const timeoutId = setTimeout(() => {
+        cleanup();
+        reject(new Error('Request timeout'));
+      }, 15000);
+      
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        delete window[callbackName];
+        if (script.parentNode) {
+          document.body.removeChild(script);
+        }
+      };
+      
+      window[callbackName] = (response) => {
+        cleanup();
+        
+        if (response && response.success) {
+          console.log('✅ Success response:', response);
+          resolve(response);
+        } else {
+          const errorMsg = response ? response.message : 'Unknown error';
+          reject(new Error(errorMsg || 'Failed to fetch serial result'));
+        }
+      };
+      
+      script.onerror = (error) => {
+        cleanup();
+        console.error('❌ Script load error:', error);
+        reject(new Error('Network error - failed to load script'));
+      };
+      
+      document.body.appendChild(script);
+    });
   }
-},
 
-
-getResultBySerial: async (serialNo) => {
-  const url = `${BASE_URL}?action=getResultBySerial&serialNo=${encodeURIComponent(serialNo)}`;
-  
-  try {
-    const response = await jsonpRequest(url);
-
-    if (!response.success) {
-      throw new Error(response.message || "Failed to fetch serial result");
-    }
-console.log('📊 Result data fetched:', response);
-    return response;
-  } catch (error) {
-    console.error("❌ Serial fetch failed:", error);
-    throw error;
-  }
-},
-
- };
-function jsonpRequest(url, callbackName = "cb_" + Date.now()) {
-  return new Promise((resolve, reject) => {
-
-    const fullUrl = `${url}&callback=${callbackName}`;
-
-    // Create script FIRST so it is in scope
-    const script = document.createElement("script");
-    script.src = fullUrl;
-
-    // Create callback handler
-    window[callbackName] = (response) => {
-      resolve(response);
-      delete window[callbackName];
-      document.body.removeChild(script); // FIXED
-    };
-
-    // Handle error
-    script.onerror = () => {
-      reject(new Error("Network error"));
-      delete window[callbackName];
-      document.body.removeChild(script); // FIXED
-    };
-
-    // Inject script into DOM
-    document.body.appendChild(script);
-  });
-}
+};
