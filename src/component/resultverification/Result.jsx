@@ -1231,7 +1231,7 @@ const Result = () => {
                 type="text"
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                placeholder={searchType === "enrollment" ? "Enter Enrollment Number (e.g., ADM076211178720)" : "Enter Serial Number (e.g., BT01A15161905)"}
+                placeholder={searchType === "enrollment" ? "Enter Enrollment Number (e.g., ADM0XXXXX8720)" : "Enter Serial Number (e.g., BT0XXXXXXX61905)"}
                 style={{
                   width: '100%',
                   padding: '1rem 1rem 1rem 3rem',
@@ -1663,7 +1663,7 @@ const Result = () => {
               Enter enrollment number or serial number to view the official marksheet
             </p>
             <p style={{ fontSize: '14px', color: '#94a3b8' }}>
-              Demo: Try <strong>ADM076211178720</strong> or <strong>BT01A15161905</strong>
+              Demo: Try <strong>ADM0XXXXXX8720</strong> or <strong>BT01XXXXXXX5</strong>
             </p>
           </div>
         )}
