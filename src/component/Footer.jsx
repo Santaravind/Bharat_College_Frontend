@@ -69,7 +69,7 @@ export default function Footer() {
       {/* Footer Bottom https://linkedin.com/in/aravind-sant-singh-717023229"*/}
       <div className="bg-white text-gray-900 py-4 text-center text-sm">
         <p>
-          © 2025 <a href="" className="text-black font-semibold">BTCFSM</a>. All rights reserved. Theme <a href="https://www.happydigitalbharat.com/" className="text-black hover:text-blue-600" target="_blank" rel="noreferrer">Develop By Happy Digital Bharat </a> 
+          © 2025 <a href="" className="text-black font-semibold">BTCFSM</a>. All rights reserved. Theme <a href="https://www.happydigitalbharat.com/tech" className="text-black hover:text-blue-600" target="_blank" rel="noreferrer">Develop By Happy Digital Bharat </a> 
            {/* <a href="https://linkedin.com/in/aravind-sant-singh-717023229" className="text-white cursor-pointer text-right " target="_blank" rel="noreferrer">Developer ARAVIND SANT SINGH </a>. */}
         </p>
       </div>
