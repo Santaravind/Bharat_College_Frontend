@@ -452,7 +452,9 @@
 
 
 
-import React, { useState, useRef } from "react";
+
+
+import React, { useState } from "react";
 import {
   Search,
   FileText,
@@ -464,392 +466,540 @@ import {
   GraduationCap,
   Calendar,
   Award,
-  BookOpen
+  BookOpen,
+  MapPin,
+  Phone,
+  Mail,
+  Shield
 } from "lucide-react";
 import { googleserv } from "../adminpanel/googleserver/Googleserv.js";
 import toast from "react-hot-toast";
 import { IoLocationSharp } from "react-icons/io5";
+import logo from '../assets/logo2.png'
+
+
+// Number to words converter
+const convertToWords = (number) => {
+  const units = ['ZERO', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE'];
+  const numStr = Math.round(number).toString();
+  return numStr.split('').map(digit => units[parseInt(digit)]).join(' ');
+};
+
+// Date formatter
+const formatDate = (dateString) => {
+  if (!dateString) return "";
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  } catch {
+    return dateString;
+  }
+};
 
 const Result = () => {
-  //this good as client requirement 
   const [searchType, setSearchType] = useState("enrollment");
   const [searchValue, setSearchValue] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isPrinting, setIsPrinting] = useState(false);
-  
-  const handleSearch = async (e) => {
-    e.preventDefault();
 
-    if (!searchValue.trim()) {
-      setError("Please enter a search value");
+  // this is working 
+  const handleSearch = async (e) => {
+  e.preventDefault();
+
+  if (!searchValue.trim()) {
+    setError("Please enter a search value");
+    return;
+  }
+
+  setLoading(true);
+  setError("");
+  setResult(null);
+
+  try {
+    let response;
+
+    // 🔥 Correct API calls (only what you asked for)
+    if (searchType === "enrollment") {
+      response = await googleserv.getResultByEnrollment(searchValue.trim());
+    } else {
+      response = await googleserv.getResultBySerial(searchValue.trim());
+    }
+
+    // 🔥 API returns success or failure?
+    if (!response || !response.success || !response.data) {
+      setError("No record found for the provided details");
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
-    setError("");
-    setResult(null);
+    const data = response.data;
+    const allSubjects = [];
 
-    try {
-      let response;
-      if (searchType === "enrollment") {
-        response = await googleserv.getResultByEnrollment(searchValue.trim());
-      } else {
-        response = await googleserv.getResultBySerial(searchValue.trim());
-      }
-
-      if (response.success && response.data) {
-        const data = response.data;
-        
-        // Process all subjects and practicals from server data
-        const allSubjects = [];
-        
-        // Add subjects from server
-        if (data.subjects && Array.isArray(data.subjects)) {
-          data.subjects.forEach((subject, index) => {
-            allSubjects.push({
-              name: subject.name || `Subject ${index + 1}`,
-              maxMarks: subject.maxMarks || 100,
-              minMarks: 40,
-              obtainedMarks: subject.obtainedMarks || subject.marks || 0,
-              type: 'theory'
-            });
-          });
-        }
-        
-        // Add practicals from server
-        if (data.practicals && Array.isArray(data.practicals)) {
-          data.practicals.forEach((practical, index) => {
-            allSubjects.push({
-              name: practical.name || `Practical ${index + 1}`,
-              maxMarks: practical.maxMarks || 100,
-              minMarks: 40,
-              obtainedMarks: practical.obtainedMarks || practical.marks || 0,
-              type: 'practical'
-            });
-          });
-        }
-        
-        // Convert marks to words for each subject
-        const subjectsWithWords = allSubjects.map(subject => ({
-          ...subject,
-          inWords: convertToWords(subject.obtainedMarks)
-        }));
-        
-        // Calculate total marks
-        const totalMarks = allSubjects.reduce((sum, subject) => sum + subject.maxMarks, 0);
-        const obtainedMarks = allSubjects.reduce((sum, subject) => sum + subject.obtainedMarks, 0);
-        
-        // Calculate percentage if not provided
-        let percentage = data.Percentage || data.percentage;
-        if (!percentage && totalMarks > 0) {
-          percentage = ((obtainedMarks / totalMarks) * 100).toFixed(2);
-        }
-        
-        // Determine grade
-        let grade = data.Grade || data.grade || "";
-        if (!grade && percentage) {
-          const perc = parseFloat(percentage);
-          if (perc >= 75) grade = "Distinction";
-          else if (perc >= 60) grade = "First Division";
-          else if (perc >= 50) grade = "Second Division";
-          else grade = "Fail";
-        }
-
-        const enhancedData = {
-          // Student personal info
-          studentName: data["Student Name"] || data.studentName || "",
-          fatherName: data["Father Name"] || data.fatherName || "",
-          dateOfBirth: formatDate(data["Date of Birth"] || data.dateOfBirth),
-          photoUrl: data["Photo Url"] || data.photoUrl || "",
-          
-          // Academic info
-          enrollmentNo: data["Enrollment No"] || data.enrollmentNo || "",
-          serialNo: data["Serial No"] || data.serialNo || "",
-          registerNumber: data["Serial No"] || data["Enrollment No"] || "N/A",
-          courseName: data["Course Name"] || data.courseName || "",
-          session: data.Session || data.session || "",
-          percentage: percentage,
-          grade: grade,
-          
-          // Marks data
-          subjects: subjectsWithWords,
-          totalMarks: totalMarks,
-          obtainedMarks: obtainedMarks,
-          totalInWords: convertToWords(obtainedMarks),
-          
-          // Institution info
-          institutionName: "BHARAT TECHNICAL COLLEGE  Of Fire Engineering & Safety Management",
-          institutionAddress: "PUSAOLI, ROBERTSGANJ, SONEBHADRA, UTTAR PRADESH - 231216",
-          centreCode: "UP/504",
-          certificateDate: formatDate(data["Issue Date"] || data.issueDate || new Date().toISOString()),
-          courseDuration: "ONE YEAR"
-        };
-        
-        setResult(enhancedData);
-        setError("");
-        toast.success("Result found successfully!");
-      } else {
-        setError("No record found for the provided details");
-        toast.error("No record found");
-      }
-    } catch (err) {
-      console.error("Search error:", err);
-      setError(err.message || "Failed to fetch data. Please check your connection and try again.");
-      toast.error("Failed to fetch data");
-    } finally {
-      setLoading(false);
+    // subjects
+    if (data.subjects && Array.isArray(data.subjects)) {
+      data.subjects.forEach((subject, index) => {
+        allSubjects.push({
+          name: subject.name || `Subject ${index + 1}`,
+          maxMarks: subject.maxMarks || 100,
+          minMarks: 40,
+          obtainedMarks: subject.obtainedMarks || subject.marks || 0,
+          type: "theory"
+        });
+      });
     }
-  };
 
-  // Function to convert marks to words (digit by digit)
-  const convertToWords = (number) => {
-    const units = ['ZERO', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE'];
-    const numStr = Math.round(number).toString();
-    return numStr.split('').map(digit => units[parseInt(digit)]).join(' ');
-  };
+    // practicals
+    if (data.practicals && Array.isArray(data.practicals)) {
+      data.practicals.forEach((practical, index) => {
+        allSubjects.push({
+          name: practical.name || `Practical ${index + 1}`,
+          maxMarks: practical.maxMarks || 100,
+          minMarks: 40,
+          obtainedMarks: practical.obtainedMarks || practical.marks || 0,
+          type: "practical"
+        });
+      });
+    }
+
+    const subjectsWithWords = allSubjects.map((subject) => ({
+      ...subject,
+      inWords: convertToWords(subject.obtainedMarks)
+    }));
+
+    const totalMarks = allSubjects.reduce((sum, sub) => sum + sub.maxMarks, 0);
+    const obtainedMarks = allSubjects.reduce((sum, sub) => sum + sub.obtainedMarks, 0);
+
+    let percentage = data.Percentage || data.percentage;
+    if (!percentage && totalMarks > 0) {
+      percentage = ((obtainedMarks / totalMarks) * 100).toFixed(2);
+    }
+
+    let grade = data.Grade || data.grade || "";
+    if (!grade) {
+      const p = parseFloat(percentage);
+      if (p >= 75) grade = "Distinction";
+      else if (p >= 60) grade = "First Division";
+      else if (p >= 50) grade = "Second Division";
+      else grade = "Pass";
+    }
+
+    // Final mapped data
+    const enhancedData = {
+      studentName: data["Student Name"] || data.studentName || "",
+      fatherName: data["Father Name"] || data.fatherName || "",
+      dateOfBirth: formatDate(data["Date of Birth"] || data.dateOfBirth),
+      photoUrl: data["Photo Url"] || data.photoUrl || "",
+      enrollmentNo: data["Enrollment No"] || data.enrollmentNo || "",
+      serialNo: data["Serial No"] || data.serialNo || "",
+      courseName: data["Course Name"] || data.courseName || "",
+      session: data.Session || data.session || "",
+      percentage,
+      grade,
+      subjects: subjectsWithWords,
+      totalMarks,
+      obtainedMarks,
+      totalInWords: convertToWords(obtainedMarks),
+      institutionName: "BHARAT TECHNICAL COLLEGE",
+      institutionAddress: "Pusauli, Robertsganj, Sonbhadra, Uttar Pradesh - 231216",
+      // centreCode: "UP/504",
+      certificateDate: formatDate(data["Issue Date"] || data.issueDate || new Date().toISOString()),
+      courseDuration: "ONE YEAR"
+    };
+
+    setResult(enhancedData);
+  } catch (err) {
+    console.error("Search error:", err);
+    setError("Failed to fetch data. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handlePrint = () => {
     setIsPrinting(true);
-    
-    // Create a new window for printing
+
     const printWindow = window.open('', '_blank', 'width=900,height=700,scrollbars=yes');
-    
+
     if (!printWindow) {
-      toast.error("Please allow popups to print the marksheet");
+      alert("Please allow popups to print the marksheet");
       setIsPrinting(false);
       return;
     }
-    
+
     const printContent = `
       <!DOCTYPE html>
       <html>
       <head>
         <title>Marksheet - ${result?.studentName || 'Student'}</title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
           @page {
-            size: A4 portrait;
-            margin: 15mm;
+          size: A4;
+          margin: 10mm;
+        }
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
           }
           
           body {
-            font-family: 'Times New Roman', Times, serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Crimson Text', 'Times New Roman', serif;
             background: white;
+            color: #1a1a2e;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
-            color: black;
           }
           
-          .print-container {
-            width: 100%;
+          .certificate-container {
             max-width: 210mm;
             margin: 0 auto;
-            padding: 10px;
-            border: 2px solid #000;
-            box-sizing: border-box;
+            padding: 15px;
+            background: linear-gradient(135deg, #fffef5 0%, #fefcf3 50%, #fffef5 100%);
+            border: 4px double #b8860b;
+            position: relative;
+          }
+          
+          .certificate-container::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 2px solid #d4af37;
+            pointer-events: none;
           }
           
           .header {
             text-align: center;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
             margin-bottom: 15px;
+            border-bottom: 3px double #1a1a2e;
           }
           
-          .header .nsdm {
+          .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+          }
+          
+          .emblem {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
-            font-size: 14px;
-          }
-          
-          .header .title {
-            font-weight: bold;
-            font-size: 18px;
-            margin: 5px 0;
-          }
-          
-          .header .subtitle {
             font-size: 12px;
-            margin: 3px 0;
+            border: 2px solid #b8860b;
           }
           
-          .student-photo {
-            float: right;
-            margin-left: 20px;
+          .emblem-left {
+            background: linear-gradient(135deg, #1a1a2e, #2d2d5a);
+            color: #d4af37;
+          }
+          
+          .emblem-right {
+            background: linear-gradient(135deg, #d4af37, #b8860b);
+            color: #1a1a2e;
+          }
+          
+          .header-text {
+            flex: 1;
+          }
+          
+          .govt-text {
+            font-size: 10px;
+            color: #666;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+          }
+          
+          .college-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 3px;
+          }
+          
+          .college-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: #1a1a2e;
+            margin-bottom: 5px;
+          }
+          
+          .reg-info {
+            font-size: 10px;
+            color: #666;
+          }
+          
+          .board-title {
+            background: linear-gradient(135deg, #1a1a2e, #2d2d5a);
+            color: #d4af37;
+            padding: 8px 25px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-top: 10px;
+          }
+          
+          .statement-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-top: 10px;
+            letter-spacing: 3px;
+          }
+          
+          .student-section {
+            display: flex;
+            gap: 20px;
             margin-bottom: 20px;
-            border: 1px solid #000;
-            padding: 2px;
           }
           
-          .student-photo img {
-            width: 120px;
-            height: 150px;
-            object-fit: cover;
-            display: block;
+          .student-info {
+            flex: 1;
           }
           
-          .student-details {
-            margin-bottom: 20px;
-          }
-          
-          .detail-row {
+          .info-row {
             display: flex;
             margin-bottom: 8px;
             align-items: flex-start;
           }
           
-          .detail-label {
-            font-weight: bold;
-            width: 220px;
-            min-width: 220px;
+          .info-label {
+            font-weight: 600;
+            width: 180px;
+            min-width: 180px;
+            font-size: 11px;
+            color: #1a1a2e;
           }
           
-          .detail-value {
+          .info-value {
             flex: 1;
-            border-bottom: 1px solid #000;
+            border-bottom: 1px solid #1a1a2e;
             padding-bottom: 2px;
+            font-weight: 600;
+            font-size: 12px;
             text-transform: uppercase;
-            font-weight: bold;
+          }
+          
+          .photo-container {
+            width: 120px;
+            height: 150px;
+            border: 3px solid #1a1a2e;
+            padding: 3px;
+            background: white;
+          }
+          
+          .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          
+          .photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #666;
+            text-align: center;
           }
           
           .marks-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 11px;
+            margin: 15px 0;
+            font-size: 10px;
           }
           
           .marks-table th,
           .marks-table td {
-            border: 1px solid #000;
-            padding: 5px;
+            border: 1px solid #1a1a2e;
+            padding: 6px 8px;
             text-align: center;
-            vertical-align: middle;
           }
           
           .marks-table th {
-            font-weight: bold;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #1a1a2e, #2d2d5a);
+            color: #d4af37;
+            font-weight: 600;
+            font-size: 9px;
           }
           
           .marks-table .subject-cell {
             text-align: left;
-            width: 40%;
+            font-weight: 500;
           }
           
-          .footer-info {
-            margin-top: 30px;
-            display: flex;
-            justify-content: space-between;
+          .marks-table .total-row {
+            background: linear-gradient(135deg, #f8f4e8, #fffef5);
+            font-weight: 700;
+          }
+          
+          .marks-table .total-row td {
             font-size: 11px;
           }
           
-          .result-declaration {
-            text-align: center;
-            margin: 20px 0;
-            font-weight: bold;
-            font-size: 14px;
+          .footer-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 10px;
           }
           
-          .signature {
+          .footer-left, .footer-right {
+            max-width: 45%;
+          }
+          
+          .grade-scale {
+            margin-top: 5px;
+          }
+          
+          .grade-scale div {
+            margin: 2px 0;
+          }
+          
+          .result-box {
             text-align: center;
+            margin: 20px 0;
+            padding: 12px;
+            background: linear-gradient(135deg, #1a1a2e, #2d2d5a);
+            color: #d4af37;
+          }
+          
+          .result-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+          }
+          
+          .signature-section {
+            display: flex;
+            justify-content: space-between;
             margin-top: 40px;
+            padding-top: 20px;
+          }
+          
+          .signature-box {
+            text-align: center;
+            width: 200px;
           }
           
           .signature-line {
-            width: 250px;
-            border-top: 1px solid #000;
-            margin: 5px auto;
+            border-top: 1px solid #1a1a2e;
+            margin-bottom: 5px;
           }
           
-          .print-date {
-            text-align: center;
+          .signature-label {
             font-size: 10px;
-            color: #666;
-            margin-top: 20px;
+            font-weight: 600;
           }
           
-          .photo-placeholder {
-            width: 120px;
-            height: 150px;
-            border: 1px solid #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          .print-footer {
             text-align: center;
-            font-size: 10px;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+            font-size: 9px;
+            color: #888;
           }
           
           @media print {
-            body {
-              background: white !important;
-            }
-            
-            .print-container {
-              border: 2px solid #000;
-            }
-            
-            .no-print {
-              display: none !important;
+            body { background: white !important; }
+            .certificate-container { 
+              border: 4px double #b8860b !important;
+              box-shadow: none !important;
             }
           }
         </style>
       </head>
       <body>
-        <div class="print-container">
-          <!-- NSDM Header -->
+        <div class="certificate-container">
+          <!-- Header -->
           <div class="header">
-           
-            <div class="title"> BHARAT TECHNICAL COLLEGE <br/> Of Fire Engineering & Safety Management</div>
-            <div class="subtitle">An Autonomous Body, Under Govt.Act Established Under Act 1882</div>
-           
-            <div class="subtitle" style="font-weight: bold;">National Development Organization, Promoted by Govt Of India</div>
-             <div class="subtitle">Robertsganj, Sonbhadra, Uttar Pradesh - 231216</div>
-            <div class="title" style="margin-top: 10px;">CENTRAL BOARD OF EXAMINATIONS</div>
-            <div class="title" style="font-size: 20px; margin-top: 5px;">STATEMENT OF MARKS</div>
-          </div>
-          
-          <!-- Student Photo -->
-          <div class="student-photo">
-            ${result?.photoUrl ? 
-              `<img src="${result.photoUrl}" alt="Student Photo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO<br/>NOT<br/>AVAILABLE</div>';" />` 
-              : '<div class="photo-placeholder">PHOTO<br/>NOT<br/>AVAILABLE</div>'
-            }
-          </div>
-          
-          <!-- Student Details -->
-          <div class="student-details">
-            <div class="detail-row">
-              <div class="detail-label">NAME OF THE CANDIDATE</div>
-              <div class="detail-value">${result?.studentName || ''}</div>
-            </div>
-            
-            <div class="detail-row">
-              <div class="detail-label">COURSE WITH DURATION</div>
-              <div class="detail-value">${result?.courseName || ''}</div>
-              <div style="margin-left: 10px;">${result?.courseDuration || ''}</div>
-            </div>
-            
-            <div class="detail-row">
-              <div class="detail-label">REGISTER NUMBER</div>
-              <div class="detail-value">${result?.registerNumber || ''}</div>
-            </div>
-            
-            <div class="detail-row">
-              <div class="detail-label">DATE</div>
-              <div class="detail-value">${result?.certificateDate || ''}</div>
-            </div>
-            
-            <div class="detail-row">
-              <div class="detail-label">INSTITUTION NAME AND ADDRESS</div>
-              <div>
-                <div class="detail-value">${result?.institutionName || ''}</div>
-                <div style="margin-top: 5px;">${result?.institutionAddress || ''}</div>
+            <div class="header-top">
+              <div class="emblem emblem-left"><img 
+              src="${logo}"
+               alt="College Logo"
+               style="width:90px;height:90px;object-fit:contain;margin-bottom:6px;"
+               />
+                  </div>
+              <div class="header-text">
+                <div class="govt-text">AN AUTONOMOUS BODY UNDER GOVT. ACT • ESTABLISHED UNDER ACT 1882</div>
+                <div class="college-name">BHARAT TECHNICAL COLLEGE</div>
+                <div class="college-subtitle">Of Fire Engineering & Safety Management</div>
+                <div class="reg-info">Reg. No. SON/01794/2025-2026 • ISO Certified</div>
+                <div class="reg-info">Pusauli, Robertsganj, Sonbhadra, Uttar Pradesh - 231216</div>
               </div>
+              <div class="emblem emblem-right">ISO</div>
+            </div>
+            <div class="board-title">CENTRAL BOARD OF EXAMINATIONS</div>
+            <div class="statement-title">STATEMENT OF MARKS</div>
+          </div>
+          
+          <!-- Student Section -->
+          <div class="student-section">
+            <div class="student-info">
+              <div class="info-row">
+                <div class="info-label">NAME OF CANDIDATE</div>
+                <div class="info-value">${result?.studentName || ''}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">FATHER'S NAME</div>
+                <div class="info-value">${result?.fatherName || ''}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">COURSE NAME</div>
+                <div class="info-value">${result?.courseName || ''}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">COURSE DURATION</div>
+                <div class="info-value">${result?.courseDuration || ''}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">ENROLLMENT NO</div>
+                <div class="info-value">${result?.enrollmentNo || ''}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">SERIAL NO</div>
+                <div class="info-value">${result?.serialNo || ''}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">SESSION</div>
+                <div class="info-value">${result?.session || ''}</div>
+              </div>
+              <div class="info-row">
+                <div class="info-label">INSTITUTION</div>
+                <div class="info-value">${result?.institutionName || ''}</div>
+              </div>
+            </div>
+            <div class="photo-container">
+              ${result?.photoUrl ?
+                `<img src="${result.photoUrl}" alt="Student Photo" onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>'" />`
+                : '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
+              }
             </div>
           </div>
           
@@ -857,15 +1007,15 @@ const Result = () => {
           <table class="marks-table">
             <thead>
               <tr>
-                <th rowspan="2">S.NO</th>
+                <th rowspan="2" style="width: 40px;">S.NO</th>
                 <th rowspan="2">SUBJECTS</th>
                 <th colspan="2">MARKS</th>
                 <th colspan="2">MARKS AWARDED</th>
               </tr>
               <tr>
-                <th>MAXIMUM</th>
-                <th>MINIMUM</th>
-                <th>IN FIGURES</th>
+                <th>MAX</th>
+                <th>MIN</th>
+                <th>OBTAINED</th>
                 <th>IN WORDS</th>
               </tr>
             </thead>
@@ -877,232 +1027,279 @@ const Result = () => {
                   <td>${subject.maxMarks}</td>
                   <td>${subject.minMarks}</td>
                   <td><strong>${subject.obtainedMarks}</strong></td>
-                  <td>${subject.inWords}</td>
+                  <td style="font-size: 9px;">${subject.inWords}</td>
                 </tr>
-              `).join('') || '<tr><td colspan="6" style="text-align: center;">No subject data available</td></tr>'}
-              
-              <!-- Total Row -->
-              <tr style="font-weight: bold;">
-                <td colspan="2">TOTAL</td>
-                <td>${result?.totalMarks || 0}</td>
-                <td>${result?.subjects ? result.subjects.length * 40 : 0}</td>
-                <td>${result?.obtainedMarks || 0}</td>
-                <td>${result?.totalInWords || ''}</td>
+              `).join('') || ''}
+              <tr class="total-row">
+                <td colspan="2"><strong>GRAND TOTAL</strong></td>
+                <td><strong>${result?.totalMarks || 0}</strong></td>
+                <td><strong>${result?.subjects ? result.subjects.length * 40 : 0}</strong></td>
+                <td><strong>${result?.obtainedMarks || 0}</strong></td>
+                <td><strong>${result?.totalInWords || ''}</strong></td>
               </tr>
             </tbody>
           </table>
           
-          <!-- Footer Information -->
-          <div class="footer-info">
-            <div>
-              <div><strong>D.O.B:</strong> ${result?.dateOfBirth || ''}</div>
-              <div style="margin-top: 5px;"><strong>CENTRE CODE:</strong> ${result?.centreCode || ''}</div>
+          <!-- Footer Info -->
+          <div class="footer-section">
+            <div class="footer-left">
+              <div><strong>Date of Birth:</strong> ${result?.dateOfBirth || ''}</div>
+              <div><strong>Centre Code:</strong> ${result?.centreCode || ''}</div>
+              <div><strong>Issue Date:</strong> ${result?.certificateDate || ''}</div>
             </div>
-            <div>
-              <div><strong>GRADE</strong></div>
-              <div>Distinction : 75 % and above</div>
-              <div>First Division : 60 % to 74 %</div>
-              <div>Second Division : 50 % to 59 %</div>
+            <div class="footer-right">
+              <div><strong>GRADING SCALE:</strong></div>
+              <div class="grade-scale">
+                <div>Distinction: 75% and above</div>
+                <div>First Division: 60% to 74%</div>
+                <div>Second Division: 50% to 59%</div>
+              </div>
             </div>
           </div>
           
-          <!-- Result Declaration -->
-          <div class="result-declaration">
-            RESULT: ${result?.grade?.toUpperCase() || 'N/A'} (${result?.percentage || '0'}%)
+          <!-- Result Box -->
+          <div class="result-box">
+            <div class="result-text">
+              RESULT: ${result?.grade?.toUpperCase() || 'N/A'} — ${result?.percentage || '0'}%
+            </div>
           </div>
           
-          <!-- Signature -->
-          <div class="signature">
-            <div style="font-weight: bold; margin-bottom: 40px;">Controller Of Examinations</div>
-            <div>Signature</div>
-            <div class="signature-line"></div>
+          <!-- Signature Section -->
+          <div class="signature-section">
+            <div class="signature-box">
+              <div class="signature-line"></div>
+              <div class="signature-label">Examination Controller</div>
+            </div>
+            <div class="signature-box">
+              <div class="signature-line"></div>
+              <div class="signature-label">Director</div>
+            </div>
           </div>
           
-          <!-- Print Date -->
-          <div class="print-date">
-            Printed on: ${new Date().toLocaleDateString('en-IN')}
+          <!-- Print Footer -->
+          <div class="print-footer">
+            This is a computer-generated document. Printed on: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}
           </div>
         </div>
         
         <script>
-          // Auto-print when window loads
           window.onload = function() {
-            setTimeout(function() {
-              window.print();
-            }, 500);
-            
-            // Close window after print
-            window.onafterprint = function() {
-              setTimeout(function() {
-                window.close();
-              }, 500);
-            };
-            
-            // Fallback close
-            setTimeout(function() {
-              if (!document.hidden) {
-                window.print();
-              }
-            }, 2000);
+            setTimeout(function() { window.print(); }, 500);
+            window.onafterprint = function() { setTimeout(function() { window.close(); }, 500); };
           };
         </script>
       </body>
       </html>
     `;
-    
+
     printWindow.document.write(printContent);
     printWindow.document.close();
-    
-    // Reset printing state
-    setTimeout(() => {
-      setIsPrinting(false);
-    }, 3000);
-  };
-
-  // const handleBrowserPrint = () => {
-  //   // Direct browser print
-  //   window.print();
-  // };
-
-  const downloadPDF = () => {
-    toast.success("PDF download feature will be available soon!");
+    setTimeout(() => setIsPrinting(false), 3000);
   };
 
   const clearSearch = () => {
     setSearchValue("");
     setResult(null);
     setError("");
-    toast.success("Search cleared");
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "";
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-IN', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
-    } catch {
-      return dateString;
-    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 px-4">
+    <div style={{ 
+      minHeight: '100vh', 
+      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+      padding: '2rem 1rem'
+    }}>
       {/* College Header */}
-      <div className="max-w-6xl mx-auto mb-8 bg-white rounded-xl shadow-lg p-6 border border-gray-200">
-        <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="p-3 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl shadow-lg">
-              <GraduationCap className="w-10 h-10 text-white" />
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto 2rem',
+        background: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+        padding: '2rem',
+        border: '1px solid #e2e8f0'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginBottom: '1rem' }}>
+            <div style={{
+              padding: '1rem',
+              background: 'linear-gradient(135deg, #1e40af, #3730a3)',
+              borderRadius: '12px',
+              boxShadow: '0 4px 15px rgba(30, 64, 175, 0.4)'
+            }}>
+              {/* <GraduationCap style={{ width: '40px', height: '40px', color: 'white' }} /> */}
+              <img 
+              src={logo}
+               alt="College Logo"
+               style={{ width: '80px', height: '80px' }}
+               />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 mb-2">
+              <h1 style={{ fontSize: '1.875rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.25rem' }}>
                 BHARAT TECHNICAL COLLEGE
               </h1>
-              <p className="text-xl font-semibold text-gray-700 mb-1">
+              <p style={{ fontSize: '1.125rem', fontWeight: '600', color: '#475569' }}>
                 Of Fire Engineering & Safety Management
               </p>
             </div>
           </div>
-          <p className="text-gray-600 mb-2">
-            An Autonomous Body, Under Govt.Act Established Under Act 1882
+          <p style={{ color: '#64748b', marginBottom: '0.5rem', fontSize: '0.875rem' }}>
+            An Autonomous Body, Under Govt. Act · Established Under Act 1882
           </p>
-          <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-4">
-            <div className="flex items-center gap-2">
-              <IoLocationSharp className="text-red-600 text-xl" />
-              <span className="text-gray-700">Robertsganj, Sonbhadra, Uttar Pradesh - 231216</span>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem', marginTop: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#475569' }}>
+              <MapPin style={{ width: '16px', height: '16px', color: '#ef4444' }} />
+              <span>Robertsganj, Sonbhadra, UP - 231216</span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-blue-600 font-medium">📞 +91-8840157051</span>
-              <span className="text-blue-600 font-medium">✉ bharattechnicalcollege@gmail.com</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#1e40af' }}>
+              <Phone style={{ width: '16px', height: '16px' }} />
+              <span>+91-8840157051</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#1e40af' }}>
+              <Mail style={{ width: '16px', height: '16px' }} />
+              <span>bharattechnicalcollege@gmail.com</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto">
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* Search Section */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-xl p-6 mb-8 border border-blue-200">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center">
-              <Search className="w-6 h-6 mr-3 text-blue-600" />
+        <div style={{
+          background: 'linear-gradient(135deg, #eff6ff, #e0e7ff)',
+          borderRadius: '16px',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+          padding: '2rem',
+          marginBottom: '2rem',
+          border: '1px solid #bfdbfe'
+        }}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <Search style={{ width: '24px', height: '24px', marginRight: '0.75rem', color: '#2563eb' }} />
               Search Student Marksheet
             </h2>
-            <p className="text-gray-600">Enter enrollment or serial number to view marksheet</p>
+            <p style={{ color: '#64748b' }}>Enter enrollment or serial number to view marksheet</p>
           </div>
 
-          <form onSubmit={handleSearch} className="space-y-6">
-            <div className="flex flex-wrap gap-3">
+          <form onSubmit={handleSearch}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.5rem' }}>
               <button
                 type="button"
                 onClick={() => setSearchType("enrollment")}
-                className={`flex items-center px-5 py-3 rounded-xl transition-all ${
-                  searchType === "enrollment"
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                    : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
-                }`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0.75rem 1.25rem',
+                  borderRadius: '12px',
+                  border: searchType === "enrollment" ? 'none' : '1px solid #d1d5db',
+                  background: searchType === "enrollment" ? 'linear-gradient(135deg, #2563eb, #4338ca)' : 'white',
+                  color: searchType === "enrollment" ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  fontWeight: '500',
+                  transition: 'all 0.2s'
+                }}
               >
-                <FileText className="w-5 h-5 mr-2" />
+                <FileText style={{ width: '20px', height: '20px', marginRight: '0.5rem' }} />
                 Enrollment No
               </button>
               <button
                 type="button"
                 onClick={() => setSearchType("serial")}
-                className={`flex items-center px-5 py-3 rounded-xl transition-all ${
-                  searchType === "serial"
-                    ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
-                    : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
-                }`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '0.75rem 1.25rem',
+                  borderRadius: '12px',
+                  border: searchType === "serial" ? 'none' : '1px solid #d1d5db',
+                  background: searchType === "serial" ? 'linear-gradient(135deg, #2563eb, #4338ca)' : 'white',
+                  color: searchType === "serial" ? 'white' : '#374151',
+                  cursor: 'pointer',
+                  fontWeight: '500',
+                  transition: 'all 0.2s'
+                }}
               >
-                <Hash className="w-5 h-5 mr-2" />
+                <Hash style={{ width: '20px', height: '20px', marginRight: '0.5rem' }} />
                 Serial No
               </button>
             </div>
 
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
+            <div style={{ position: 'relative', marginBottom: '1.5rem' }}>
+              <div style={{ position: 'absolute', top: '50%', left: '1rem', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+                <Search style={{ width: '20px', height: '20px', color: '#9ca3af' }} />
               </div>
               <input
                 type="text"
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                placeholder={
-                  searchType === "enrollment"
-                    ? "Enter Enrollment Number (e.g., ADM076211178720)"
-                    : "Enter Serial Number (e.g., BT01A15161905)"
-                }
-                className="w-full pl-12 pr-4 py-4 border-2 border-blue-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                placeholder={searchType === "enrollment" ? "Enter Enrollment Number (e.g., ADM0XXXXX8720)" : "Enter Serial Number (e.g., BT0XXXXXXX61905)"}
+                style={{
+                  width: '100%',
+                  padding: '1rem 1rem 1rem 3rem',
+                  border: '2px solid #93c5fd',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
               />
             </div>
 
-            <div className="flex gap-4">
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               <button
                 type="submit"
                 disabled={loading || !searchValue.trim()}
-                className="flex-1 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl hover:from-blue-700 hover:to-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center font-semibold shadow-lg hover:shadow-xl"
+                style={{
+                  flex: 1,
+                  minWidth: '200px',
+                  padding: '1rem 1.5rem',
+                  background: loading || !searchValue.trim() ? '#9ca3af' : 'linear-gradient(135deg, #2563eb, #4338ca)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: loading || !searchValue.trim() ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)'
+                }}
               >
                 {loading ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-3" />
+                    <div style={{
+                      width: '20px',
+                      height: '20px',
+                      border: '2px solid white',
+                      borderTopColor: 'transparent',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite',
+                      marginRight: '0.75rem'
+                    }} />
                     Searching...
                   </>
                 ) : (
                   <>
-                    <Search className="w-5 h-5 mr-3" />
+                    <Search style={{ width: '20px', height: '20px', marginRight: '0.75rem' }} />
                     Search Marksheet
                   </>
                 )}
               </button>
-              
+
               {searchValue && (
                 <button
                   type="button"
                   onClick={clearSearch}
-                  className="px-6 py-4 border-2 border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-all font-medium"
+                  style={{
+                    padding: '1rem 1.5rem',
+                    border: '2px solid #d1d5db',
+                    background: 'white',
+                    color: '#374151',
+                    borderRadius: '12px',
+                    fontSize: '1rem',
+                    fontWeight: '500',
+                    cursor: 'pointer'
+                  }}
                 >
                   Clear
                 </button>
@@ -1110,230 +1307,214 @@ const Result = () => {
             </div>
 
             {error && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
-                <div className="flex">
-                  <div className="ml-3">
-                    <p className="text-sm text-red-700">{error}</p>
-                  </div>
-                </div>
+              <div style={{
+                marginTop: '1rem',
+                background: '#fef2f2',
+                borderLeft: '4px solid #ef4444',
+                padding: '1rem',
+                borderRadius: '8px',
+                color: '#b91c1c'
+              }}>
+                {error}
               </div>
             )}
           </form>
         </div>
 
-        {/* Marksheet Display */}
+        {/* Certificate Display */}
         {result && (
           <>
-            <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-gray-800 mb-8">
-              {/* Header */}
-              {/* HEADER BLOCK */}
-<div className="text-center py-6 px-8 border-b-4 border-black print:border-b-4 bg-white">
+            <div style={{
+              background: 'linear-gradient(135deg, #fffef5 0%, #fefcf3 50%, #fffef5 100%)',
+              borderRadius: '12px',
+              boxShadow: '0 10px 40px rgba(0,0,0,0.15)',
+              overflow: 'hidden',
+              border: '4px double #b8860b',
+              marginBottom: '2rem'
+            }}>
+              {/* Certificate Header */}
+              <div style={{
+                textAlign: 'center',
+                padding: '1.5rem 2rem',
+                borderBottom: '3px double #1a1a2e',
+                background: 'linear-gradient(135deg, #fffef5, #fefcf3)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', marginBottom: '0.75rem' }}>
+                  <div style={{
+                   
+                   
+                    background: 'linear-gradient(135deg, #1a1a2e, #2d2d5a)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '2px solid #b8860b'
+                  }}>
+                    {/* <GraduationCap style={{ width: '32px', height: '32px', color: '#d4af37' }} /> */}
+                    <img src={logo} name="College log" style={{  width: '80px', height: '80px' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '10px', color: '#666', letterSpacing: '2px', marginBottom: '4px' }}>
+                      AN AUTONOMOUS BODY UNDER GOVT. ACT • ESTABLISHED UNDER ACT 1882
+                    </p>
+                    <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '1.75rem', fontWeight: '700', color: '#1a1a2e', marginBottom: '2px' }}>
+                      BHARAT TECHNICAL COLLEGE
+                    </h1>
+                    <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '1.125rem', color: '#1a1a2e' }}>
+                      Of Fire Engineering & Safety Management
+                    </h2>
+                    <p style={{ fontSize: '10px', color: '#666', marginTop: '4px' }}>
+                      Reg. No. SON/01794/2025-2026 • ISO Certified
+                    </p>
+                  </div>
+                  <div style={{
+                    width: '70px',
+                    height: '70px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #d4af37, #b8860b)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '2px solid #b8860b'
+                  }}>
+                    <span style={{ fontFamily: 'Georgia, serif', fontSize: '1.25rem', fontWeight: '700', color: '#1a1a2e' }}>ISO</span>
+                  </div>
+                </div>
+                <div style={{
+                  background: 'linear-gradient(135deg, #1a1a2e, #2d2d5a)',
+                  color: '#d4af37',
+                  padding: '0.5rem 2rem',
+                  display: 'inline-block',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  letterSpacing: '2px',
+                  marginTop: '0.75rem'
+                }}>
+                  CENTRAL BOARD OF EXAMINATIONS
+                </div>
+                <h3 style={{ fontFamily: 'Georgia, serif', fontSize: '1.75rem', fontWeight: '700', color: '#1a1a2e', marginTop: '0.75rem', letterSpacing: '3px' }}>
+                  STATEMENT OF MARKS
+                </h3>
+              </div>
 
-  {/* College Name & Details */}
-  <div className="mb-4">
-    <h1 className="text-3xl font-extrabold text-gray-900 tracking-wide print:text-2xl font-serif">
-      BHARAT TECHNICAL COLLEGE
-    </h1>
-
-    <p className="text-lg font-semibold text-gray-800 print:text-base font-serif">
-      OF FIRE ENGINEERING & MANAGEMENT
-    </p>
-
-    <p className="text-xs text-gray-700 print:text-[15px] font-medium">
-      An Autonomous Body, Under Govt. Act · Established Under Act 1882
-    </p>
-
-    <p className="text-xs font-semibold text-gray-800 print:text-[15px] ">
-      Registration No. SON/01794/2025-2026 • ISO Certified
-    </p>
-
-    <p className="text-xs text-gray-700 print:text-[15px]">
-      Pusauli, Robertsganj, Sonbhadra, Uttar Pradesh - 231216
-    </p>
-
-    <p className="text-xs text-blue-700 font-semibold mt-1 print:text-[11px]">
-      www.bharatechnicalcollege.com • bharattechnicalcollege@gmail.com
-    </p>
-  </div>
-
-  {/* Examination Board Title */}
-  <div className="mt-6">
-    <div className="text-xl font-bold text-gray-900 print:text-lg tracking-wide font-serif">
-      CENTRAL BOARD OF EXAMINATIONS
-    </div>
-
-    <div className="text-3xl font-extrabold uppercase mt-2 text-gray-900 print:text-2xl font-serif tracking-widest">
-      STATEMENT OF MARKS
-    </div>
-  </div>
-</div>
-
-
-              <div className="p-8">
-                {/* Student Info and Photo */}
-                <div className="flex justify-between items-start mb-8">
-                  <div className="flex-1">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <div className="flex items-center mb-4">
-                          <User className="w-5 h-5 mr-3 text-blue-600" />
-                          <div>
-                            <div className="text-sm text-gray-600">Student Name</div>
-                            <div className="text-xl font-bold uppercase">{result.studentName}</div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center mb-4">
-                          <User className="w-5 h-5 mr-3 text-blue-600" />
-                          <div>
-                            <div className="text-sm text-gray-600">Father's Name</div>
-                            <div className="text-lg font-semibold">{result.fatherName}</div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center mb-4">
-                          <Calendar className="w-5 h-5 mr-3 text-blue-600" />
-                          <div>
-                            <div className="text-sm text-gray-600">Date of Birth</div>
-                            <div className="text-lg font-semibold">{result.dateOfBirth}</div>
-                          </div>
+              <div style={{ padding: '2rem' }}>
+                {/* Student Info */}
+                <div style={{ display: 'flex', gap: '2rem', marginBottom: '2rem' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                        <User style={{ width: '20px', height: '20px', color: '#2563eb', marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontSize: '12px', color: '#64748b' }}>Student Name</div>
+                          <div style={{ fontSize: '1.125rem', fontWeight: '700', textTransform: 'uppercase' }}>{result.studentName}</div>
                         </div>
                       </div>
-                      
-                      <div>
-                        <div className="flex items-center mb-4">
-                          <Hash className="w-5 h-5 mr-3 text-blue-600" />
-                          <div>
-                            <div className="text-sm text-gray-600">Enrollment No</div>
-                            <div className="text-lg font-bold">{result.enrollmentNo}</div>
-                          </div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                        <User style={{ width: '20px', height: '20px', color: '#2563eb', marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontSize: '12px', color: '#64748b' }}>Father's Name</div>
+                          <div style={{ fontSize: '1rem', fontWeight: '600' }}>{result.fatherName}</div>
                         </div>
-                        
-                        <div className="flex items-center mb-4">
-                          <Hash className="w-5 h-5 mr-3 text-blue-600" />
-                          <div>
-                            <div className="text-sm text-gray-600">Serial No</div>
-                            <div className="text-lg font-bold">{result.serialNo}</div>
-                          </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                        <Calendar style={{ width: '20px', height: '20px', color: '#2563eb', marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontSize: '12px', color: '#64748b' }}>Date of Birth</div>
+                          <div style={{ fontSize: '1rem', fontWeight: '600' }}>{result.dateOfBirth}</div>
                         </div>
-                        
-                        <div className="flex items-center mb-4">
-                          <GraduationCap className="w-5 h-5 mr-3 text-blue-600" />
-                          <div>
-                            <div className="text-sm text-gray-600">Course</div>
-                            <div className="text-lg font-semibold">{result.courseName}</div>
-                          </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                        <Hash style={{ width: '20px', height: '20px', color: '#2563eb', marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontSize: '12px', color: '#64748b' }}>Enrollment No</div>
+                          <div style={{ fontSize: '1rem', fontWeight: '700' }}>{result.enrollmentNo}</div>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                        <Hash style={{ width: '20px', height: '20px', color: '#2563eb', marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontSize: '12px', color: '#64748b' }}>Serial No</div>
+                          <div style={{ fontSize: '1rem', fontWeight: '700' }}>{result.serialNo}</div>
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                        <GraduationCap style={{ width: '20px', height: '20px', color: '#2563eb', marginTop: '2px' }} />
+                        <div>
+                          <div style={{ fontSize: '12px', color: '#64748b' }}>Course</div>
+                          <div style={{ fontSize: '1rem', fontWeight: '600' }}>{result.courseName}</div>
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  {/* Student Photo */}
-                  <div className="ml-8 border-4 border-gray-800 p-2 rounded-lg">
+                  {/* Photo */}
+                  <div style={{
+                    width: '140px',
+                    height: '170px',
+                    border: '3px solid #1a1a2e',
+                    padding: '4px',
+                    background: 'white'
+                  }}>
                     {result.photoUrl ? (
                       <img
                         src={result.photoUrl}
                         alt="Student"
-                        className="w-40 h-48 object-cover"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         onError={(e) => {
                           e.target.style.display = 'none';
-                          e.target.parentElement.innerHTML = `
-                            <div class="w-40 h-48 bg-gray-100 flex flex-col items-center justify-center rounded">
-                              <User class="w-16 h-16 text-gray-400 mb-2" />
-                              <div class="text-gray-500 text-sm text-center">Photo<br/>Not Available</div>
-                            </div>
-                          `;
                         }}
                       />
                     ) : (
-                      <div className="w-40 h-48 bg-gray-100 flex flex-col items-center justify-center rounded">
-                        <User className="w-16 h-16 text-gray-400 mb-2" />
-                        <div className="text-gray-500 text-sm text-center">Photo<br/>Not Available</div>
+                      <div style={{
+                        width: '100%',
+                        height: '100%',
+                        background: '#f1f5f9',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <User style={{ width: '48px', height: '48px', color: '#94a3b8' }} />
+                        <span style={{ fontSize: '11px', color: '#64748b', marginTop: '8px', textAlign: 'center' }}>Photo Not Available</span>
                       </div>
                     )}
                   </div>
                 </div>
 
                 {/* Marks Table */}
-                <div className="mb-8">
-                  <div className="flex items-center mb-4">
-                    <BookOpen className="w-6 h-6 mr-3 text-blue-600" />
-                    <h3 className="text-xl font-bold text-gray-800">Subject Wise Marks</h3>
-                  </div>
-                  
-                  <div className="overflow-x-auto border border-gray-300 rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-300">
-                      <thead className="bg-gray-100">
-                        <tr>
-                          <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-300">
-                            S.NO
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-300">
-                            SUBJECTS
-                          </th>
-                          <th className="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-300">
-                            MAX MARKS
-                          </th>
-                          <th className="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-300">
-                            MIN MARKS
-                          </th>
-                          <th className="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-300">
-                            OBTAINED MARKS
-                          </th>
-                          <th className="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
-                            IN WORDS
-                          </th>
+                <div style={{ marginBottom: '2rem' }}>
+                  <h3 style={{ display: 'flex', alignItems: 'center', fontSize: '1.25rem', fontWeight: '700', color: '#1a1a2e', marginBottom: '1rem' }}>
+                    <BookOpen style={{ width: '24px', height: '24px', marginRight: '0.75rem', color: '#2563eb' }} />
+                    Subject Wise Marks
+                  </h3>
+                  <div style={{ overflowX: 'auto', border: '1px solid #1a1a2e', borderRadius: '8px' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+                      <thead>
+                        <tr style={{ background: 'linear-gradient(135deg, #1a1a2e, #2d2d5a)' }}>
+                          <th style={{ padding: '12px', color: '#d4af37', fontWeight: '600', border: '1px solid #1a1a2e', width: '50px' }}>S.NO</th>
+                          <th style={{ padding: '12px', color: '#d4af37', fontWeight: '600', border: '1px solid #1a1a2e', textAlign: 'left' }}>SUBJECTS</th>
+                          <th style={{ padding: '12px', color: '#d4af37', fontWeight: '600', border: '1px solid #1a1a2e', width: '80px' }}>MAX</th>
+                          <th style={{ padding: '12px', color: '#d4af37', fontWeight: '600', border: '1px solid #1a1a2e', width: '80px' }}>MIN</th>
+                          <th style={{ padding: '12px', color: '#d4af37', fontWeight: '600', border: '1px solid #1a1a2e', width: '100px' }}>OBTAINED</th>
+                          <th style={{ padding: '12px', color: '#d4af37', fontWeight: '600', border: '1px solid #1a1a2e' }}>IN WORDS</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-300">
-                        {result.subjects && result.subjects.length > 0 ? (
-                          result.subjects.map((subject, index) => (
-                            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                              <td className="px-4 py-3 text-center border-r border-gray-300 font-medium">
-                                {index + 1}
-                              </td>
-                              <td className="px-4 py-3 border-r border-gray-300">
-                                {subject.name}
-                              </td>
-                              <td className="px-4 py-3 text-center border-r border-gray-300">
-                                {subject.maxMarks}
-                              </td>
-                              <td className="px-4 py-3 text-center border-r border-gray-300">
-                                {subject.minMarks}
-                              </td>
-                              <td className="px-4 py-3 text-center border-r border-gray-300 font-bold text-lg">
-                                {subject.obtainedMarks}
-                              </td>
-                              <td className="px-4 py-3 text-center uppercase text-sm">
-                                {subject.inWords}
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan="6" className="px-4 py-8 text-center text-gray-500">
-                              No subject data available
-                            </td>
+                      <tbody>
+                        {result.subjects.map((subject, index) => (
+                          <tr key={index} style={{ background: index % 2 === 0 ? 'white' : '#fafaf8' }}>
+                            <td style={{ padding: '10px', textAlign: 'center', border: '1px solid #d1d5db', fontWeight: '500' }}>{index + 1}</td>
+                            <td style={{ padding: '10px', border: '1px solid #d1d5db' }}>{subject.name}</td>
+                            <td style={{ padding: '10px', textAlign: 'center', border: '1px solid #d1d5db' }}>{subject.maxMarks}</td>
+                            <td style={{ padding: '10px', textAlign: 'center', border: '1px solid #d1d5db' }}>{subject.minMarks}</td>
+                            <td style={{ padding: '10px', textAlign: 'center', border: '1px solid #d1d5db', fontWeight: '700', fontSize: '16px' }}>{subject.obtainedMarks}</td>
+                            <td style={{ padding: '10px', textAlign: 'center', border: '1px solid #d1d5db', fontSize: '12px', textTransform: 'uppercase' }}>{subject.inWords}</td>
                           </tr>
-                        )}
-                        
-                        {/* Total Row */}
-                        <tr className="bg-gradient-to-r from-blue-50 to-indigo-50 font-bold">
-                          <td colSpan="2" className="px-4 py-3 border-r border-gray-300">
-                            TOTAL MARKS
-                          </td>
-                          <td className="px-4 py-3 text-center border-r border-gray-300">
-                            {result.totalMarks}
-                          </td>
-                          <td className="px-4 py-3 text-center border-r border-gray-300">
-                            {result.subjects ? result.subjects.length * 40 : 0}
-                          </td>
-                          <td className="px-4 py-3 text-center border-r border-gray-300 text-xl">
-                            {result.obtainedMarks}
-                          </td>
-                          <td className="px-4 py-3 text-center uppercase text-lg">
-                            {result.totalInWords}
-                          </td>
+                        ))}
+                        <tr style={{ background: 'linear-gradient(135deg, #f8f4e8, #fffef5)', fontWeight: '700' }}>
+                          <td colSpan="2" style={{ padding: '12px', border: '1px solid #1a1a2e' }}>GRAND TOTAL</td>
+                          <td style={{ padding: '12px', textAlign: 'center', border: '1px solid #1a1a2e' }}>{result.totalMarks}</td>
+                          <td style={{ padding: '12px', textAlign: 'center', border: '1px solid #1a1a2e' }}>{result.subjects.length * 40}</td>
+                          <td style={{ padding: '12px', textAlign: 'center', border: '1px solid #1a1a2e', fontSize: '18px' }}>{result.obtainedMarks}</td>
+                          <td style={{ padding: '12px', textAlign: 'center', border: '1px solid #1a1a2e', fontSize: '14px' }}>{result.totalInWords}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -1341,53 +1522,50 @@ const Result = () => {
                 </div>
 
                 {/* Result Summary */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="font-bold text-gray-800">PERFORMANCE</h4>
-                      <Award className="w-6 h-6 text-blue-600" />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                  <div style={{
+                    background: 'linear-gradient(135deg, #eff6ff, #dbeafe)',
+                    padding: '1.5rem',
+                    borderRadius: '12px',
+                    border: '1px solid #93c5fd'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <h4 style={{ fontWeight: '700', color: '#1e293b' }}>PERCENTAGE</h4>
+                      <Award style={{ width: '24px', height: '24px', color: '#2563eb' }} />
                     </div>
-                    <div className="text-3xl font-bold text-blue-700 mb-2">
-                      {result.percentage}%
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div 
-                        className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2.5 rounded-full"
-                        style={{ width: `${Math.min(parseFloat(result.percentage), 100)}%` }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-bold text-gray-800">GRADE</h4>
-                      <Award className="w-6 h-6 text-green-600" />
-                    </div>
-                    <div className="text-4xl font-bold text-green-700 mb-2">
-                      {result.grade}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {result.percentage >= 75 ? 'Distinction' :
-                       result.percentage >= 60 ? 'First Division' :
-                       result.percentage >= 50 ? 'Second Division' : 'Pass'}
+                    <div style={{ fontSize: '2.5rem', fontWeight: '700', color: '#1d4ed8' }}>{result.percentage}%</div>
+                    <div style={{ width: '100%', height: '8px', background: '#e2e8f0', borderRadius: '4px', marginTop: '0.5rem' }}>
+                      <div style={{
+                        width: `${Math.min(parseFloat(result.percentage), 100)}%`,
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #2563eb, #4338ca)',
+                        borderRadius: '4px'
+                      }} />
                     </div>
                   </div>
-
-                  <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-xl border border-purple-200">
-                    <h4 className="font-bold text-gray-800 mb-4">INSTITUTION DETAILS</h4>
-                    <div className="space-y-2 text-sm">
-                      <div>
-                        <div className="font-semibold">Institution:</div>
-                        <div>{result.institutionName}</div>
-                      </div>
-                      <div>
-                        <div className="font-semibold">Centre Code:</div>
-                        <div>{result.centreCode}</div>
-                      </div>
-                      <div>
-                        <div className="font-semibold">Session:</div>
-                        <div>{result.session}</div>
-                      </div>
+                  <div style={{
+                    background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)',
+                    padding: '1.5rem',
+                    borderRadius: '12px',
+                    border: '1px solid #86efac'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                      <h4 style={{ fontWeight: '700', color: '#1e293b' }}>GRADE</h4>
+                      <Award style={{ width: '24px', height: '24px', color: '#16a34a' }} />
+                    </div>
+                    <div style={{ fontSize: '2rem', fontWeight: '700', color: '#15803d' }}>{result.grade}</div>
+                  </div>
+                  <div style={{
+                    background: 'linear-gradient(135deg, #faf5ff, #f3e8ff)',
+                    padding: '1.5rem',
+                    borderRadius: '12px',
+                    border: '1px solid #d8b4fe'
+                  }}>
+                    <h4 style={{ fontWeight: '700', color: '#1e293b', marginBottom: '0.75rem' }}>INSTITUTION</h4>
+                    <div style={{ fontSize: '13px', color: '#374151' }}>
+                      <div style={{ fontWeight: '600' }}>{result.institutionName}</div>
+                      <div style={{ marginTop: '4px' }}>Centre Code: {result.centreCode}</div>
+                      <div>Session: {result.session}</div>
                     </div>
                   </div>
                 </div>
@@ -1395,70 +1573,269 @@ const Result = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4 justify-center mb-8">
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '2rem' }}>
               <button
                 onClick={handlePrint}
                 disabled={isPrinting}
-                className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl hover:from-blue-700 hover:to-indigo-800 disabled:opacity-50 transition-all flex items-center font-semibold shadow-lg hover:shadow-xl"
+                style={{
+                  padding: '0.875rem 2rem',
+                  background: isPrinting ? '#9ca3af' : 'linear-gradient(135deg, #2563eb, #4338ca)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: isPrinting ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)'
+                }}
               >
                 {isPrinting ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-3" />
-                    Preparing Print...
+                    <div style={{
+                      width: '20px',
+                      height: '20px',
+                      border: '2px solid white',
+                      borderTopColor: 'transparent',
+                      borderRadius: '50%',
+                      animation: 'spin 1s linear infinite',
+                      marginRight: '0.5rem'
+                    }} />
+                    Preparing...
                   </>
                 ) : (
                   <>
-                    <Printer className="w-5 h-5 mr-2" />
+                    <Printer style={{ width: '20px', height: '20px', marginRight: '0.5rem' }} />
                     Print Marksheet
                   </>
                 )}
               </button>
-              
-              {/* <button
-                onClick={handleBrowserPrint}
-                className="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-xl hover:from-green-700 hover:to-emerald-800 transition-all flex items-center font-semibold shadow-lg hover:shadow-xl"
-              >
-                <Printer className="w-5 h-5 mr-2" />
-                Direct Print (Ctrl+P)
-              </button> */}
-              
-              <button
-                onClick={downloadPDF}
-                className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-700 text-white rounded-xl hover:from-purple-700 hover:to-pink-800 transition-all flex items-center font-semibold shadow-lg hover:shadow-xl"
-              >
-                <Download className="w-5 h-5 mr-2" />
-                Download PDF
-              </button>
-              
               <button
                 onClick={clearSearch}
-                className="px-8 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all flex items-center font-semibold shadow-lg hover:shadow-xl"
+                style={{
+                  padding: '0.875rem 2rem',
+                  background: 'linear-gradient(135deg, #4b5563, #374151)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  boxShadow: '0 4px 15px rgba(75, 85, 99, 0.4)'
+                }}
               >
-                <X className="w-5 h-5 mr-2" />
+                <X style={{ width: '20px', height: '20px', marginRight: '0.5rem' }} />
                 New Search
               </button>
             </div>
           </>
         )}
 
-        {/* Info when no search */}
+        {/* Empty State */}
         {!result && !loading && (
-          <div className="bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-200">
-            <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full flex items-center justify-center">
-              <Search className="w-10 h-10 text-blue-600" />
+          <div style={{
+            background: 'white',
+            borderRadius: '16px',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+            padding: '3rem',
+            textAlign: 'center',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{
+              width: '80px',
+              height: '80px',
+              margin: '0 auto 1.5rem',
+              background: 'linear-gradient(135deg, #eff6ff, #e0e7ff)',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Search style={{ width: '40px', height: '40px', color: '#2563eb' }} />
             </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Search Student Marksheet</h3>
-            <p className="text-gray-600 mb-6">
-              Enter enrollment number or serial number to view and print the official marksheet
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#1e293b', marginBottom: '0.5rem' }}>
+              Search Student Marksheet
+            </h3>
+            <p style={{ color: '#64748b', marginBottom: '1rem' }}>
+              Enter enrollment number or serial number to view the official marksheet
             </p>
-            <div className="text-sm text-gray-500">
-              All data is fetched directly from the server. No dummy data is used.
-            </div>
+            <p style={{ fontSize: '14px', color: '#94a3b8' }}>
+              Demo: Try <strong>ADM0XXXXXX8720</strong> or <strong>BT01XXXXXXX5</strong>
+            </p>
           </div>
         )}
       </div>
+
+      <style>{`
+/* ---------------------------------------
+   📱 GLOBAL RESPONSIVE OPTIMIZATION
+----------------------------------------*/
+
+/* Reduce padding for mobile */
+@media (max-width: 768px) {
+  body, html {
+    overflow-x: hidden !important;
+  }
+
+  /* MAIN PAGE WRAPPER */
+  div[style*="minHeight: '100vh'"] {
+    padding: 1rem !important;
+  }
+
+  /* COLLEGE HEADER CARD */
+  div[style*="maxWidth: '1200px'"][style*="margin: '0 auto 2rem'"] {
+    padding: 1rem !important;
+  }
+
+  /* LOGO SIZE */
+  img[alt="College Logo"] {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  /* COLLEGE TITLE */
+  h1 {
+    font-size: 1.35rem !important;
+  }
+
+  /* SUBTITLE */
+  h2, h3 {
+    font-size: 1.15rem !important;
+  }
+  p {
+    font-size: 0.85rem !important;
+  }
+
+  /* CONTACT ROW MOBILE STACK */
+  div[style*="flexWrap: 'wrap'"][style*="justifyContent: 'center'"] {
+    gap: 0.75rem !important;
+  }
+
+  /* SEARCH BOX INPUT */
+  input[type="text"] {
+    font-size: 0.9rem !important;
+    padding: 0.85rem 1rem 0.85rem 3rem !important;
+  }
+
+  /* SEARCH BUTTONS */
+  button {
+    font-size: 0.9rem !important;
+    padding: 0.75rem 1.2rem !important;
+  }
+
+  /* CERTIFICATE WRAPPER */
+  div[style*="border: '4px double"] {
+    padding: 1rem !important;
+    overflow-x: auto !important;
+  }
+
+  /* CERTIFICATE HEADER (logo + ISO) stack vertically */
+  div[style*="display: 'flex'"][style*="justifyContent: 'center'"][style*="gap: '1.5rem'"] {
+    flex-direction: column !important;
+  }
+
+  /* STUDENT INFO GRID */
+  div[style*="gridTemplateColumns: 'repeat(2, 1fr)'"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* STUDENT PHOTO */
+  div[style*="width: '140px'][style*='height: '170px'"] {
+    width: 120px !important;
+    height: 150px !important;
+  }
+
+  /* MARKS TABLE WRAPPER */
+  div[style*="overflowX: 'auto'"] {
+    width: 100% !important;
+    overflow-x: auto !important;
+  }
+
+  /* MARKS TABLE */
+  table {
+    font-size: 12px !important;
+    min-width: 650px !important;
+  }
+
+  th, td {
+    padding: 8px !important;
+  }
+
+  /* RESULT SUMMARY CARDS */
+  div[style*="gridTemplateColumns: 'repeat(auto-fit"] {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* PRINT BUTTONS */
+  div[style*="justifyContent: 'center'"][style*="flex-wrap"] button {
+    width: 100% !important;
+  }
+
+  /* EMPTY STATE */
+  div[style*="textAlign: 'center'"][style*="padding: '3rem'"] {
+    padding: 1.5rem !important;
+  }
+
+  /* QR CODE in preview */
+  img[src*="chart.googleapis.com"] {
+    width: 90px !important;
+    height: 90px !important;
+  }
+}
+
+/* ---------------------------------------
+   📱 EXTRA SMALL DEVICES  (≤ 480px)
+----------------------------------------*/
+
+@media (max-width: 480px) {
+
+  /* HEADER LOGO BOX */
+  div[style*="padding: '1rem'"][style*='background: linear-gradient'] {
+    padding: 0.5rem !important;
+  }
+
+  img[alt="College Logo"] {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  /* Reduce padding in certificate */
+  div[style*="padding: '2rem'"] {
+    padding: 1rem !important;
+  }
+
+  /* Reduce big percentage text */
+  div[style*="fontSize: '2.5rem'"] {
+    font-size: 1.8rem !important;
+  }
+
+  /* Subject table rows shrink */
+  td, th {
+    font-size: 10px !important;
+  }
+
+  /* Big headers shrink */
+  h1 {
+    font-size: 1.2rem !important;
+  }
+  h3 {
+    font-size: 1.1rem !important;
+  }
+
+  /* Entire card centers tighter */
+  div[style*="borderRadius: '16px'"] {
+    padding: 1rem !important;
+  }
+}
+`}</style>
+
     </div>
   );
 };
 
 export default Result;
+
