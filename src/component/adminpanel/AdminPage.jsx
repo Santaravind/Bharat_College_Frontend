@@ -5,6 +5,7 @@ import { setAdminEmail, setAdminPassword,clearAdmin } from "../reduxstore/adminS
 import SendNotification from "./SendNotification";
 import ResultDeclared from "./ResultDeclared";
 import toast from "react-hot-toast";
+import AdminResult from "./AdminResult";
 
 function AdminPage() {
   const [email, setEmail] = useState("");
@@ -56,6 +57,8 @@ function AdminPage() {
         return <SendNotification />;
       case "resultDeclared":
         return <ResultDeclared />;
+        case "AdminResult":
+          return <AdminResult/>
       default:
         return (
           <div className="text-center py-8 text-gray-500">
@@ -154,7 +157,7 @@ function AdminPage() {
                   </h3>
                   
                   {/* Action Buttons */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                     <button
                       onClick={() => handleComponentClick("sendNotification")}
                       className={`flex items-center justify-center p-6 border-2 rounded-xl font-semibold transition-all duration-200 ${
@@ -202,7 +205,84 @@ function AdminPage() {
                       </svg>
                       Declare Results
                     </button>
-                  </div>
+                  </div> */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  {/* Send Notification Button */}
+  <button
+    onClick={() => handleComponentClick("sendNotification")}
+    className={`flex items-center justify-center p-6 border-2 rounded-xl font-semibold transition-all duration-200 ${
+      activeComponent === "sendNotification"
+        ? "bg-blue-50 border-blue-500 text-blue-700 transform -translate-y-1 shadow-md"
+        : "bg-white border-gray-200 text-gray-700 hover:border-blue-300 hover:bg-blue-25 hover:shadow-sm"
+    }`}
+  >
+    <svg
+      className="w-6 h-6 mr-3"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+      />
+    </svg>
+    Send Notification
+  </button>
+
+  {/* Declare Result Button */}
+  <button
+    onClick={() => handleComponentClick("resultDeclared")}
+    className={`flex items-center justify-center p-6 border-2 rounded-xl font-semibold transition-all duration-200 ${
+      activeComponent === "resultDeclared"
+        ? "bg-green-50 border-green-500 text-green-700 transform -translate-y-1 shadow-md"
+        : "bg-white border-gray-200 text-gray-700 hover:border-green-300 hover:bg-green-25 hover:shadow-sm"
+    }`}
+  >
+    <svg
+      className="w-6 h-6 mr-3"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    Declare Results
+  </button>
+
+  {/* AdminResult Button (NEW BUTTON) */}
+  <button
+    onClick={() => handleComponentClick("AdminResult")}
+    className={`flex items-center justify-center p-6 border-2 rounded-xl font-semibold transition-all duration-200 ${
+      activeComponent === "AdminResult"
+        ? "bg-purple-50 border-purple-500 text-purple-700 transform -translate-y-1 shadow-md"
+        : "bg-white border-gray-200 text-gray-700 hover:border-purple-300 hover:bg-purple-25 hover:shadow-sm"
+    }`}
+  >
+    <svg
+      className="w-6 h-6 mr-3"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M5 13l4 4L19 7"
+      />
+    </svg>
+    Admin Result
+  </button>
+</div>
+
 
                   {/* Active Component Display */}
                   <div className="mt-6">

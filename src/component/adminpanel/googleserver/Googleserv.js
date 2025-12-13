@@ -158,7 +158,7 @@ export const googleserv = {
         cleanup();
         
         if (response && response.success) {
-          console.log('✅ Success response:', response);
+          // console.log('✅ Success response:', response);
           resolve(response);
         } else {
           const errorMsg = response ? response.message : 'Unknown error';
@@ -207,7 +207,7 @@ export const googleserv = {
         cleanup();
         
         if (response && response.success) {
-          console.log('✅ Success response:', response);
+          // console.log('✅ Success response:', response);
           resolve(response);
         } else {
           const errorMsg = response ? response.message : 'Unknown error';
