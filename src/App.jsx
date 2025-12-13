@@ -17,6 +17,7 @@ import Declaration from './component/form/admissionpages/Declaration'
 import Verification from './component/resultverification/Verification'
 import AdminPage from './component/adminpanel/AdminPage.jsx'
 import Result from './component/resultverification/Result.jsx'
+import AdminResult from './component/adminpanel/AdminResult.jsx'
 
 
 
@@ -43,7 +44,7 @@ function App() {
       <Route path='/declaration' element={<Declaration/>}/>
       <Route path='/admin' element={<AdminPage/>}/>
       <Route path='/result' element={<Result/>}/>
-
+      <Route path='/adminresult' element={<AdminResult/>} />  
       {/* <Route path='/admisucces' element={<AdmissionSuccess/>}/> */}
 
       

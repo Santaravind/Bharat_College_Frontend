@@ -49,14 +49,14 @@ const Verification = () => {
     }
   };
 
-  const handlePrint = () => {
-    try {
-      window.print();
-    } catch (error) {
-      // console.error("Print failed:", error);
-      alert("Printing failed. Please use browser print (Ctrl+P)");
-    }
-  };
+  // const handlePrint = () => {
+  //   try {
+  //     window.print();
+  //   } catch (error) {
+  //     // console.error("Print failed:", error);
+  //     alert("Printing failed. Please use browser print (Ctrl+P)");
+  //   }
+  // };
 
   const clearSearch = () => {
     setSearchValue("");
@@ -338,7 +338,7 @@ const Verification = () => {
         )}
 
         {/* Print Button */}
-        {result && (
+        {/* {result && (
           <div className="flex justify-center mt-8 print:hidden">
             <button
               onClick={handlePrint}
@@ -348,7 +348,7 @@ const Verification = () => {
               Print Certificate
             </button>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Global Print Styles */}
