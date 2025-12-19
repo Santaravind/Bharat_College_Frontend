@@ -114,12 +114,12 @@ const AdmissionSuccess = ({ formData }) => {
     </div>
 
     {/* this for developer only */}
-     {/* <button 
+     <button 
         onClick={handleNewAdmission}
-        className='border-2 border-neutral-100  px-3 py-2 text-neutral-50 font-semibold hover:text-white hover:bg-neutral-400 rounded-full '> 
-          Refresh page
+        className='border-2 border-neutral-500  px-3 py-2 text-neutral-900 font-semibold hover:text-red-500 hover:bg-neutral-400 rounded-full '> 
+          New Admission /Refress the page  
         </button>
-         */}
+        
     </>
   );
 };
