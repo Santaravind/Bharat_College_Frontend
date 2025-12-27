@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import { IoLocationSharp } from "react-icons/io5";
 import logo from '../assets/logo2.png'
 import ISO from '../assets/ISO.png'
+import Result from '../assets/resultStamp.png'
 
 
 // Number to words converter
@@ -981,10 +982,12 @@ const AdminResult = () => {
           
           .signature-box {
             text-align: center;
+             margin-top: -20px;
             width: 200px;
           }
           
           .signature-line {
+             margin-top: 40px;
             border-top: 1px solid #1a1a2e;
             margin-bottom: 5px;
           }
@@ -998,9 +1001,9 @@ const AdminResult = () => {
             text-align: center;
             margin-top: 15px;
             padding-top: 10px;
-            border-top: 1px dashed #ccc;
+           
             font-size: 9px;
-            color: #888;
+            
           }
           
           @media print {
@@ -1197,19 +1200,20 @@ const AdminResult = () => {
           <div class="signature-section">
             <div class="signature-box">
               <div class="signature-line"></div>
-              <div class="signature-label">Examination Controller</div>
+              <div class="signature-label">Controller of Examination </div>
             </div>
             <div class="signature-box">
-              <div class="signature-line"></div>
-              <div class="signature-label">Director</div>
+                <img 
+                  src="${Result}"
+                  alt="College Stamp"
+                  style="width:70px;height:70px;object-fit:contain;margin-top:-3px;"
+                />
             </div>
           </div>
           
           <!-- Print Footer -->
           <div class="print-footer">
-            This is a computer-generated document. Printed on: ${
-              new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })
-            }
+             
           </div>
         </div>
         
