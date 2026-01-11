@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import { IoLocationSharp } from "react-icons/io5";
 import logo from '../assets/logo2.png'
 import ISO from '../assets/ISO.png'
+import VRQR from '../assets/VRQR.png'
 import Result from '../assets/resultStamp.png'
 
 
@@ -801,7 +802,8 @@ const AdminResult = () => {
           }
           
           .reg-info {
-            font-size: 10px;
+            font-size: 12px;
+            font-family: 'Playfair Display', serif;
             color: #666;
           }
           
@@ -940,12 +942,12 @@ const AdminResult = () => {
           
           .result-box {
   text-align: center;
-  margin: 10px 0;
+  margin: 5px 0;
   padding: 0;
-  background: black;
+  background: ;
   color: black;
 
-  border-top: 3px solid black; /* horizontal line */
+  
 }
 
 
@@ -955,6 +957,7 @@ const AdminResult = () => {
             font-size: 18px;
             font-weight: 700;
             letter-spacing: 2px;
+            border-top: 3px solid black; /* horizontal line */
           }
           
          .signature-section {
@@ -1174,9 +1177,9 @@ const AdminResult = () => {
 
           <!-- Result Box -->
          <div class="result-box">
-            <!--<div class="result-text">
+            <div class="result-text">
               RESULT: ${result?.grade?.toUpperCase() || 'N/A'} — ${result?.percentage || '0'}%
-            </div>-->
+            </div>
           </div>
           
           <!-- Signature Section 
@@ -1200,15 +1203,20 @@ const AdminResult = () => {
                 />
             </div>
           </div>-->
-          <div class="signature-section">
-  
-  <div class="signature-box">
-    <img src="${Result}" alt="College Stamp" />
-  </div>
 
-  <div class="signature-box emblem">
-    <img src="${ISO}" alt="ISO Logo"  />
-  </div>
+          <div class="signature-section">
+
+          <div class="signature-box">
+            <img src="${VRQR}" alt="College Stamp" />
+          </div>
+  
+           <div class="signature-box">
+            <img src="${Result}" alt="College Stamp" />
+          </div>
+
+           <div class="signature-box emblem">
+             <img src="${ISO}" alt="ISO Logo" style="width:120px; height:120px" />
+           </div>
 
   <div class="signature-box">
     <div class="signature-line"></div>
