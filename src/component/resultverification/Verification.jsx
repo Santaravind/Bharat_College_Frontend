@@ -210,7 +210,7 @@ const Verification = () => {
             {/* Certificate Title - Compact */}
             <div className="border-b-2 border-yellow-500 print:border-b-2 print:border-yellow-500 p-4 print:p-3 text-center print:bg-white">
               <h2 className="text-xl font-bold uppercase text-gray-900 print:text-lg print:text-black tracking-wide font-serif">
-                CERTIFICATE OF TRAINING
+               !!!   Student is Verified BY College     !!!
               </h2>
             </div>
 
@@ -304,7 +304,7 @@ const Verification = () => {
               </div>
 
               {/* Signatures Section - Optimized */}
-              <div className="flex justify-between items-end mt-8 print:mt-6">
+              {/* <div className="flex justify-between items-end mt-8 print:mt-6">
                 <div className="text-center">
                   <div className="mb-2 print:mb-1 font-semibold text-gray-800 print:text-sm">Controller of Examination</div>
                   <div className="mb-4 print:mb-3 text-gray-600 print:text-xs">Signature</div>
@@ -318,7 +318,7 @@ const Verification = () => {
                   <div className="mt-2 font-bold text-gray-900 print:text-sm">Rk Mishra</div>
                   <div className="text-sm text-gray-700 print:text-xs">Director</div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Certificate Footer - Optimized */}
               <div className="text-center mt-6 print:mt-4 pt-4 border-t-2 border-yellow-500">
