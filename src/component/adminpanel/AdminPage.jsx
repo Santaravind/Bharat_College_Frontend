@@ -6,7 +6,7 @@ import SendNotification from "./SendNotification";
 import ResultDeclared from "./ResultDeclared";
 import toast from "react-hot-toast";
 import AdminResult from "./AdminResult";
-
+import Certificate from "./Certificate";
 function AdminPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,6 +59,8 @@ function AdminPage() {
         return <ResultDeclared />;
         case "AdminResult":
           return <AdminResult/>
+           case "Cetificate":
+          return <Certificate/>
       default:
         return (
           <div className="text-center py-8 text-gray-500">
@@ -280,6 +282,30 @@ function AdminPage() {
       />
     </svg>
     Admin Result
+  </button>
+
+   <button
+    onClick={() => handleComponentClick("Cetificate")}
+    className={`flex items-center justify-center p-6 border-2 rounded-xl font-semibold transition-all duration-200 ${
+      activeComponent === "Cetificate"
+        ? "bg-purple-50 border-rose-500 text-green-700 transform -translate-y-1 shadow-md"
+        : "bg-white border-gray-200 text-gray-700 hover:border-purple-300 hover:bg-purple-25 hover:shadow-sm"
+    }`}
+  >
+    <svg
+      className="w-6 h-6 mr-3"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M5 13l4 4L19 7"
+      />
+    </svg>
+   Certificate
   </button>
 </div>
 
