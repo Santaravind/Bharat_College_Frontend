@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import { IoLocationSharp } from "react-icons/io5";
 import logo from '../assets/logo2.png'
 import ISO from '../assets/ISO.png'
+import VRQR from '../assets/VRQR.png'
 import Result from '../assets/resultStamp.png'
 
 
@@ -698,51 +699,31 @@ const AdminResult = () => {
           }
           
           /* Watermark container covering entire page */
-          .watermark-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-          }
+           .certificate-container::after {
+  content: "BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM BTCFSM ";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.03);
+  
+  pointer-events: none;
+  z-index:1;
+}
+
           
-          /* Main diagonal watermark */
-          .watermark-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-family: 'Playfair Display', serif;
-            font-size: 140px;
-            font-weight: 800;
-            letter-spacing: 25px;
-            color: rgba(0, 0, 0, 0.08);
-            white-space: nowrap;
-            opacity: 0.3;
-            text-transform: uppercase;
-          }
+
           
-          /* Additional watermark repetitions */
-          .watermark-small {
-            position: absolute;
-            font-family: 'Playfair Display', serif;
-            font-size: 70px;
-            font-weight: 700;
-            color: rgba(0, 0, 0, 0.03);
-            letter-spacing: 15px;
-            opacity: 0.3;
-            text-transform: uppercase;
-          }
           
           .certificate-container {
             max-width: 210mm;
-            margin: 0 auto;
+            margin: 0px auto;
             padding: 15px;
             background: linear-gradient(135deg, #fffef5 0%, #fefcf3 50%, #fffef5 100%);
-            border: 4px double #b8860b;
+            border: 4px solid #b8860b;
             position: relative;
             z-index: 2;
           }
@@ -754,7 +735,7 @@ const AdminResult = () => {
             left: 8px;
             right: 8px;
             bottom: 8px;
-            border: 2px solid #d4af37;
+            
             pointer-events: none;
           }
           
@@ -821,7 +802,8 @@ const AdminResult = () => {
           }
           
           .reg-info {
-            font-size: 10px;
+            font-size: 12px;
+            font-family: 'Playfair Display', serif;
             color: #666;
           }
           
@@ -838,8 +820,8 @@ const AdminResult = () => {
           
           .statement-title {
             font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            font-weight: 700;
+            font-size: 24px;
+            font-weight: 650;
             color: #1a1a2e;
             margin-top: 10px;
             letter-spacing: 3px;
@@ -879,10 +861,10 @@ const AdminResult = () => {
           }
           
           .photo-container {
-            width: 120px;
-            height: 150px;
-            border: 3px solid #1a1a2e;
-            padding: 3px;
+            width: 100px;
+            height: 130px;
+            // border: 2px solid #1a1a2e;
+            padding: 1px;
             background: white;
           }
           
@@ -919,10 +901,10 @@ const AdminResult = () => {
           }
           
           .marks-table th {
-            background: linear-gradient(135deg, #1a1a2e, #2d2d5a);
-            color: #d4af37;
+            background: ;
+            color: black;
             font-weight: 600;
-            font-size: 9px;
+            font-size: 12px;
           }
           
           .marks-table .subject-cell {
@@ -959,43 +941,61 @@ const AdminResult = () => {
           }
           
           .result-box {
-            text-align: center;
-            margin: 20px 0;
-            padding: 12px;
-            background: linear-gradient(135deg, #1a1a2e, #2d2d5a);
-            color: #d4af37;
-          }
+  text-align: center;
+  margin: 5px 0;
+  padding: 0;
+  background: ;
+  color: black;
+
+  
+}
+
+
           
           .result-text {
             font-family: 'Playfair Display', serif;
             font-size: 18px;
             font-weight: 700;
             letter-spacing: 2px;
+            border-top: 3px solid black; /* horizontal line */
           }
           
-          .signature-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 20px;
-          }
+         .signature-section {
+  display: flex;
+  justify-content: space-between; /* equal spacing */
+  align-items: center;            /* same horizontal line */
+  margin-top: 40px;
+  padding-top: 20px;
+}
+
+.signature-box {
+  width: 200px;
+  text-align: center;
+}
+
+/* Signature line */
+.signature-line {
+  width: 100%;
+  border-top: 1.5px solid #1a1a2e;
+  margin-bottom: 6px;
+  margin-top: 30px;
+}
+
+/* Text */
+.signature-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Images - FIXED SIZE */
+.signature-box img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
           
-          .signature-box {
-            text-align: center;
-             margin-top: -20px;
-            width: 200px;
-          }
           
-          .signature-line {
-             margin-top: 40px;
-            border-top: 1px solid #1a1a2e;
-            margin-bottom: 5px;
-          }
-          
-          .signature-label {
-            font-size: 10px;
-            font-weight: 600;
-          }
           
           .print-footer {
             text-align: center;
@@ -1005,6 +1005,13 @@ const AdminResult = () => {
             font-size: 9px;
             
           }
+            @media print {
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
           
           @media print {
             body { 
@@ -1043,21 +1050,24 @@ const AdminResult = () => {
                 />
               </div>
               <div class="header-text">
-                <div class="govt-text">AN AUTONOMOUS BODY UNDER GOVT. ACT • ESTABLISHED UNDER ACT 1882</div>
+                
                 <div class="college-name">BHARAT TECHNICAL COLLEGE</div>
                 <div class="college-subtitle">Of Fire Engineering & Safety Management</div>
+                <div class="govt-text">AN AUTONOMOUS BODY UNDER GOVT. </div>
+                <div class="reg-info">ACT • ESTABLISHED UNDER ACT 1882 </div>
                 <div class="reg-info">Reg. No. SON/01794/2025-2026 • ISO Certified</div>
                 <div class="reg-info">Pusauli, Robertsganj, Sonbhadra, Uttar Pradesh - 231216</div>
               </div>
-              <div class="emblem emblem-right">
-                <img 
-                  src="${ISO}"
-                  alt="ISO Logo"
-                  style="width:70px;height:70px;object-fit:contain;margin-bottom:0px;"
-                />
-              </div>
+               <div class="photo-container">
+              ${
+                result?.photoUrl
+                  ? `<img src="${result.photoUrl}" alt="Student Photo" onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>'" />`
+                  : '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
+              }
             </div>
-            <div class="board-title">CENTRAL BOARD OF EXAMINATIONS</div>
+             
+            </div>
+            <div class="statement-title">CENTRAL BOARD OF EXAMINATIONS</div>
             <div class="statement-title">STATEMENT OF MARKS</div>
           </div>
           
@@ -1097,40 +1107,16 @@ const AdminResult = () => {
                 <div class="info-value">${result?.institutionName || ''}</div>
               </div>
             </div>
-               <!-- Watermark Overlay -->
-        <div class="watermark-overlay">
-          <div class="watermark-text">BTCFSM</div>
-          <div class="watermark-small" style="top: 15%; left: 5%; transform: rotate(-30deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 25%; right: 5%; transform: rotate(20deg);">BTCFSM</div>
-          <div class="watermark-small" style="bottom: 20%; left: 10%; transform: rotate(-15deg);">BTCFSM</div>
-          <div class="watermark-small" style="bottom: 10%; right: 10%; transform: rotate(30deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 40%; left: 15%; transform: rotate(-10deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 70%; right: 15%; transform: rotate(15deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 85%; left: 20%; transform: rotate(-25deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 60%; left: 25%; transform: rotate(-5deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 30%; right: 25%; transform: rotate(10deg);">BTCFSM</div>
-        </div>
+             
 
-           <!-- Watermark Overlay -->
-        <div class="watermark-overlay">
-          <div class="watermark-text">BTCFSM</div>
-          <div class="watermark-small" style="top: 15%; left: 5%; transform: rotate(-30deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 25%; right: 5%; transform: rotate(20deg);">BTCFSM</div>
-          <div class="watermark-small" style="bottom: 20%; left: 10%; transform: rotate(-15deg);">BTCFSM</div>
-          <div class="watermark-small" style="bottom: 10%; right: 10%; transform: rotate(30deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 40%; left: 15%; transform: rotate(-10deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 70%; right: 15%; transform: rotate(15deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 85%; left: 20%; transform: rotate(-25deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 60%; left: 25%; transform: rotate(-5deg);">BTCFSM</div>
-          <div class="watermark-small" style="top: 30%; right: 25%; transform: rotate(10deg);">BTCFSM</div>
-        </div>
-            <div class="photo-container">
+          
+           <!-- <div class="photo-container">
               ${
                 result?.photoUrl
                   ? `<img src="${result.photoUrl}" alt="Student Photo" onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>'" />`
                   : '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
               }
-            </div>
+            </div>-->
           </div>
           
           <!-- Marks Table -->
@@ -1190,26 +1176,54 @@ const AdminResult = () => {
           </div>
 
           <!-- Result Box -->
-          <div class="result-box">
+         <div class="result-box">
             <div class="result-text">
               RESULT: ${result?.grade?.toUpperCase() || 'N/A'} — ${result?.percentage || '0'}%
             </div>
           </div>
           
-          <!-- Signature Section -->
+          <!-- Signature Section 
           <div class="signature-section">
             <div class="signature-box">
               <div class="signature-line"></div>
               <div class="signature-label">Controller of Examination </div>
             </div>
-            <div class="signature-box">
+             <div class="emblem emblem-right">
+                <img 
+                  src="${ISO}"
+                  alt="ISO Logo"
+                  style="width:100px;height:100px;object-fit:contain;margin-top:3px;"
+                />
+              </div>
+           <div class="signature-box">
                 <img 
                   src="${Result}"
                   alt="College Stamp"
                   style="width:70px;height:70px;object-fit:contain;margin-top:-3px;"
                 />
             </div>
+          </div>-->
+
+          <div class="signature-section">
+
+          <div class="signature-box">
+            <img src="${VRQR}" alt="College Stamp" />
           </div>
+  
+           <div class="signature-box">
+            <img src="${Result}" alt="College Stamp" />
+          </div>
+
+           <div class="signature-box emblem">
+             <img src="${ISO}" alt="ISO Logo" style="width:120px; height:120px" />
+           </div>
+
+  <div class="signature-box">
+    <div class="signature-line"></div>
+    <div class="signature-label">Controller of Examination</div>
+  </div>
+</div>
+
           
           <!-- Print Footer -->
           <div class="print-footer">
@@ -1226,18 +1240,12 @@ const AdminResult = () => {
       </body>
       </html>
     `;
-
-   
-
-
     
-
-  
-
     printWindow.document.write(printContent);
     printWindow.document.close();
     setTimeout(() => setIsPrinting(false), 3000);
   };
+
 
   const clearSearch = () => {
     setSearchValue("");
@@ -1246,6 +1254,9 @@ const AdminResult = () => {
   };
 
   return (
+  
+    
+    <>
     <div style={{ 
       minHeight: '100vh', 
       background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
@@ -1977,6 +1988,7 @@ const AdminResult = () => {
 `}</style>
 
     </div>
+    </>
   );
 };
 
