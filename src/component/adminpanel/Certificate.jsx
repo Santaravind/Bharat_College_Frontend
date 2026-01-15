@@ -1267,525 +1267,1074 @@ const Certificate = () => {
       return;
     }
 
+    // const printContent = `
+    //   <!DOCTYPE html>
+    //   <html>
+    //   <head>
+    //     <title>Certificate - ${result?.studentName || 'Student'}</title>
+    //     <meta charset="UTF-8">
+    //     <style>
+    //       @page {
+    //         size: A4;
+    //         margin: 0;
+    //       }
+          
+    //       * {
+    //         margin: 0;
+    //         padding: 0;
+    //         box-sizing: border-box;
+    //       }
+          
+    //       body {
+    //         font-family: 'Times New Roman', serif;
+    //         background: white;
+    //         color: #000;
+    //         -webkit-print-color-adjust: exact;
+    //         print-color-adjust: exact;
+    //         width: 210mm;
+    //         min-height: 297mm;
+    //         margin: 0;
+    //         padding: 0;
+    //       }
+          
+    //       .certificate-container {
+    //         width: 210mm;
+    //         min-height: 297mm;
+    //         margin: 0;
+    //         padding: 15mm 20mm;
+    //         position: relative;
+    //         background: white;
+    //         border: 2px solid #000;
+    //         page-break-inside: avoid;
+    //       }
+          
+    //       /* Certificate border design */
+    //       .border-decorations {
+    //         position: absolute;
+    //         top: 10mm;
+    //         left: 10mm;
+    //         right: 10mm;
+    //         bottom: 10mm;
+    //         border: 3px double #000;
+    //         pointer-events: none;
+    //       }
+          
+    //       /* Header Section */
+    //       .header-section {
+    //         text-align: center;
+    //         margin-bottom: 6px;
+    //         position: relative;
+    //       }
+          
+    //       .logos {
+    //         display: flex;
+    //         justify-content: space-between;
+    //         align-items: center;
+    //         margin-bottom: 12px;
+    //       }
+          
+    //       .college-name {
+    //         font-size: 24px;
+    //         font-weight: bold;
+    //         color: #000;
+    //         margin-bottom: 5px;
+    //         text-transform: uppercase;
+    //         letter-spacing: 1px;
+    //       }
+          
+    //       .college-subtitle {
+    //         font-size: 16px;
+    //         font-weight: bold;
+    //         color: #000;
+    //         margin-bottom: 8px;
+    //         letter-spacing: 0.5px;
+    //       }
+          
+    //       .govt-info {
+    //         font-size: 10px;
+    //         color: #000;
+    //         margin-bottom: 4px;
+    //         line-height: 1.3;
+    //       }
+          
+    //       .address {
+    //         font-size: 10px;
+    //         color: #000;
+    //         margin-bottom: 8px;
+    //         font-weight: 500;
+    //       }
+          
+    //       .website {
+    //         font-size: 10px;
+    //         color: #000;
+    //         margin-bottom: 3px;
+    //       }
+          
+    //       /* Certificate Title */
+    //       .certificate-title {
+    //         text-align: center;
+    //         margin: 20px 0 25px 0;
+    //         border-top: 2px solid #000;
+    //         border-bottom: 2px solid #000;
+    //         padding: 12px 0;
+    //       }
+          
+    //       .certificate-main-title {
+    //         font-size: 28px;
+    //         font-weight: bold;
+    //         text-transform: uppercase;
+    //         letter-spacing: 2px;
+    //         margin-bottom: 8px;
+    //       }
+          
+    //       .certificate-subtitle {
+    //         font-size: 18px;
+    //         font-weight: bold;
+    //         text-transform: uppercase;
+    //         letter-spacing: 1px;
+    //       }
+          
+    //       /* Student Information Section */
+    //       .student-section {
+    //         margin: 25px 0;
+    //         padding: 0 15px;
+    //       }
+          
+    //       .student-info-container {
+    //         display: flex;
+    //         justify-content: space-between;
+    //         align-items: flex-start;
+    //         margin-bottom: 20px;
+    //       }
+          
+    //       .student-details {
+    //         flex: 1;
+    //         margin-right: 20px;
+    //       }
+          
+    //       .student-photo-container {
+    //         width: 100px;
+    //         height: 120px;
+    //         border: 2px solid #000;
+    //         padding: 2px;
+    //         background: white;
+    //         display: flex;
+    //         align-items: center;
+    //         justify-content: center;
+    //         margin-left: 20px;
+    //       }
+          
+    //       .student-photo {
+    //         width: 100%;
+    //         height: 100%;
+    //         object-fit: cover;
+    //       }
+          
+    //       .photo-placeholder {
+    //         width: 100%;
+    //         height: 100%;
+    //         background: #f0f0f0;
+    //         display: flex;
+    //         align-items: center;
+    //         justify-content: center;
+    //         font-size: 10px;
+    //         color: #666;
+    //         text-align: center;
+    //         padding: 5px;
+    //       }
+          
+    //       .certificate-statement {
+    //         font-size: 16px;
+    //         text-align: center;
+    //         margin-bottom: 25px;
+    //         line-height: 1.6;
+    //       }
+          
+    //       .student-name {
+    //         font-size: 24px;
+    //         font-weight: bold;
+    //         text-align: center;
+    //         margin: 15px 0 8px 0;
+    //         text-transform: uppercase;
+    //         letter-spacing: 1px;
+    //       }
+          
+    //       .father-name {
+    //         font-size: 16px;
+    //         text-align: center;
+    //         margin-bottom: 20px;
+    //         font-weight: 500;
+    //       }
+          
+    //       .course-info {
+    //         font-size: 20px;
+    //         font-weight: bold;
+    //         text-align: center;
+    //         margin: 20px 0 25px 0;
+    //         text-transform: uppercase;
+    //       }
+          
+    //       /* Marks Information */
+    //       .marks-section {
+    //         margin: 25px 0;
+    //         padding: 0 20px;
+    //       }
+          
+    //       .marks-grid {
+    //         display: grid;
+    //         grid-template-columns: repeat(2, 1fr);
+    //         gap: 20px;
+    //         margin: 15px 0;
+    //       }
+          
+    //       .marks-item {
+    //         text-align: center;
+    //       }
+          
+    //       .marks-label {
+    //         font-size: 12px;
+    //         color: #000;
+    //         margin-bottom: 4px;
+    //       }
+          
+    //       .marks-value {
+    //         font-size: 18px;
+    //         font-weight: bold;
+    //         padding: 4px;
+    //         border-bottom: 2px solid #000;
+    //       }
+          
+    //       /* Result Summary */
+    //       .result-summary {
+    //         margin: 30px 0;
+    //         padding: 15px;
+    //         text-align: center;
+    //         border-top: 1px solid #000;
+    //         border-bottom: 1px solid #000;
+    //       }
+          
+    //       .grade-section {
+    //         font-size: 18px;
+    //         font-weight: bold;
+    //         margin-bottom: 8px;
+    //       }
+          
+    //       .percentage-section {
+    //         font-size: 22px;
+    //         font-weight: bold;
+    //         color: #000;
+    //         margin-bottom: 15px;
+    //       }
+          
+    //       .session-info {
+    //         font-size: 14px;
+    //         font-weight: 500;
+    //         margin: 10px 0;
+    //       }
+          
+    //       /* Footer Section */
+    //       .footer-section {
+    //         margin-top: 40px;
+    //         padding: 0 20px;
+    //       }
+          
+    //       .signatures {
+    //         display: flex;
+    //         justify-content: space-between;
+    //         margin: 30px 0 20px 0;
+    //       }
+          
+    //       .signature-box {
+    //         text-align: center;
+    //         width: 150px;
+    //       }
+          
+    //       .signature-line {
+    //         border-top: 1px solid #000;
+    //         margin: 40px 0 8px 0;
+    //         padding-top: 8px;
+    //       }
+          
+    //       .signature-label {
+    //         font-size: 12px;
+    //         font-weight: bold;
+    //         margin-top: 4px;
+    //       }
+          
+    //       .date-section {
+    //         text-align: center;
+    //         margin-top: 30px;
+    //         font-size: 14px;
+    //         font-weight: 500;
+    //       }
+          
+    //       .college-stamp {
+    //         text-align: center;
+    //         margin-top: 15px;
+    //       }
+          
+    //       .college-stamp img {
+    //         max-width: 100px;
+    //         height: auto;
+    //       }
+          
+    //       /* Logo sizes */
+    //       .logo-left img {
+    //         width: 70px;
+    //         height: 70px;
+    //         object-fit: contain;
+    //       }
+          
+    //       .logo-right img {
+    //         width: 60px;
+    //         height: 60px;
+    //         object-fit: contain;
+    //       }
+          
+    //       @media print {
+    //         body {
+    //           background: white !important;
+    //           -webkit-print-color-adjust: exact;
+    //           print-color-adjust: exact;
+    //           margin: 0 !important;
+    //           padding: 0 !important;
+    //         }
+            
+    //         .certificate-container {
+    //           border: 2px solid #000 !important;
+    //           box-shadow: none !important;
+    //           page-break-after: avoid;
+    //           page-break-inside: avoid;
+    //         }
+            
+    //         .no-print {
+    //           display: none !important;
+    //         }
+            
+    //         .logos {
+    //           page-break-inside: avoid;
+    //         }
+            
+    //         .student-section {
+    //           page-break-inside: avoid;
+    //         }
+    //       }
+    //     </style>
+    //   </head>
+    //   <body>
+    //     <div class="certificate-container">
+    //       <div class="border-decorations"></div>
+          
+    //       <!-- College Header -->
+    //       <div class="header-section">
+    //         <div class="logos">
+    //           <div class="logo-left">
+    //             <img src="${logo}" alt="College Logo" />
+    //           </div>
+    //           <div class="college-info">
+    //             <div class="college-name">Bharat Technical College</div>
+    //             <div class="college-subtitle">Of Fire Engineering & Management</div>
+    //             <div class="govt-info">
+    //               An Autonomous Body, Under Govt.Act Established Under Act 1882,<br>
+    //               Registered Under Govt of U.P. & Ministry of MSME, Govt of India.<br>
+    //               Registration No. SON/01794/2025-2026. It is also ISO Certified.
+    //             </div>
+    //             <div class="address">
+    //               Pusault, Robertsganj, Sonbhadra, Uttar Pradesh, India, 231216
+    //             </div>
+    //             <div class="website">www.bharattechnicalcollege.com</div>
+    //             <div class="website">bharattechnicalcollege@gmail.com</div>
+    //           </div>
+    //           <div class="logo-right">
+    //             <img src="${ISO}" alt="ISO Certified" />
+    //           </div>
+    //         </div>
+    //       </div>
+          
+    //       <!-- Certificate Title -->
+    //       <div class="certificate-title">
+    //         <div class="certificate-main-title">Certificate of Training</div>
+    //         <div class="certificate-subtitle">This is to Certify that</div>
+    //       </div>
+          
+    //       <!-- Student Information -->
+    //       <div class="student-section">
+    //         <div class="student-info-container">
+    //           <div class="student-details">
+    //             <div class="certificate-statement">
+    //               This is to Certify that
+    //             </div>
+                
+    //             <div class="student-name">
+    //               ${result?.studentName || ''}
+    //             </div>
+                
+    //             <div class="father-name">
+    //               ${result?.fatherPrefix || 'S/O:'} ${result?.fatherName || ''}
+    //             </div>
+                
+    //             <div class="certificate-statement">
+    //               has successfully completed
+    //             </div>
+                
+    //             <div class="course-info">
+    //               ${result?.courseName || ''}
+    //             </div>
+    //           </div>
+              
+    //           <!-- Student Photo -->
+    //           <div class="student-photo-container">
+    //             ${result?.photoUrl ? 
+    //               `<img src="${result.photoUrl}" alt="Student Photo" class="student-photo" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>';" />` : 
+    //               '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
+    //             }
+    //           </div>
+    //         </div>
+    //       </div>
+          
+    //       <!-- Marks Information -->
+    //       <div class="marks-section">
+    //         <div class="marks-grid">
+    //           <div class="marks-item">
+    //             <div class="marks-label">S. No.</div>
+    //             <div class="marks-value">${result?.serialNo || ''}</div>
+    //           </div>
+              
+    //           <div class="marks-item">
+    //             <div class="marks-label">Enrollment No.</div>
+    //             <div class="marks-value">${result?.enrollmentNo || ''}</div>
+    //           </div>
+              
+    //           <div class="marks-item">
+    //             <div class="marks-label">Total Marks</div>
+    //             <div class="marks-value">${result?.totalMarks || 0}</div>
+    //           </div>
+              
+    //           <div class="marks-item">
+    //             <div class="marks-label">Obtained Marks</div>
+    //             <div class="marks-value">${result?.obtainedMarks || 0}</div>
+    //           </div>
+    //         </div>
+    //       </div>
+          
+    //       <!-- Result Summary -->
+    //       <div class="result-summary">
+    //         <div class="percentage-section">
+    //           Percentage: ${result?.percentage || '0'}%
+    //         </div>
+            
+    //         <div class="grade-section">
+    //           Grade: ${result?.grade || ''}
+    //         </div>
+            
+    //         <div class="session-info">
+    //           Session: ${result?.session || ''}
+    //         </div>
+            
+    //         <div class="session-info">
+    //           Course: ${result?.courseName || ''}
+    //         </div>
+            
+    //         <!--- <div class="session-info">
+    //           College / Branch: Bharat Technical College Robertsganj
+    //         </div> --->
+    //       </div>
+          
+    //       <!-- Footer with Signatures -->
+    //       <div class="footer-section">
+    //         <div class="date-section">
+    //           Issue Date: ${result?.certificateDate || ''}
+    //         </div>
+            
+    //         <div class="signatures">
+    //           <div class="signature-box">
+    //             <div class="signature-line"></div>
+    //             <div class="signature-label">Teacher / Trainer</div>
+    //           </div>
+              
+    //           <div class="signature-box">
+    //             <div class="signature-label">Signature</div>
+    //           </div>
+              
+    //           <div class="signature-box">
+    //             <div class="signature-line"></div>
+    //             <div class="signature-label">Director Signature</div>
+    //           </div>
+    //         </div>
+            
+    //         <div class="college-stamp">
+    //           <img src="${Result}" alt="College Stamp" />
+    //         </div>
+    //       </div>
+    //     </div>
+        
+    //     <script>
+    //       window.onload = function() {
+    //         // Force images to load before printing
+    //         setTimeout(function() { 
+    //           window.print(); 
+    //         }, 1000);
+            
+    //         window.onafterprint = function() { 
+    //           setTimeout(function() { 
+    //             window.close(); 
+    //           }, 500); 
+    //         };
+    //       };
+    //     </script>
+    //   </body>
+    //   </html>
+    // `;
+    
     const printContent = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Certificate - ${result?.studentName || 'Student'}</title>
-        <meta charset="UTF-8">
-        <style>
-          @page {
-            size: A4;
-            margin: 0;
-          }
-          
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-          
-          body {
-            font-family: 'Times New Roman', serif;
-            background: white;
-            color: #000;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0;
-            padding: 0;
-          }
-          
-          .certificate-container {
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0;
-            padding: 15mm 20mm;
-            position: relative;
-            background: white;
-            border: 2px solid #000;
-            page-break-inside: avoid;
-          }
-          
-          /* Certificate border design */
-          .border-decorations {
-            position: absolute;
-            top: 10mm;
-            left: 10mm;
-            right: 10mm;
-            bottom: 10mm;
-            border: 3px double #000;
-            pointer-events: none;
-          }
-          
-          /* Header Section */
-          .header-section {
-            text-align: center;
-            margin-bottom: 10px;
-            position: relative;
-          }
-          
-          .logos {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-          }
-          
-          .college-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-          }
-          
-          .college-subtitle {
-            font-size: 16px;
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-          }
-          
-          .govt-info {
-            font-size: 10px;
-            color: #000;
-            margin-bottom: 4px;
-            line-height: 1.3;
-          }
-          
-          .address {
-            font-size: 10px;
-            color: #000;
-            margin-bottom: 10px;
-            font-weight: 500;
-          }
-          
-          .website {
-            font-size: 10px;
-            color: #000;
-            margin-bottom: 3px;
-          }
-          
-          /* Certificate Title */
-          .certificate-title {
-            text-align: center;
-            margin: 20px 0 25px 0;
-            border-top: 2px solid #000;
-            border-bottom: 2px solid #000;
-            padding: 12px 0;
-          }
-          
-          .certificate-main-title {
-            font-size: 28px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-          }
-          
-          .certificate-subtitle {
-            font-size: 18px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-          }
-          
-          /* Student Information Section */
-          .student-section {
-            margin: 25px 0;
-            padding: 0 15px;
-          }
-          
-          .student-info-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-          }
-          
-          .student-details {
-            flex: 1;
-            margin-right: 20px;
-          }
-          
-          .student-photo-container {
-            width: 100px;
-            height: 120px;
-            border: 2px solid #000;
-            padding: 2px;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 20px;
-          }
-          
-          .student-photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-          
-          .photo-placeholder {
-            width: 100%;
-            height: 100%;
-            background: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: #666;
-            text-align: center;
-            padding: 5px;
-          }
-          
-          .certificate-statement {
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 25px;
-            line-height: 1.6;
-          }
-          
-          .student-name {
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            margin: 15px 0 8px 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-          }
-          
-          .father-name {
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 500;
-          }
-          
-          .course-info {
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            margin: 20px 0 25px 0;
-            text-transform: uppercase;
-          }
-          
-          /* Marks Information */
-          .marks-section {
-            margin: 25px 0;
-            padding: 0 20px;
-          }
-          
-          .marks-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin: 15px 0;
-          }
-          
-          .marks-item {
-            text-align: center;
-          }
-          
-          .marks-label {
-            font-size: 12px;
-            color: #000;
-            margin-bottom: 4px;
-          }
-          
-          .marks-value {
-            font-size: 18px;
-            font-weight: bold;
-            padding: 4px;
-            border-bottom: 2px solid #000;
-          }
-          
-          /* Result Summary */
-          .result-summary {
-            margin: 30px 0;
-            padding: 15px;
-            text-align: center;
-            border-top: 1px solid #000;
-            border-bottom: 1px solid #000;
-          }
-          
-          .grade-section {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-          }
-          
-          .percentage-section {
-            font-size: 22px;
-            font-weight: bold;
-            color: #000;
-            margin-bottom: 15px;
-          }
-          
-          .session-info {
-            font-size: 14px;
-            font-weight: 500;
-            margin: 10px 0;
-          }
-          
-          /* Footer Section */
-          .footer-section {
-            margin-top: 40px;
-            padding: 0 20px;
-          }
-          
-          .signatures {
-            display: flex;
-            justify-content: space-between;
-            margin: 30px 0 20px 0;
-          }
-          
-          .signature-box {
-            text-align: center;
-            width: 150px;
-          }
-          
-          .signature-line {
-            border-top: 1px solid #000;
-            margin: 40px 0 8px 0;
-            padding-top: 8px;
-          }
-          
-          .signature-label {
-            font-size: 12px;
-            font-weight: bold;
-            margin-top: 4px;
-          }
-          
-          .date-section {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 14px;
-            font-weight: 500;
-          }
-          
-          .college-stamp {
-            text-align: center;
-            margin-top: 15px;
-          }
-          
-          .college-stamp img {
-            max-width: 100px;
-            height: auto;
-          }
-          
-          /* Logo sizes */
-          .logo-left img {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-          }
-          
-          .logo-right img {
-            width: 60px;
-            height: 60px;
-            object-fit: contain;
-          }
-          
-          @media print {
-            body {
-              background: white !important;
-              -webkit-print-color-adjust: exact;
-              print-color-adjust: exact;
-              margin: 0 !important;
-              padding: 0 !important;
-            }
-            
-            .certificate-container {
-              border: 2px solid #000 !important;
-              box-shadow: none !important;
-              page-break-after: avoid;
-              page-break-inside: avoid;
-            }
-            
-            .no-print {
-              display: none !important;
-            }
-            
-            .logos {
-              page-break-inside: avoid;
-            }
-            
-            .student-section {
-              page-break-inside: avoid;
-            }
-          }
-        </style>
-      </head>
-      <body>
-        <div class="certificate-container">
-          <div class="border-decorations"></div>
-          
-          <!-- College Header -->
-          <div class="header-section">
-            <div class="logos">
-              <div class="logo-left">
-                <img src="${logo}" alt="College Logo" />
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <title>Certificate - ${result?.studentName || 'Student'}</title>
+    <meta charset="UTF-8">
+    <style>
+      @page {
+        size: A4;
+        margin: 15mm;
+      }
+      
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body {
+       font-family: 'Crimson Text', 'Times New Roman', serif;
+        background: white;
+       color: #1a1a2e;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        width: 210mm;
+        height: 297mm;
+        margin: 0 auto;
+        padding: 0;
+      }
+      
+      .certificate-container {
+        width: 180mm;
+        min-height: 267mm;
+        max-height: 267mm;
+        margin: 0 auto;
+        padding: 10mm 15mm;
+        position: relative;
+        background: white;
+        border: 2px solid #000;
+        overflow: hidden;
+      }
+        /*water marks*/
+      .certificate-container::after {
+  content: "BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM BTCFSM ";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.03);
+  
+  pointer-events: none;
+  z-index:1;
+}
+
+      /* Certificate border design */
+      .border-decorations {
+        position: absolute;
+        top: 5mm;
+        left: 5mm;
+        right: 5mm;
+        bottom: 5mm;
+        border: 2px solid #000;
+        pointer-events: none;
+      }
+      
+      /* Header Section - Compact */
+      .header-section {
+        text-align: center;
+        margin-bottom: 5mm;
+      }
+      
+      .logos {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3mm;
+      }
+      
+      .college-name {
+        font-size: 20px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 2px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      
+      .college-subtitle {
+        font-size: 16px;
+         font-family: 'Playfair Display', serif;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 3px;
+        letter-spacing: 0.5px;
+      }
+      
+      .govt-info {
+        font-size: 12px;
+        color: #000;
+        margin-bottom: 2px;
+        line-height: 1.2;
+      }
+      
+      .address {
+        font-size: 12px;
+        color: #000;
+        margin-bottom: 3px;
+        font-weight: 500;
+      }
+      
+      .website {
+        font-size: 8px;
+        color: #000;
+        margin-bottom: 2px;
+      }
+      
+      /* Certificate Title */
+      .certificate-title {
+        text-align: center;
+        margin: 10mm 0 8mm 0;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        padding: 4mm 0;
+      }
+      
+      .certificate-main-title {
+        font-size: 22px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 3px;
+      }
+      
+      .certificate-subtitle {
+        font-size: 16px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      /* Student Information Section - Compact */
+      .student-section {
+        margin: 8mm 0;
+        padding: 0 10mm;
+      }
+      
+      .student-info-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 5mm;
+      }
+      
+      .student-details {
+        flex: 1;
+        margin-right: 10mm;
+      }
+      
+      .student-photo-container {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #000;
+        padding: 1px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 5mm;
+        flex-shrink: 0;
+      }
+      
+      .student-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .photo-placeholder {
+        width: 100%;
+        height: 100%;
+        background: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        color: #666;
+        text-align: center;
+        padding: 3px;
+      }
+      
+      .certificate-statement {
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 4mm;
+        line-height: 1.4;
+      }
+
+      
+      .student-name {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin: 3mm 0 2mm 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .father-name {
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 4mm;
+        font-weight: 500;
+      }
+      
+      .course-info {
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        margin: 4mm 0 5mm 0;
+        text-transform: uppercase;
+      }
+      
+      /* Marks Information - Compact */
+      .marks-section {
+        margin: 5mm 0;
+        padding: 0 10mm;
+      }
+      
+      .marks-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8mm;
+        margin: 3mm 0;
+      }
+      
+      .marks-item {
+        text-align: center;
+      }
+      
+      .marks-label {
+        font-size: 15px;
+        color: #000;
+        margin-bottom: 2px;
+      }
+      
+      .marks-value {
+        font-size: 14px;
+        font-weight: bold;
+        padding: 3px;
+        border-bottom: 1px solid #000;
+        min-height: 20px;
+      }
+      
+      /* Result Summary - Compact */
+      .result-summary {
+        margin: 5mm 0;
+        padding: 3mm;
+        text-align: center;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+      }
+      
+      .grade-section {
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 2px;
+      }
+      
+      .percentage-section {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 3mm;
+      }
+      
+      .session-info {
+        font-size: 12px;
+        font-weight: 500;
+        margin: 2mm 0;
+      }
+      
+      /* Footer Section - Compact */
+      .footer-section {
+        margin-top: 8mm;
+        padding: 0 10mm;
+      }
+      
+      .signatures {
+        display: flex;
+        justify-content: space-between;
+        margin: 5mm 0 3mm 0;
+      }
+      
+      .signature-box {
+        text-align: center;
+        width: 120px;
+      }
+      
+      .signature-line {
+        border-top: 1px solid #000;
+        margin: 25px 0 5px 0;
+        padding-top: 5px;
+      }
+      
+      .signature-label {
+        font-size: 10px;
+        font-weight: bold;
+        margin-top: 2px;
+      }
+      
+      .date-section {
+        text-align: center;
+        margin-top: 5mm;
+        font-size: 12px;
+        font-weight: 500;
+      }
+      
+      .college-stamp {
+        text-align: center;
+        margin-top: 3mm;
+      }
+      
+      .college-stamp img {
+        max-width: 80px;
+        height: auto;
+      }
+      
+      /* Logo sizes - Smaller */
+      .logo-left img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+      }
+      
+      .logo-right img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+      }
+      
+      /* Force single page */
+      .page-break {
+        page-break-before: always;
+      }
+      
+      @media print {
+        body {
+          background: white !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 210mm !important;
+          height: 297mm !important;
+        }
+        
+        .certificate-container {
+          width: 180mm !important;
+          min-height: 267mm !important;
+          max-height: 267mm !important;
+          border: 2px solid #000 !important;
+          box-shadow: none !important;
+           background: linear-gradient(135deg, #fffef5 0%, #fefcf3 50%, #fffef5 100%);
+          page-break-inside: avoid;
+          page-break-after: avoid;
+        }
+        
+        .no-print {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="certificate-container">
+      <div class="border-decorations"></div>
+      
+      <!-- College Header -->
+      <div class="header-section">
+        <div class="logos">
+          <div class="logo-left">
+            <img src="${logo}" alt="College Logo" />
+          </div>
+          <div class="college-info">
+            <div class="college-name">Bharat Technical College</div>
+            <div class="college-subtitle">Of Fire Engineering & Management</div>
+            <div class="govt-info">
+              An Autonomous Body, Under Govt.Act Established Under Act 1882,
+               <div class="govt-info">
+              Registered Under Govt of U.P. & Ministry of MSME, Govt of India.
               </div>
-              <div class="college-info">
-                <div class="college-name">Bharat Technical College</div>
-                <div class="college-subtitle">Of Fire Engineering & Management</div>
-                <div class="govt-info">
-                  An Autonomous Body, Under Govt.Act Established Under Act 1882,<br>
-                  Registered Under Govt of U.P. & Ministry of MSME, Govt of India.<br>
-                  Registration No. SON/01794/2025-2026. It is also ISO Certified.
-                </div>
-                <div class="address">
-                  Pusault, Robertsganj, Sonbhadra, Uttar Pradesh, India, 231216
-                </div>
-                <div class="website">www.bharattechnicalcollege.com</div>
-                <div class="website">bharattechnicalcollege@gmail.com</div>
-              </div>
-              <div class="logo-right">
-                <img src="${ISO}" alt="ISO Certified" />
-              </div>
+              Registration No. SON/01794/2025-2026. It is also ISO Certified.
+            </div>
+            <div class="address">
+              Pusault, Robertsganj, Sonbhadra, Uttar Pradesh, India, 231216
+            </div>
+            <!---<div class="website">www.bharattechnicalcollege.com</div>
+            <div class="website">bharattechnicalcollege@gmail.com</div>--->
+          </div>
+          <div class="logo-right">
+            <img src="${ISO}" alt="ISO Certified" />
+          </div>
+        </div>
+      </div>
+      
+      <!-- Certificate Title -->
+      <div class="certificate-title">
+        <div class="certificate-main-title">Certificate of Training</div>
+        <div class="certificate-subtitle">This is to Certify that</div>
+      </div>
+      
+      <!-- Student Information -->
+      <div class="student-section">
+        <div class="student-info-container">
+          <div class="student-details">
+            <div class="certificate-statement">
+              This is to Certify that
+            </div>
+            
+            <div class="student-name">
+              ${result?.studentName || ''}
+            </div>
+            
+            <div class="father-name">
+              ${result?.fatherPrefix || 'S/O:'} ${result?.fatherName || ''}
+            </div>
+            
+            <div class="certificate-statement">
+              has successfully completed
+            </div>
+            
+            <div class="course-info">
+              ${result?.courseName || ''}
             </div>
           </div>
           
-          <!-- Certificate Title -->
-          <div class="certificate-title">
-            <div class="certificate-main-title">Certificate of Training</div>
-            <div class="certificate-subtitle">This is to Certify that</div>
+          <!-- Student Photo -->
+          <div class="student-photo-container">
+            ${result?.photoUrl ? 
+              `<img src="${result.photoUrl}" alt="Student Photo" class="student-photo" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>';" />` : 
+              '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
+            }
+          </div>
+          <div class="student-photo-container">
+             ${result?.photoUrl ? 
+              `<img src="${VRQR}" alt="Student Photo"  class="student-photo" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>';" />` : 
+              '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
+            }
+          </div>
+        </div>
+      </div>
+      
+      <!-- Marks Information -->
+      <div class="marks-section">
+        <div class="marks-grid">
+          <div class="marks-item">
+            <div class="marks-label">S. No.</div>
+            <div class="marks-value">${result?.serialNo || ''}</div>
           </div>
           
-          <!-- Student Information -->
-          <div class="student-section">
-            <div class="student-info-container">
-              <div class="student-details">
-                <div class="certificate-statement">
-                  This is to Certify that
-                </div>
-                
-                <div class="student-name">
-                  ${result?.studentName || ''}
-                </div>
-                
-                <div class="father-name">
-                  ${result?.fatherPrefix || 'S/O:'} ${result?.fatherName || ''}
-                </div>
-                
-                <div class="certificate-statement">
-                  has successfully completed
-                </div>
-                
-                <div class="course-info">
-                  ${result?.courseName || ''}
-                </div>
-              </div>
-              
-              <!-- Student Photo -->
-              <div class="student-photo-container">
-                ${result?.photoUrl ? 
-                  `<img src="${result.photoUrl}" alt="Student Photo" class="student-photo" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>';" />` : 
-                  '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
-                }
-              </div>
-            </div>
+          <div class="marks-item">
+            <div class="marks-label">Enrollment No.</div>
+            <div class="marks-value">${result?.enrollmentNo || ''}</div>
           </div>
           
-          <!-- Marks Information -->
-          <div class="marks-section">
-            <div class="marks-grid">
-              <div class="marks-item">
-                <div class="marks-label">S. No.</div>
-                <div class="marks-value">${result?.serialNo || ''}</div>
-              </div>
-              
-              <div class="marks-item">
-                <div class="marks-label">Enrollment No.</div>
-                <div class="marks-value">${result?.enrollmentNo || ''}</div>
-              </div>
-              
-              <div class="marks-item">
-                <div class="marks-label">Total Marks</div>
-                <div class="marks-value">${result?.totalMarks || 0}</div>
-              </div>
-              
-              <div class="marks-item">
-                <div class="marks-label">Obtained Marks</div>
-                <div class="marks-value">${result?.obtainedMarks || 0}</div>
-              </div>
-            </div>
+          <div class="marks-item">
+            <div class="marks-label">Total Marks</div>
+            <div class="marks-value">${result?.totalMarks || 0}</div>
           </div>
           
-          <!-- Result Summary -->
-          <div class="result-summary">
-            <div class="percentage-section">
-              Percentage: ${result?.percentage || '0'}%
-            </div>
-            
-            <div class="grade-section">
-              Grade: ${result?.grade || ''}
-            </div>
-            
-            <div class="session-info">
-              Session: ${result?.session || ''}
-            </div>
-            
-            <div class="session-info">
-              Course: ${result?.courseName || ''}
-            </div>
-            
-            <!--- <div class="session-info">
-              College / Branch: Bharat Technical College Robertsganj
-            </div> --->
+          <div class="marks-item">
+            <div class="marks-label">Obtained Marks</div>
+            <div class="marks-value">${result?.obtainedMarks || 0}</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Result Summary -->
+      <div class="result-summary">
+        <div class="percentage-section">
+          Percentage: ${result?.percentage || '0'}%
+        </div>
+        
+        <div class="grade-section">
+          Grade: ${result?.grade || ''}
+        </div>
+        
+        <div class="session-info">
+          Session: ${result?.session || ''}
+        </div>
+        
+        <div class="session-info">
+          Course: ${result?.courseName || ''}
+        </div>
+      </div>
+      
+      <!-- Footer with Signatures -->
+      <div class="footer-section">
+        <div class="date-section">
+          Issue Date: ${result?.certificateDate || ''}
+        </div>
+        
+        <div class="signatures">
+          <div class="signature-box">
+            <div class="signature-line"></div>
+            <div class="signature-label">Teacher / Trainer</div>
           </div>
           
-          <!-- Footer with Signatures -->
-          <div class="footer-section">
-            <div class="date-section">
-              Issue Date: ${result?.certificateDate || ''}
-            </div>
-            
-            <div class="signatures">
-              <div class="signature-box">
-                <div class="signature-line"></div>
-                <div class="signature-label">Teacher / Trainer</div>
-              </div>
-              
-              <div class="signature-box">
-                <div class="signature-label">Signature</div>
-              </div>
-              
-              <div class="signature-box">
-                <div class="signature-line"></div>
-                <div class="signature-label">Director Signature</div>
-              </div>
-            </div>
-            
-            <div class="college-stamp">
-              <img src="${Result}" alt="College Stamp" />
-            </div>
+          <!---<div class="signature-box">
+            <div class="signature-label">Signature</div>
+          </div>--->
+
+           <div class="college-stamp">
+          <img src="${Result}" alt="College Stamp" />
+        </div>
+
+          <div class="signature-box">
+            <div class="signature-line"></div>
+            <div class="signature-label">Director Signature</div>
           </div>
         </div>
         
-        <script>
-          window.onload = function() {
-            // Force images to load before printing
-            setTimeout(function() { 
-              window.print(); 
-            }, 1000);
-            
-            window.onafterprint = function() { 
-              setTimeout(function() { 
-                window.close(); 
-              }, 500); 
-            };
-          };
-        </script>
-      </body>
-      </html>
-    `;
+       <!--- <div class="college-stamp">
+          <img src="${Result}" alt="College Stamp" />
+        </div>--->
+      </div>
+    </div>
     
+    <script>
+      window.onload = function() {
+        // Wait a bit for images to load
+        setTimeout(function() { 
+          window.print(); 
+        }, 800);
+        
+        window.onafterprint = function() { 
+          setTimeout(function() { 
+            window.close(); 
+          }, 300); 
+        };
+      };
+    </script>
+  </body>
+  </html>
+`;
+
     printWindow.document.write(printContent);
     printWindow.document.close();
     setTimeout(() => setIsPrinting(false), 3000);
