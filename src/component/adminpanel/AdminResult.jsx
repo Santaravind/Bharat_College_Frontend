@@ -22,7 +22,7 @@ import {
 import { googleserv } from "./googleserver/Googleserv.js";
 import toast from "react-hot-toast";
 import { IoLocationSharp } from "react-icons/io5";
-import logo from '../assets/logo2.png'
+import logo from '../assets/logonobg.png'
 import ISO from '../assets/ISO.png'
 import VRQR from '../assets/VRQR.png'
 import Result from '../assets/resultStamp.png'
@@ -670,582 +670,686 @@ const AdminResult = () => {
     //   </html>
     // `;
 
+
+    
+      
+    //  const printContent=` `;
+    
     const printContent = `
-      <!DOCTYPE html>
-      <html>
-      <head>
+    <!DOCTYPE html>
+    <html>
+    <head>
         <title>Marksheet - ${result?.studentName || 'Student'}</title>
         <meta charset="UTF-8">
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Crimson+Text:wght@400;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Hind:wght@400;600&display=swap" rel="stylesheet">
         <style>
-          @page {
-            size: A4;
-            margin: 10mm;
-          }
-          
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-          
-          body {
-            font-family: 'Crimson Text', 'Times New Roman', serif;
-            color: #1a1a2e;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-            position: relative;
-            min-height: 100vh;
-          }
-          
-          /* Watermark container covering entire page */
-           .certificate-container::after {
-  content: "BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM  BTCFSM BTCFSM BTCFSM BTCFSM ";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  font-weight: 700;
-  color: rgba(0,0,0,0.03);
-  
-  pointer-events: none;
-  z-index:1;
-}
-
-          
-
-          
-          
-          .certificate-container {
-            max-width: 210mm;
-            margin: 0px auto;
-            padding: 15px;
-            background: linear-gradient(135deg, #fffef5 0%, #fefcf3 50%, #fffef5 100%);
-            border: 4px solid #b8860b;
-            position: relative;
-            z-index: 2;
-          }
-          
-          .certificate-container::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            right: 8px;
-            bottom: 8px;
+            /* 1. RESET & PAGE SETUP */
+            @page { 
+                size: A4; 
+                margin: 0; /* Let the container handle margins */
+            }
             
-            pointer-events: none;
-          }
-          
-          .header {
-            text-align: center;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
-            border-bottom: 3px double #1a1a2e;
-          }
-          
-          .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 10px;
-          }
-          
-          .emblem {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 12px;
-            border: 0px solid #b8860b;
-          }
-          
-          .emblem-left {
-            background: linear-gradient(135deg, #1a1a2e, #2d2d5a);
-            color: #d4af37;
-          }
-          
-          .emblem-right {
-            /* optional right emblem background */
-          }
-          
-          .header-text {
-            flex: 1;
-          }
-          
-          .govt-text {
-            font-size: 10px;
-            color: #666;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-          }
-          
-          .college-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 3px;
-          }
-          
-          .college-subtitle {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            color: #1a1a2e;
-            margin-bottom: 5px;
-          }
-          
-          .reg-info {
-            font-size: 12px;
-            font-family: 'Playfair Display', serif;
-            color: #666;
-          }
-          
-          .board-title {
-            background: linear-gradient(135deg, #1a1a2e, #2d2d5a);
-            color: #d4af37;
-            padding: 8px 25px;
-            display: inline-block;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            margin-top: 10px;
-          }
-          
-          .statement-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 650;
-            color: #1a1a2e;
-            margin-top: 10px;
-            letter-spacing: 3px;
-          }
-          
-          .student-section {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-          }
-          
-          .student-info {
-            flex: 1;
-          }
-          
-          .info-row {
-            display: flex;
-            margin-bottom: 8px;
-            align-items: flex-start;
-          }
-          
-          .info-label {
-            font-weight: 600;
-            width: 180px;
-            min-width: 180px;
-            font-size: 11px;
-            color: #1a1a2e;
-          }
-          
-          .info-value {
-            flex: 1;
-            border-bottom: 1px solid #1a1a2e;
-            padding-bottom: 2px;
-            font-weight: 600;
-            font-size: 12px;
-            text-transform: uppercase;
-          }
-          
-          .photo-container {
-            width: 100px;
-            height: 130px;
-            // border: 2px solid #1a1a2e;
-            padding: 1px;
-            background: white;
-          }
-          
-          .photo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-          
-          .photo-placeholder {
-            width: 100%;
-            height: 100%;
-            background: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            color: #666;
-            text-align: center;
-          }
-          
-          .marks-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            font-size: 10px;
-          }
-          
-          .marks-table th,
-          .marks-table td {
-            border: 1px solid #1a1a2e;
-            padding: 6px 8px;
-            text-align: center;
-          }
-          
-          .marks-table th {
-            background: ;
-            color: black;
-            font-weight: 600;
-            font-size: 12px;
-          }
-          
-          .marks-table .subject-cell {
-            text-align: left;
-            font-weight: 500;
-          }
-          
-          .marks-table .total-row {
-            background: linear-gradient(135deg, #f8f4e8, #fffef5);
-            font-weight: 700;
-          }
-          
-          .marks-table .total-row td {
-            font-size: 11px;
-          }
-          
-          .footer-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            font-size: 10px;
-          }
-          
-          .footer-left, .footer-right {
-            max-width: 45%;
-          }
-          
-          .grade-scale {
-            margin-top: 5px;
-          }
-          
-          .grade-scale div {
-            margin: 2px 0;
-          }
-          
-          .result-box {
-  text-align: center;
-  margin: 5px 0;
-  padding: 0;
-  background: ;
-  color: black;
-
-  
-}
-
-
-          
-          .result-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            border-top: 3px solid black; /* horizontal line */
-          }
-          
-         .signature-section {
-  display: flex;
-  justify-content: space-between; /* equal spacing */
-  align-items: center;            /* same horizontal line */
-  margin-top: 40px;
-  padding-top: 20px;
-}
-
-.signature-box {
-  width: 200px;
-  text-align: center;
-}
-
-/* Signature line */
-.signature-line {
-  width: 100%;
-  border-top: 1.5px solid #1a1a2e;
-  margin-bottom: 6px;
-  margin-top: 30px;
-}
-
-/* Text */
-.signature-label {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-/* Images - FIXED SIZE */
-.signature-box img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-}
-
-          
-          
-          
-          .print-footer {
-            text-align: center;
-            margin-top: 15px;
-            padding-top: 10px;
-           
-            font-size: 9px;
-            
-          }
-            @media print {
-  body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-
-          
-          @media print {
-            body { 
-              background: white !important; 
-              -webkit-print-color-adjust: exact; 
-              print-color-adjust: exact; 
+            * { 
+                margin: 0; 
+                padding: 0; 
+                box-sizing: border-box; 
             }
-            .certificate-container { 
-              border: 4px double #b8860b !important;
-              box-shadow: none !important;
-            }
-            .watermark-text {
-              color: rgba(0, 0, 0, 0.07) !important;
-              opacity: 0.2 !important;
-            }
-            .watermark-small {
-              color: rgba(0, 0, 0, 0.04) !important;
-              opacity: 0.3 !important;
-            }
-          }
-        </style>
-      </head>
-      <body>
-     
 
-        <!-- Single certificate container -->
-        <div class="certificate-container">
-          <!-- Header -->
-          <div class="header">
-            <div class="header-top">
-              <div class="emblem emblem-left">
-                <img 
-                  src="${logo}"
-                  alt="College Logo"
-                  style="width:90px;height:90px;object-fit:contain;margin-bottom:6px;"
-                />
-              </div>
-              <div class="header-text">
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f0f0f0;
+                display: flex;
+                justify-content: center;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* 2. FIXED DIMENSIONS FOR A4 */
+            .certificate-container {
+                width: 210mm;
+                height: 297mm; /* Fixed A4 height */
+                background: white;
+                padding: 30px;
+                position: relative;
+                overflow: hidden; /* Prevents bleed */
                 
-                <div class="college-name">BHARAT TECHNICAL COLLEGE</div>
-                <div class="college-subtitle">Of Fire Engineering & Safety Management</div>
-                <div class="govt-text">AN AUTONOMOUS BODY UNDER GOVT. </div>
-                <div class="reg-info">ACT • ESTABLISHED UNDER ACT 1882 </div>
-                <div class="reg-info">Reg. No. SON/01794/2025-2026 • ISO Certified</div>
-                <div class="reg-info">Pusauli, Robertsganj, Sonbhadra, Uttar Pradesh - 231216</div>
-              </div>
-               <div class="photo-container">
-              ${
-                result?.photoUrl
-                  ? `<img src="${result.photoUrl}" alt="Student Photo" onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>'" />`
-                  : '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
-              }
-            </div>
-             
-            </div>
-            <div class="statement-title">CENTRAL BOARD OF EXAMINATIONS</div>
-            <div class="statement-title">STATEMENT OF MARKS</div>
-          </div>
-          
-          <!-- Student Section -->
-          <div class="student-section">
-            <div class="student-info">
-              <div class="info-row">
-                <div class="info-label">NAME OF CANDIDATE</div>
-                <div class="info-value">${result?.studentName || ''}</div>
-              </div>
-              <div class="info-row">
-                <div class="info-label">FATHER'S NAME</div>
-                <div class="info-value">${result?.fatherName || ''}</div>
-              </div>
-              <div class="info-row">
-                <div class="info-label">COURSE NAME</div>
-                <div class="info-value">${result?.courseName || ''}</div>
-              </div>
-              <div class="info-row">
-                <div class="info-label">COURSE DURATION</div>
-                <div class="info-value">${result?.courseDuration || ''}</div>
-              </div>
-              <div class="info-row">
-                <div class="info-label">ENROLLMENT NO</div>
-                <div class="info-value">${result?.enrollmentNo || ''}</div>
-              </div>
-              <div class="info-row">
-                <div class="info-label">SERIAL NO</div>
-                <div class="info-value">${result?.serialNo || ''}</div>
-              </div>
-              <div class="info-row">
-                <div class="info-label">SESSION</div>
-                <div class="info-value">${result?.session || ''}</div>
-              </div>
-              <div class="info-row">
-                <div class="info-label">INSTITUTION</div>
-                <div class="info-value">${result?.institutionName || ''}</div>
-              </div>
-            </div>
-             
+                /* Border logic: ensures border stays inside the width */
+                border: 12px solid transparent;
+                border-image: url('https://img.icons8.com/color/48/star--v1.png') 30 round;
+                outline: 1.5px solid #1a3a6c;
+                outline-offset: -8px;
+            }
 
-          
-           <!-- <div class="photo-container">
-              ${
-                result?.photoUrl
-                  ? `<img src="${result.photoUrl}" alt="Student Photo" onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'>PHOTO NOT AVAILABLE</div>'" />`
-                  : '<div class="photo-placeholder">PHOTO NOT AVAILABLE</div>'
-              }
-            </div>-->
-          </div>
-          
-          <!-- Marks Table -->
-          <table class="marks-table">
-            <thead>
-              <tr>
-                <th rowspan="2" style="width: 40px;">S.NO</th>
-                <th rowspan="2">SUBJECTS</th>
-                <th colspan="2">MARKS</th>
-                <th colspan="2">MARKS AWARDED</th>
-              </tr>
-              <tr>
-                <th>MAX</th>
-                <th>MIN</th>
-                <th>OBTAINED</th>
-                <th>IN WORDS</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${
-                result?.subjects?.map((subject, index) => `
-                  <tr>
-                    <td>${index + 1}</td>
-                    <td class="subject-cell">${subject.name}</td>
-                    <td>${subject.maxMarks}</td>
-                    <td>${subject.minMarks}</td>
-                    <td><strong>${subject.obtainedMarks}</strong></td>
-                    <td style="font-size: 9px;">${subject.inWords}</td>
-                  </tr>
-                `).join('') || ''
-              }
-              <tr class="total-row">
-                <td colspan="2"><strong>GRAND TOTAL</strong></td>
-                <td><strong>${result?.totalMarks || 0}</strong></td>
-                <td><strong>${result?.subjects ? result.subjects.length * 40 : 0}</strong></td>
-                <td><strong>${result?.obtainedMarks || 0}</strong></td>
-                <td><strong>${result?.totalInWords || ''}</strong></td>
-              </tr>
-            </tbody>
-          </table>
-          
-          <!-- Footer Info -->
-          <div class="footer-section">
-            <div class="footer-left">
-              <div><strong>Date of Birth:</strong> ${result?.dateOfBirth || ''}</div>
-              <div><strong>Centre Code:</strong> ${result?.centreCode || ''}</div>
-              <div><strong>Issue Date:</strong> ${result?.certificateDate || ''}</div>
+            /* 3. SCANNABLE LAYOUT SECTIONS */
+            .header {
+                text-align: center;
+                color: #1a3a6c;
+            }
+
+            .logo-section {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 5px;
+            }
+
+            .header h1 { font-size: 24px; font-weight: 800; margin: 2px 0; }
+            .header p { font-size: 11px; font-weight: 600; line-height: 1.3; }
+
+            .statement-header {
+                border-top: 2px solid #1a3a6c;
+                border-bottom: 2px solid #1a3a6c;
+                margin: 10px 0;
+                padding: 5px 0;
+                text-align: center;
+            }
+
+            .statement-header h3 { font-size: 20px; letter-spacing: 1px; }
+
+            .top-meta-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 15px;
+                font-size: 11px;
+            }
+
+            .top-meta-table td {
+                border: 1px solid #ccc;
+                padding: 6px;
+                text-align: center;
+                background: #f9f9f9;
+            }
+
+            .label-hindi { display: block; font-size: 9px; font-family: 'Hind', sans-serif; color: #444; }
+
+            .student-details {
+                margin: 15px 0;
+                font-size: 13px;
+                line-height: 1.8;
+            }
+
+            .detail-row { 
+                border-bottom: 1px dotted #666; 
+                font-weight: bold; 
+                display: inline-block;
+                padding: 0 10px;
+            }
+
+            .marks-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 5px;
+                text-align: center;
+                font-size: 11px;
+            }
+
+            .marks-table th, .marks-table td {
+                border: 1px solid #000;
+                padding: 6px 4px;
+            }
+
+            .marks-table th {
+                background-color: #f2f2f2;
+                color: #1a3a6c;
+                font-size: 10px;
+            }
+
+            .total-row {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+
+            .footer {
+                margin-top: 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+            }
+
+            .signature-box { text-align: center; width: 180px; }
+            .signature-box img { width: 80px; height: auto; }
+            
+            .result-legend {
+                font-size: 9px;
+                border: 1px solid #000;
+                padding: 5px;
+                width: 180px;
+            }
+
+            .watermark {
+                position: absolute;
+                top: 55%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                opacity: 0.06;
+                width: 450px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            /* 4. PRINT SPECIFIC FIXES */
+            @media print {
+                body { background: none; padding: 0; }
+                .certificate-container { 
+                    margin: 0; 
+                    border-width: 12px !important; /* Ensure border displays */
+                }
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="certificate-container">
+            <img src="${logo}" class="watermark" alt="watermark">
+
+            <div class="header">
+                <div class="logo-section">
+                    <img src="${logo}" style="width: 85px;" />
+                    <div>
+                        <p style="font-size: 16px; font-family: 'Hind';">व्यवसायिक शिक्षा के लिए राष्ट्रीय कौशल विकास</p>
+                        <h1>Bharat Technical College Of Fire Engineering & Management</h1>
+                        <p> An Autonomous Body, Under Govt.Act Established Under Act 1882,Registered Under Govt of U.P. & Ministry of MSME, Govt of India.Registration No. SON/01794/2025-2026. It is also ISO Certified.</p>
+                    </div>
+                    <div style="width: 85px;"></div>
+                </div>
+
+                <div class="statement-header">
+                    <h3 style="font-family: 'Hind';">सेंट्रल बोर्ड परीक्षा</h3>
+                    <h3>CENTRAL BOARD OF EXAMINATION</h3>
+                    <p style="font-size: 12px;">STATEMENT OF MARKS / मार्क्स के वक्तव्य</p>
+                </div>
             </div>
-            <div class="footer-right">
-              <div><strong>GRADING SCALE:</strong></div>
-              <div class="grade-scale">
-                <div>Distinction: 75% and above</div>
-                <div>First Division: 60% to 74%</div>
-                <div>Second Division: 50% to 59%</div>
-              </div>
+
+            <table class="top-meta-table">
+                <tr>
+                    <td><span class="label-hindi">नामांकन संख्या</span> Enrollment No.</td>
+                    <td><span class="label-hindi">अनुक्रमांक</span> Roll No.</td>
+                    <td><span class="label-hindi">केन्द्र कोड</span> Centre Code</td>
+                    <td><span class="label-hindi">प्रमाण-पत्र क्रमांक</span> Cert No.</td>
+                </tr>
+                <tr style="font-weight: bold; font-size: 13px;">
+                    <td>${result?.enrollmentNo || 'NSDVE100984168'}</td>
+                    <td>${result?.rollNo || 'CUS12343'}</td>
+                    <td>${result?.centreCode || 'JH/NCVTE/N1047669'}</td>
+                    <td>${result?.serialNo || 'NSDVE12343'}</td>
+                </tr>
+            </table>
+
+            <div class="student-details">
+                <p>प्रमाणित किया जाता है कि (This is to certify that) &nbsp; <span class="detail-row">${result?.studentName?.toUpperCase() || ''}</span></p>
+                <p>परिषद् के अभिलेखानुसार (According to the Boards Record)</p>
+                <p>आत्मज / आत्मजा श्रीमती (Son / Daughter of Mrs.) &nbsp; <span class="detail-row">${result?.motherName || 'MALTI DEVI'}</span></p>
+                <p>एवं श्री (and Mr.) &nbsp; <span class="detail-row">${result?.fatherName || ''}</span></p>
+                <p>जिनकी जन्मतिथि (Whose Date of Birth is) &nbsp; <span class="detail-row">${result?.dateOfBirth || ''}</span></p>
+                <p>की सेंट्रल बोर्ड परीक्षा (has passed Central Board Examination held in) &nbsp; <span class="detail-row">${result?.session || 'Jun-2023'}</span></p>
+                <p>से श्रेणी (with Division) &nbsp; <span class="detail-row">${result?.grade?.toUpperCase() || 'DISTINCTION'}</span></p>
             </div>
-          </div>
 
-          <!-- Result Box -->
-         <div class="result-box">
-            <div class="result-text">
-              RESULT: ${result?.grade?.toUpperCase() || 'N/A'} — ${result?.percentage || '0'}%
+            <table class="marks-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="width:35%">विषय<br>(SUBJECTS)</th>
+                        <th rowspan="2">विषय कोड<br>(CODE)</th>
+                        <th rowspan="2">अधिकतम अंक<br>(MAX)</th>
+                        <th colspan="2">प्राप्तांक (MARKS OBTAINED)</th>
+                        <th rowspan="2">योग<br>(TOTAL)</th>
+                        <th rowspan="2">योग शब्दों में<br>(TOTAL IN WORDS)</th>
+                    </tr>
+                    <tr>
+                        <th>लिखित</th>
+                        <th>प्रायो.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${result?.subjects?.map(sub => `
+                    <tr>
+                        <td style="text-align: left; font-weight: bold; padding-left: 8px;">${sub.name}</td>
+                        <td>${sub.code || 'FSS400'}</td>
+                        <td>${sub.maxMarks}</td>
+                        <td>${sub.theory || sub.obtainedMarks}</td>
+                        <td>${sub.practical || '-'}</td>
+                        <td><strong>${sub.obtainedMarks}</strong></td>
+                        <td style="text-transform: uppercase; font-size: 9px;">${sub.inWords}</td>
+                    </tr>`).join('')}
+                    <tr class="total-row">
+                        <td colspan="2">GRAND TOTAL & RESULT</td>
+                        <td>${result?.totalMarks}</td>
+                        <td>${result?.obtainedMarks}</td>
+                        <td>-</td>
+                        <td>${result?.obtainedMarks}</td>
+                        <td style="text-transform: uppercase; font-size: 10px;">${result?.totalInWords}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="footer">
+                <div class="result-legend">
+                    AA - Absent | < 39% - Fail<br>
+                    40% to 59% - Second Class<br>
+                    60% to 79% - First Class<br>
+                    >= 80% - Distinction
+                </div>
+
+                <div style="text-align: left; font-size: 11px;">
+                    <strong>Place:</strong> Sonbhadra<br>
+                    <strong>Date:</strong> ${result?.certificateDate || ''}
+                </div>
+
+                <div class="signature-box">
+                    <img src="${Result}" alt="Signature" />
+                    <div style="border-top: 1.5px solid #000; margin-top: 5px; font-weight: bold; font-size: 12px;">
+                        Controller of Examination
+                    </div>
+                </div>
             </div>
-          </div>
-          
-          <!-- Signature Section 
-          <div class="signature-section">
-            <div class="signature-box">
-              <div class="signature-line"></div>
-              <div class="signature-label">Controller of Examination </div>
-            </div>
-             <div class="emblem emblem-right">
-                <img 
-                  src="${ISO}"
-                  alt="ISO Logo"
-                  style="width:100px;height:100px;object-fit:contain;margin-top:3px;"
-                />
-              </div>
-           <div class="signature-box">
-                <img 
-                  src="${Result}"
-                  alt="College Stamp"
-                  style="width:70px;height:70px;object-fit:contain;margin-top:-3px;"
-                />
-            </div>
-          </div>-->
-
-          <div class="signature-section">
-
-          <div class="signature-box">
-            <img src="${VRQR}" alt="College Stamp" />
-          </div>
-  
-           <div class="signature-box">
-            <img src="${Result}" alt="College Stamp" />
-          </div>
-
-           <div class="signature-box emblem">
-             <img src="${ISO}" alt="ISO Logo" style="width:120px; height:120px" />
-           </div>
-
-  <div class="signature-box">
-    <div class="signature-line"></div>
-    <div class="signature-label">Controller of Examination</div>
-  </div>
-</div>
-
-          
-          <!-- Print Footer -->
-          <div class="print-footer">
-             
-          </div>
         </div>
-        
+
         <script>
-          window.onload = function() {
-            setTimeout(function() { window.print(); }, 500);
-            window.onafterprint = function() { setTimeout(function() { window.close(); }, 500); };
-          };
+            window.onload = function() {
+                setTimeout(function() { 
+                    window.print(); 
+                }, 1000);
+            };
         </script>
-      </body>
-      </html>
-    `;
-    
+    </body>
+    </html>
+`;
     printWindow.document.write(printContent);
     printWindow.document.close();
     setTimeout(() => setIsPrinting(false), 3000);
   };
 
+// const handlePrint = () => {
+//   setIsPrinting(true);
+
+//   const printWindow = window.open('', '_blank', 'width=900,height=700,scrollbars=yes');
+
+//   if (!printWindow) {
+//     alert("Please allow popups to print the marksheet");
+//     setIsPrinting(false);
+//     return;
+//   }
+
+//   const printContent = `
+//     <!DOCTYPE html>
+//     <html>
+//     <head>
+//       <title>Marksheet - ${result?.studentName || 'Student'}</title>
+//       <meta charset="UTF-8">
+//       <style>
+//         @page {
+//           size: A4;
+//           margin: 15mm;
+//         }
+        
+//         * {
+//           margin: 0;
+//           padding: 0;
+//           box-sizing: border-box;
+//         }
+        
+//         body {
+//           font-family: 'Times New Roman', Times, serif;
+//           color: #000;
+//           -webkit-print-color-adjust: exact;
+//           print-color-adjust: exact;
+//           position: relative;
+//           min-height: 100vh;
+//           background: #fff;
+//         }
+        
+//         /* Watermark */
+//         body::after {
+//           content: "BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM BTCFSM";
+//           position: absolute;
+//           top: 50%;
+//           left: 50%;
+//           transform: translate(-50%, -50%) rotate(-30deg);
+//           font-size: 36px;
+//           font-weight: bold;
+//           color: rgba(0,0,0,0.03);
+//           white-space: nowrap;
+//           pointer-events: none;
+//           z-index: 1;
+//           width: 200%;
+//           text-align: center;
+//         }
+        
+//         .certificate-container {
+//           max-width: 210mm;
+//           margin: 0 auto;
+//           padding: 20px;
+//           background: white;
+//           border: 2px solid #000;
+//           position: relative;
+//           z-index: 2;
+//         }
+        
+//         .header {
+//           text-align: center;
+//           margin-bottom: 20px;
+//         }
+        
+//         .main-title {
+//           font-size: 22px;
+//           font-weight: bold;
+//           text-transform: uppercase;
+//           letter-spacing: 1px;
+//           line-height: 1.3;
+//         }
+        
+//         .hindi-title {
+//           font-size: 18px;
+//           font-weight: bold;
+//           margin-bottom: 5px;
+//         }
+        
+//         .sub-title {
+//           font-size: 14px;
+//           font-weight: 500;
+//           margin: 5px 0;
+//         }
+        
+//         .govt-info {
+//           font-size: 12px;
+//           border-top: 1px solid #000;
+//           border-bottom: 1px solid #000;
+//           padding: 5px 0;
+//           margin: 10px 0;
+//         }
+        
+//         .board-title {
+//           font-size: 18px;
+//           font-weight: bold;
+//           text-transform: uppercase;
+//           margin: 15px 0 5px;
+//         }
+        
+//         .statement-title {
+//           font-size: 24px;
+//           font-weight: bold;
+//           text-transform: uppercase;
+//           border-bottom: 2px solid #000;
+//           display: inline-block;
+//           padding-bottom: 5px;
+//           margin-bottom: 20px;
+//         }
+        
+//         /* Three column layout */
+//         .details-grid {
+//           display: grid;
+//           grid-template-columns: repeat(3, 1fr);
+//           gap: 20px;
+//           border: 1px solid #000;
+//           padding: 10px;
+//           margin-bottom: 20px;
+//         }
+        
+//         .detail-item {
+//           text-align: center;
+//         }
+        
+//         .detail-label {
+//           font-size: 12px;
+//           font-weight: normal;
+//         }
+        
+//         .detail-value {
+//           font-size: 14px;
+//           font-weight: bold;
+//           margin-top: 5px;
+//           word-break: break-word;
+//         }
+        
+//         /* Student info section */
+//         .student-info-section {
+//           margin-bottom: 20px;
+//         }
+        
+//         .info-line {
+//           display: flex;
+//           margin-bottom: 8px;
+//           font-size: 14px;
+//         }
+        
+//         .info-label {
+//           font-weight: bold;
+//           width: 200px;
+//         }
+        
+//         .info-value {
+//           font-weight: normal;
+//           border-bottom: 1px dotted #000;
+//           flex: 1;
+//           padding-left: 10px;
+//         }
+        
+//         /* Marks table */
+//         .marks-table {
+//           width: 100%;
+//           border-collapse: collapse;
+//           margin: 20px 0;
+//           font-size: 12px;
+//         }
+        
+//         .marks-table th,
+//         .marks-table td {
+//           border: 1px solid #000;
+//           padding: 8px 5px;
+//           text-align: center;
+//         }
+        
+//         .marks-table th {
+//           background: #f0f0f0;
+//           font-weight: bold;
+//           font-size: 11px;
+//         }
+        
+//         .marks-table .subject-cell {
+//           text-align: left;
+//         }
+        
+//         .total-row {
+//           font-weight: bold;
+//           background: #f0f0f0;
+//         }
+        
+//         .grand-total {
+//           margin-top: 10px;
+//           text-align: right;
+//           font-size: 14px;
+//           font-weight: bold;
+//         }
+        
+//         /* Grade scale */
+//         .grade-scale {
+//           margin: 20px 0;
+//           font-size: 11px;
+//           display: flex;
+//           gap: 20px;
+//           flex-wrap: wrap;
+//         }
+        
+//         .grade-item {
+//           margin-right: 15px;
+//         }
+        
+//         /* Footer */
+//         .footer {
+//           display: flex;
+//           justify-content: space-between;
+//           margin-top: 40px;
+//           font-size: 12px;
+//         }
+        
+//         .signature {
+//           text-align: center;
+//           width: 200px;
+//         }
+        
+//         .signature-line {
+//           border-top: 1px solid #000;
+//           margin: 30px 0 5px;
+//           width: 100%;
+//         }
+        
+//         .place-date {
+//           display: flex;
+//           justify-content: space-between;
+//           margin: 20px 0;
+//           font-size: 12px;
+//         }
+        
+//         .controller {
+//           text-align: right;
+//           margin-top: 20px;
+//           font-weight: bold;
+//         }
+        
+//         @media print {
+//           body { background: white; }
+//           body::after { opacity: 0.1; }
+//         }
+//       </style>
+//     </head>
+//     <body>
+//       <div class="certificate-container">
+//         <!-- Header -->
+//         <div class="header">
+//           <div class="hindi-title">राष्ट्रीय कौशल विकास संगठन</div>
+//           <div class="main-title">NATIONAL SKILL DEVELOPMENT ORGANISATION</div>
+//           <div class="sub-title">(An Autonomous Body, Registered Under Govt. of India)</div>
+//           <div class="sub-title">In Collaboration with Skill Council For Vocational Education, Govt of India</div>
+//           <div class="sub-title">In Associated with NCVTE Foundation, Incorporated with Government of India</div>
+          
+//           <div class="board-title">केन्द्रीय बोर्ड परीक्षा</div>
+//           <div class="board-title">CENTRAL BOARD OF EXAMINATION</div>
+//           <div class="statement-title">STATEMENT OF MARKS / अंकों का विवरण</div>
+//         </div>
+
+//         <!-- Three column details -->
+//         <div class="details-grid">
+//           <div class="detail-item">
+//             <div class="detail-label">नामांकन संख्या / Enrollment No.</div>
+//             <div class="detail-value">${result?.enrollmentNo || ''}</div>
+//           </div>
+//           <div class="detail-item">
+//             <div class="detail-label">अनुक्रमांक / Roll No.</div>
+//             <div class="detail-value">${result?.rollNo || 'CUS12343'}</div>
+//           </div>
+//           <div class="detail-item">
+//             <div class="detail-label">प्रमाण-पत्र क्रमांक / Certificate No.</div>
+//             <div class="detail-value">${result?.certificateNo || 'NSDVE' + (result?.enrollmentNo?.slice(-5) || '12343')}</div>
+//           </div>
+//         </div>
+
+//         <!-- Student Information -->
+//         <div class="student-info-section">
+//           <div class="info-line">
+//             <span class="info-label">प्रमाणित किया जाता है कि (This is to certify that)</span>
+//             <span class="info-value">${result?.studentName || ''}</span>
+//           </div>
+//           <div class="info-line">
+//             <span class="info-label">परिषद के अभिलेखानुसार (According to the Board's Record)</span>
+//             <span class="info-value"></span>
+//           </div>
+//           <div class="info-line">
+//             <span class="info-label">आत्मज / आत्मजा श्रीमती (Son/Daughter of Mrs.)</span>
+//             <span class="info-value">${result?.motherName || ''}</span>
+//           </div>
+//           <div class="info-line">
+//             <span class="info-label">एवं श्री (and Mr.)</span>
+//             <span class="info-value">${result?.fatherName || ''}</span>
+//           </div>
+//           <div class="info-line">
+//             <span class="info-label">जिनकी जन्मतिथि (Whose Date of Birth is)</span>
+//             <span class="info-value">${result?.dateOfBirth || ''}</span>
+//           </div>
+//           <div class="info-line">
+//             <span class="info-label">की केन्द्रीय बोर्ड परीक्षा / केन्द्र (has passed Central Board Examination held in)</span>
+//             <span class="info-value">Jun-2023</span>
+//           </div>
+//           <div class="info-line">
+//             <span class="info-label">से श्रेणी (with Division)</span>
+//             <span class="info-value">${result?.grade || 'DISTINCTION'}</span>
+//           </div>
+//           <div class="info-line">
+//             <span class="info-label">परीक्षार्थी के विषयवार प्राप्तांक निम्नलिखित हैं। (Marks obtained by the candidate subject wise are as under)</span>
+//             <span class="info-value"></span>
+//           </div>
+//         </div>
+
+//         <!-- Marks Table -->
+//         <table class="marks-table">
+//           <thead>
+//             <tr>
+//               <th>विषय (SUBJECTS)</th>
+//               <th>विषय कोड (SUBJECT CODE)</th>
+//               <th>अधिकतम अंक (MAXIMUM MARKS)</th>
+//               <th>प्राप्तांक (MARKS OBTAINED)</th>
+//               <th>योग (TOTAL)</th>
+//               <th>योग शब्दों में (TOTAL IN WORDS)</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             ${result?.subjects?.map((subject, index) => `
+//               <tr>
+//                 <td class="subject-cell">${subject.name}</td>
+//                 <td>FSS400-${(index + 1).toString().padStart(2, '0')}</td>
+//                 <td>${subject.maxMarks}</td>
+//                 <td>${subject.obtainedMarks}</td>
+//                 <td>${subject.obtainedMarks}</td>
+//                 <td style="font-size: 11px;">${subject.inWords}</td>
+//               </tr>
+//             `).join('') || ''}
+//           </tbody>
+//         </table>
+
+//         <!-- Grand Total -->
+//         <div style="margin: 10px 0; text-align: right; font-weight: bold;">
+//           कुल योग एवं परिणाम (GRAND TOTAL & RESULT): ${result?.totalMarks || 0} ${result?.obtainedMarks || 0} 568
+//         </div>
+
+//         <!-- Grade Scale -->
+//         <div class="grade-scale">
+//           <span class="grade-item">AA - Absent</span>
+//           <span class="grade-item">&lt;35% - Fail</span>
+//           <span class="grade-item">40% - Third Class</span>
+//           <span class="grade-item">41% to 59% - Second Class</span>
+//           <span class="grade-item">60% to 79% - First Class</span>
+//           <span class="grade-item">&gt;=80% - Distinction</span>
+//         </div>
+
+//         <!-- Place/Date and Signature -->
+//         <div class="place-date">
+//           <div>स्थान / Place: Chennai</div>
+//           <div>दिनांक / Date: 28-06-2023</div>
+//         </div>
+
+//         <div class="controller">
+//           Controller of Examination
+//         </div>
+
+//         <!-- Print Info -->
+//         <div style="text-align: center; font-size: 9px; margin-top: 20px; color: #666;">
+//           This is a computer-generated document. Printed on: ${new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}
+//         </div>
+//       </div>
+      
+//       <script>
+//         window.onload = function() {
+//           setTimeout(function() { window.print(); }, 500);
+//           window.onafterprint = function() { setTimeout(function() { window.close(); }, 500); };
+//         };
+//       </script>
+//     </body>
+//     </html>
+//   `;
+  
+//   printWindow.document.write(printContent);
+//   printWindow.document.close();
+//   setTimeout(() => setIsPrinting(false), 3000);
+// };
 
   const clearSearch = () => {
     setSearchValue("");
