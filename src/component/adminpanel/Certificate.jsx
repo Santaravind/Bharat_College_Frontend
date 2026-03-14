@@ -3326,7 +3326,7 @@ const printContent = `<!DOCTYPE html>
     </div>
 
     <div class="cert-row">
-        Course Duration <span class="dotted">&nbsp;${result?.courseDuration || '6 Months'}&nbsp;</span> 
+        Course Duration <span class="dotted">&nbsp;${result?.courseDuration ||'N/A'}&nbsp;</span> 
         conducted in the session <span class="dotted">&nbsp;${result?.session || ''}&nbsp;</span>
     </div>
 
