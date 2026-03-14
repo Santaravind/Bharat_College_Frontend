@@ -846,8 +846,8 @@ const AdminResult = () => {
                 <div class="logo-section">
                     <img src="${logo}" style="width: 85px;" />
                     <div>
-                        <p style="font-size: 16px; font-family: 'Hind';">व्यवसायिक शिक्षा के लिए राष्ट्रीय कौशल विकास</p>
-                        <h1>Bharat Technical College Of Fire Engineering & Management</h1>
+                       
+                        <h1>Bharat Technical College Of Fire Safty Engineering & Management</h1>
                         <p> An Autonomous Body, Under Govt.Act Established Under Act 1882,Registered Under Govt of U.P. & Ministry of MSME, Govt of India.Registration No. SON/01794/2025-2026. It is also ISO Certified.</p>
                     </div>
                     <div style="width: 85px;"></div>
