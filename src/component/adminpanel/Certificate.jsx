@@ -3141,9 +3141,9 @@ const printContent = `<!DOCTYPE html>
             font-family: 'Poppins', sans-serif;
             font-size: 8.5pt;
             font-weight: 700;
-            color: #111;
+            color: #1a3a6b;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.2px;
         }
         .center-seal {
             text-align: center;
