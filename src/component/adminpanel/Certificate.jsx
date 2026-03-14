@@ -2688,26 +2688,53 @@ const printContent = `<!DOCTYPE html>
         }
 
         /* Watermark text fill */
-        .watermark-layer {
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            display: flex;
-            flex-wrap: wrap;
-            align-content: flex-start;
-            padding: 10px;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        .watermark-layer span {
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            color: rgba(0,0,0,0.045);
-            white-space: nowrap;
-            margin: 0 4px;
-            line-height: 1.8;
-        }
+        /* Main wrapper for all watermark elements */
+    .watermark-container {
+        position: absolute;
+        inset: 0;
+        z-index: 0; /* Keeps it behind all certificate content */
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    /* Repeated Text Styling */
+    .watermark-text-layer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 10px;
+        opacity: 0.07; /* Overall subtleness for the text layer */
+    }
+
+    .watermark-text-layer span {
+        font-family: 'Poppins', sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.03); /* Extremely faint */
+        margin: 8px 12px;
+        transform: rotate(-25deg); /* Professional slanted look */
+    }
+
+    /* Central Logo Styling */
+    .watermark-logo-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Perfect centering */
+        width: 130mm; /* Large size for A4 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .watermark-logo-center img {
+        width: 100%;
+        height: auto;
+        /* Adjusted for "barely there" look (range 0.05 to 0.08 is best) */
+        opacity: 0.08; 
+        /* Greyscale ensures it doesn't clash with colored text */
+        filter: grayscale(100%); 
+    }
 
         /* Corner ornaments using CSS */
         .corner {
@@ -3164,9 +3191,15 @@ const printContent = `<!DOCTYPE html>
 <div class="cert-wrap">
 
     <!-- Watermark layer -->
-    <div class="watermark-layer">
-        ${Array(120).fill('<span>BTFESM</span>').join('')}
+    <div class="watermark-container">
+    <div class="watermark-text-layer">
+        ${Array(150).fill('<span>BTFESM</span>').join('')}
     </div>
+
+    <div class="watermark-logo-center">
+        <img src="${logo}" alt="watermark logo" />
+    </div>
+</div>
 
     <!-- Corner ornaments -->
     <div class="corner corner-tl">
@@ -3293,7 +3326,7 @@ const printContent = `<!DOCTYPE html>
     </div>
 
     <div class="cert-row">
-        Course Duration <span class="dotted">&nbsp;${result?.courseDuration || '6 Months'}&nbsp;</span> 
+        Course Duration <span class="dotted">&nbsp;${result?.courseDuration ||'N/A'}&nbsp;</span> 
         conducted in the session <span class="dotted">&nbsp;${result?.session || ''}&nbsp;</span>
     </div>
 
@@ -3323,6 +3356,7 @@ const printContent = `<!DOCTYPE html>
         60% to 79% - First Class<br>
         &gt;=80% &nbsp;&nbsp; - Distinction
     </div>-->
+     
 
     <!-- Footer signatures -->
     <div class="footer">
@@ -3346,7 +3380,7 @@ const printContent = `<!DOCTYPE html>
             </div>
         </div>
     </div>
-
+ 
 </div><!-- end .cert-wrap -->
 
 <script>
