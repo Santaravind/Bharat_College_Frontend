@@ -1422,7 +1422,7 @@ function ResultDeclared() {
         timestamp: new Date().toISOString()
       };
 
-      console.log("Saving to database:", resultData);
+      // console.log("Saving to database:", resultData);
 
       const response = await googleserv.saveResultData(resultData);
          

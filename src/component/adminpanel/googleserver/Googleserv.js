@@ -156,7 +156,7 @@ export const googleserv = {
 
     window[callbackName] = (data) => {
       resolve(data);
-      console.log(data);
+    
       delete window[callbackName];
       script.remove();
     };
@@ -206,7 +206,7 @@ getResultBySerial: (serialNo) => {
 
     window[callbackName] = (data) => {
       resolve(data);
-      console.log(data);
+     
       delete window[callbackName];
       script.remove();
     };
