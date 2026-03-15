@@ -170,8 +170,8 @@ const AdminResult = () => {
   courseName: data["Course Name"] || data.courseName || "",
   session: data.Session || data.session || "",
   examinationCenter: data["Examination Center"] || data.examinationCenter || "", // ADD THIS
-  percentage,
-  grade,
+  percentage:data["Percentage"] ||data.percentage||"",
+ grade: data["Grade"] || data.grade || "",
   subjects: subjectsWithWords.map((subject, index) => ({
     ...subject,
     // Add codes from original data if available
@@ -446,7 +446,7 @@ const AdminResult = () => {
             .marks-table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-top: 5px;
+                margin-top: 15px;
                 text-align: center;
                 font-size: 11px;
             }
@@ -530,8 +530,9 @@ const AdminResult = () => {
     }
 
     .issue-details {
-        margin-top: 10px;
+        margin-top: 12px;
         font-size: 11px;
+        line-hight:2.5;
         font-weight: 600;
         color: #555;
     }
@@ -607,8 +608,8 @@ const AdminResult = () => {
                 </tr>
             </table>
 
-            <div class="student-container">
-    <div class="student-info-text">
+        <div class="student-container">
+         <div class="student-info-text">
         <p>
             <span class="hindi-inline">प्रमाणित किया जाता है कि</span> (This is to certify that) 
             <span class="detail-row">${result?.studentName?.toUpperCase() || 'N/A'}</span>
@@ -645,7 +646,7 @@ const AdminResult = () => {
 
         <p>
             <span class="hindi-inline">श्रेणी</span> (Division) 
-            <span class="detail-row" style="min-width: 50px;">${result?.grade || 'A'}</span>
+            <span class="detail-row" style="min-width: 50px;">${result?.grade ?? 'A'}</span>
         </p>
     </div>
 
@@ -717,7 +718,9 @@ const AdminResult = () => {
         </div>
         <div class="issue-details">
             <div>Place: Sonbhadra, U.P.</div>
-            <div>Date: ${result?.certificateDate || '15/06/2025'}</div>
+            <!--<div>Date: ${result?.certificateDate || '15/06/2025'}</div>-->
+             
+            <div> Data:     </div>
         </div>
     </div>
 
@@ -747,7 +750,9 @@ const AdminResult = () => {
     </body>
     </html>
 `;
-    printWindow.document.write(printContent);
+const cleanContent = printContent.replace(/undefined/g, "");
+printWindow.document.write(cleanContent);
+    // printWindow.document.write(printContent);
     printWindow.document.close();
     setTimeout(() => setIsPrinting(false), 3000);
   };
