@@ -3321,9 +3321,9 @@ const printContent = `<!DOCTYPE html>
 
     <div class="cert-row">has successfully completed the</div>
     
-    <div class="cert-row">
+    <!--<div class="cert-row">
         <span class="dotted dotted-wide">&nbsp;${result?.courseName || 'DIPLOMA IN FIRE AND INDUSTRIAL SAFETY'}&nbsp;</span>
-    </div>
+    </div>-->
 
     <div class="cert-row">
         Course Duration <span class="dotted">&nbsp;${result?.courseDuration ||'N/A'}&nbsp;</span> 
