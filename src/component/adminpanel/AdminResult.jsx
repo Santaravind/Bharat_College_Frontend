@@ -90,7 +90,7 @@ const AdminResult = () => {
 
     const data = response.data;
     const allSubjects = [];
-
+        console.log(data);//new
     // subjects
     if (data.subjects && Array.isArray(data.subjects)) {
       data.subjects.forEach((subject, index) => {
