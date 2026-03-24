@@ -1037,6 +1037,7 @@ function ResultDeclared() {
     serialNo: "",
     enrollmentNo: "",
     rollNo: "", // ✅ Added roll number
+    registrationNo: "", // ✅ NEW FIELD
     firstName: "",
     lastName: "",
     fatherName: "",
@@ -1386,15 +1387,16 @@ function ResultDeclared() {
       const resultData = {
         serialNo: formData.serialNo || `BT01A${Date.now().toString().slice(-8)}`,
         enrollmentNo: formData.enrollmentNo,
-        rollNo: formData.rollNo, // ✅ Added roll number
+        rollNo: formData.rollNo, 
         studentName,
         firstName: formData.firstName,
         lastName: formData.lastName,
         fatherName: formData.fatherName,
+        registrationNo: formData.registrationNo, // ✅ NEW FIELD
         dateOfBirth: new Date(formData.dateOfBirth).toLocaleDateString("en-CA"),
         courseName: formData.courseName,
-        courseDuration: formData.courseDuration, // ✅ Added course duration
-        examinationCenter: formData.examinationCenter, // ✅ Added examination center
+        courseDuration: formData.courseDuration, 
+        examinationCenter: formData.examinationCenter, 
         totalMarks: parseFloat(formData.totalMarks) || 0,
         obtainedMarks: parseFloat(formData.obtainedMarks) || 0,
         percentage: parseFloat(formData.percentage) || 0,
@@ -1464,6 +1466,7 @@ function ResultDeclared() {
       lastName: "",
       fatherName: "",
       dateOfBirth: "",
+       registrationNo: "",
       courseName: "",
       courseDuration: "", // ✅ Reset course duration
       examinationCenter: "", // ✅ Reset examination center
@@ -1775,7 +1778,7 @@ function ResultDeclared() {
                         />
                       </div>
                     </div>
-                    
+                   
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1790,6 +1793,19 @@ function ResultDeclared() {
                           required
                         />
                       </div>
+                       <div>
+                         <label className="block text-sm font-medium text-gray-700 mb-2">
+                           Registration Number
+                         </label>
+                         <input
+                           type="text"
+                           name="registrationNo"
+                           value={formData.registrationNo}
+                           onChange={handleInputChange}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            placeholder="Enter registration number"
+                          />
+                        </div>
                     </div>
                   </div>
                 </div>

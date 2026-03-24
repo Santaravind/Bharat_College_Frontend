@@ -2,7 +2,7 @@
 // const BASE_URL =
 //   "https://script.google.com/macros/s/AKfycbyxiVThFqVZSb0oogFHPLG4U8AlbVHgm1b9aPCDAPVRdHGRG2Dv0ZxUUPG1-lcmDnkTnQ/exec";
 
-const BASE_URL ="https://script.google.com/macros/s/AKfycbwm2UCS0Y_aW_ojFtNDZo66ItRV8Hf_jJANdYFwKvCwqDK8xmZ8t-pH2KLn7eGjA7qlBg/exec"
+const BASE_URL ="https://script.google.com/macros/s/AKfycbzt6_vGEJ7sSRqa__sUdEeFy49qAF0-XHWVwSOduw8Nvuo27q7FEpCsXO_Ua55h2AUYpQ/exec";
 
 export const googleserv = {
   // Save new result data
