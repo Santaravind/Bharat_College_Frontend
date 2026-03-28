@@ -167,6 +167,7 @@ const AdminResult = () => {
   enrollmentNo: data["Enrollment No"] || data.enrollmentNo || "",
   serialNo: data["Serial No"] || data.serialNo || "",
   rollNo: data["Roll No"] || data.rollNo || "", // ADD THIS
+  registrationNo:data["Registration No"]||data.registrationNo,//registration no added
   courseName: data["Course Name"] || data.courseName || "",
   session: data.Session || data.session || "",
   examinationCenter: data["Examination Center"] || data.examinationCenter || "", // ADD THIS
@@ -253,7 +254,7 @@ const AdminResult = () => {
                 /* Border logic: ensures border stays inside the width */
                 border: 12px solid transparent;
                 border-image: url('https://img.icons8.com/color/48/star--v1.png') 30 round;
-                outline: 1.5px solid #1a3a6c;
+                outline: 6px solid #1a3a6c;
                 outline-offset: -8px;
             }
 
@@ -261,7 +262,7 @@ const AdminResult = () => {
           .header-container {
         font-family: 'Roboto', sans-serif;
         color: #1a3a6c;
-        padding: 20px;
+        padding: 18px;
        a formal border */
         background-color: #fff;
     }
@@ -595,13 +596,13 @@ const AdminResult = () => {
 
             <table class="top-meta-table">
                 <tr>
-                    <td><span class="label-hindi">नामांकन संख्या</span> Enrollment No.</td>
+                    <td><span class="label-hindi">पंजीकरण संख्या</span> Registration No</td>
                     <td><span class="label-hindi">अनुक्रमांक</span> Roll No.</td>
                     <td><span class="label-hindi">केन्द्र </span> Centre Name</td>
                     <td><span class="label-hindi">प्रमाण-पत्र क्रमांक</span> Cert No.</td>
                 </tr>
                 <tr style="font-weight: bold; font-size: 13px;">
-                    <td>${result?.enrollmentNo || 'NSDVE100984168'}</td>
+                    <td>${result?.registrationNo || 'BSTC100984168'}</td>                     
                     <td>${result?.rollNo || 'CHDS1000'}</td>
                     <td>${result?.centreCode || 'JH/NCVTE/N1047669'}</td>
                     <td>${result?.serialNo || 'NSDVE12343'}</td>
@@ -630,9 +631,15 @@ const AdminResult = () => {
         </p>
         
         <p>
+            <span class="hindi-inline">पाठ्यक्रम का नाम</span> (Course Name :) 
+            <span class="detail-row">${result?.courseName || 'N/A'}</span>
+        </p>
+
+        <p>
             <span class="hindi-inline">की सेंट्रल बोर्ड परीक्षा</span> (Passed Central Board Exam held in) 
             <span class="detail-row">${result?.session || 'N/A'}</span>
         </p>
+        
 
         <p>
             <span class="hindi-inline">कोर्स और अवधि</span> (Course with Duration) 
