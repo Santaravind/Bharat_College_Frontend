@@ -596,13 +596,13 @@ const AdminResult = () => {
 
             <table class="top-meta-table">
                 <tr>
-                    <td><span class="label-hindi">पंजीकरण संख्या</span> Registration No</td>
+                    <td><span class="label-hindi">नामांकन संख्या</span> Enrollment No</td>
                     <td><span class="label-hindi">अनुक्रमांक</span> Roll No.</td>
                     <td><span class="label-hindi">केन्द्र </span> Centre Name</td>
                     <td><span class="label-hindi">प्रमाण-पत्र क्रमांक</span> Cert No.</td>
                 </tr>
                 <tr style="font-weight: bold; font-size: 13px;">
-                    <td>${result?.registrationNo || 'BSTC100984168'}</td>                     
+                    <td>${result?.enrollmentNo || 'BSTC100984168'}</td>                     
                     <td>${result?.rollNo || 'CHDS1000'}</td>
                     <td>${result?.centreCode || 'JH/NCVTE/N1047669'}</td>
                     <td>${result?.serialNo || 'NSDVE12343'}</td>
