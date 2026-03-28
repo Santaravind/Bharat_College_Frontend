@@ -1232,6 +1232,7 @@ const Certificate = () => {
         dateOfBirth: formatDate(data["Date of Birth"] || data.dateOfBirth || data["DOB"]),
         photoUrl: data["Photo Url"] || data.photoUrl || data["PhotoURL"] || "",
         enrollmentNo: data["Enrollment No"] || data.enrollmentNo || data["EnrollmentNo"] || "",
+         registrationNo:data["Registration No"]||data.registrationNo,
         serialNo: data["Serial No"] || data.serialNo || data["SerialNo"] || "",
         courseName: data["Course Name"] || data.courseName || data["CourseName"] || "ADVANCED DIPLOMA IN COMPUTER APPLICATION",
         session: data.Session || data.session || data["AcademicSession"] || "2025-26",
@@ -3260,7 +3261,7 @@ const printContent = `<!DOCTYPE html>
 
         <!-- Reg No + Date -->
         <div class="top-meta">
-            <div>रजि संख्या/Register No. &nbsp;&nbsp;<span>${result?.enrollmentNo || 'NSDVE100984168'}</span></div>
+            <div>रजि संख्या/Register No. &nbsp;&nbsp;<span>${result?.registrationNo || 'N/A'}</span></div>
             <div>दिनांक/Date : &nbsp;&nbsp;<span>${result?.certificateDate || ''}</span></div>
         </div>
 
