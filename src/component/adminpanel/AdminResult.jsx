@@ -90,7 +90,7 @@ const AdminResult = () => {
 
     const data = response.data;
     const allSubjects = [];
-        console.log(data);//new
+       // console.log(data);//new
     // subjects
     if (data.subjects && Array.isArray(data.subjects)) {
       data.subjects.forEach((subject, index) => {
@@ -598,13 +598,13 @@ const AdminResult = () => {
                 <tr>
                     <td><span class="label-hindi">नामांकन संख्या</span> Enrollment No</td>
                     <td><span class="label-hindi">अनुक्रमांक</span> Roll No.</td>
-                    <td><span class="label-hindi">केन्द्र </span> Centre Name</td>
+                    <td><span class="label-hindi">पंजीकरण संख्या </span> Registration No</td>
                     <td><span class="label-hindi">प्रमाण-पत्र क्रमांक</span> Cert No.</td>
                 </tr>
                 <tr style="font-weight: bold; font-size: 13px;">
                     <td>${result?.enrollmentNo || 'BSTC100984168'}</td>                     
                     <td>${result?.rollNo || 'CHDS1000'}</td>
-                    <td>${result?.centreCode || 'JH/NCVTE/N1047669'}</td>
+                    <td>${result?.registrationNo || 'JH/NCVTE/N1047669'}</td>
                     <td>${result?.serialNo || 'NSDVE12343'}</td>
                 </tr>
             </table>
@@ -633,7 +633,7 @@ const AdminResult = () => {
         <p>
             <span class="hindi-inline">पाठ्यक्रम का नाम</span> (Course Name :) 
             <span class="detail-row">${result?.courseName || 'N/A'}</span>
-        </p>
+        </p> 
 
         <p>
             <span class="hindi-inline">की सेंट्रल बोर्ड परीक्षा</span> (Passed Central Board Exam held in) 
