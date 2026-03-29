@@ -2762,8 +2762,8 @@ const printContent = `<!DOCTYPE html>
         .top-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 12pt;
-            font-weight: 600;
+            font-size: 10pt;
+            font-weight: 400;
             color: #1a1a1a;
             margin-top:50px;
             margin-bottom: 10px;
@@ -3261,7 +3261,8 @@ const printContent = `<!DOCTYPE html>
 
         <!-- Reg No + Date -->
         <div class="top-meta">
-            <div>रजि संख्या/Register No. &nbsp;&nbsp;<span>${result?.registrationNo || 'N/A'}</span></div>
+            <div>पंजी संख्या/Register No. &nbsp;&nbsp;<span>${result?.registrationNo || 'N/A'}</span></div>
+            <div>रजि संख्या/Enroll. No. &nbsp;&nbsp;<span>${result?.enrollmentNo || 'N/A'}</span></div>
             <div>दिनांक/Date : &nbsp;&nbsp;<span>${result?.certificateDate || ''}</span></div>
         </div>
 
