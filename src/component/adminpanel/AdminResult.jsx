@@ -90,7 +90,7 @@ const AdminResult = () => {
 
     const data = response.data;
     const allSubjects = [];
-   console.log(data);//new
+  //  console.log(data);//new
     // subjects
     if (data.subjects && Array.isArray(data.subjects)) {
       data.subjects.forEach((subject, index) => {
@@ -192,7 +192,7 @@ const AdminResult = () => {
 
     setResult(enhancedData);
   } catch (err) {
-    console.error("Search error:", err);
+    // console.error("Search error:", err);
     setError("Failed to fetch data. Please try again.");
   } finally {
     setLoading(false);

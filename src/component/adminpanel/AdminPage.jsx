@@ -78,7 +78,7 @@ function AdminPage() {
 
   // If authenticated with the specific email and password, show admin tools
   if (isAuthenticated) {
-    console.log("Rendering authenticated view");
+    // console.log("Rendering authenticated view");
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
         <div className="max-w-6xl mx-auto">
