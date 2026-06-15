@@ -90,7 +90,7 @@ const AdminResult = () => {
 
     const data = response.data;
     const allSubjects = [];
-       // console.log(data);//new
+   console.log(data);//new
     // subjects
     if (data.subjects && Array.isArray(data.subjects)) {
       data.subjects.forEach((subject, index) => {
@@ -470,13 +470,27 @@ const AdminResult = () => {
 
             
     .footer-container {
-        margin-top: 50px;
+        margin-top: 25px;
         display: flex;
         justify-content: space-between;
         align-items: flex-end; /* Keeps everything anchored to the bottom */
         padding: 0 10px;
         font-family: 'Roboto', sans-serif;
     }
+   /*.footer-container {
+    position: fixed;
+    bottom: 15px; /* margin from bottom of screen */
+    left: 0;
+    right: 0;
+    margin: 0 10px; /* left/right spacing */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 10px;
+    font-family: 'Roboto', sans-serif;
+    background: #fff; /* recommended, so content behind doesn't show through */
+    z-index: 10;
+}*/
 
     /* Column 1: Legend (Left) */
     .footer-left {
@@ -711,6 +725,11 @@ const AdminResult = () => {
 </tbody>
             </table>
 
+             <!-- Grand Total -->        
+              <div style=" text-align: right; font-weight: bold;">
+           कुल योग एवं परिणाम (GRAND TOTAL & RESULT): ${result?.totalMarks || 0} /${result?.obtainedMarks || 0} 
+        </div>
+
     <div class="footer-container">
     
     <div class="footer-left">
@@ -727,7 +746,7 @@ const AdminResult = () => {
             <div>Place: Sonbhadra, U.P.</div>
             <!--<div>Date: ${result?.certificateDate || '15/06/2025'}</div>-->
              
-            <div> Data:     </div>
+            <div> Date:     </div>
         </div>
     </div>
 
