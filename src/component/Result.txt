@@ -1,0 +1,566 @@
+  
+    const printContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Marksheet - ${result?.studentName || 'Student'}</title>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Hind:wght@400;600&display=swap" rel="stylesheet">
+        
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Playfair+Display:wght@700;900&family=Roboto:wght@400;700&display=swap');
+            /* 1. RESET & PAGE SETUP */
+            @page { 
+                size: A4; 
+                margin: 0; /* Let the container handle margins */
+            }
+            
+            * { 
+                margin: 0; 
+                padding: 0; 
+                box-sizing: border-box; 
+            }
+
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f0f0f0;
+                display: flex;
+                justify-content: center;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* 2. FIXED DIMENSIONS FOR A4 */
+            .certificate-container {
+                width: 210mm;
+                height: 297mm; /* Fixed A4 height */
+                background: white;
+                padding: 30px;
+                position: relative;
+                overflow: hidden; /* Prevents bleed */
+                
+                /* Border logic: ensures border stays inside the width */
+                border: 12px solid transparent;
+                border-image: url('https://img.icons8.com/color/48/star--v1.png') 30 round;
+                outline: 6px solid #1a3a6c;
+                outline-offset: -8px;
+            }
+
+            /* 3. SCANNABLE LAYOUT SECTIONS */
+          .header-container {
+        font-family: 'Roboto', sans-serif;
+        color: #1a3a6c;
+        padding: 18px;
+       a formal border */
+        background-color: #fff;
+    }
+
+    /* Main Branding Section */
+    .brand-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        border-bottom: 2px solid #d4af37; /* Gold accent line */
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+
+    .college-info {
+        flex: 1;
+        padding: 0 10px;
+    }
+
+    .college-info h1 {
+        font-family: 'Playfair Display', serif; /* Serif for academic prestige */
+        font-size: 20px;
+        text-transform: uppercase;
+        
+        margin: 10px 0 8px 0;
+        letter-spacing: 0.5px;
+        color: #202f34;
+    }
+
+    .accreditation {
+        font-size: 12px;
+        color: #444;
+        line-height: 1.4;
+        max-width: 800px;
+        margin: 0 auto;
+        font-weight: 500;
+    }
+
+    .logo-img {
+        width: 140px;
+        height: auto;
+    }
+
+    /* Document Title Section */
+    .statement-header {
+        text-align: center;
+        background-color: #f8f9fa; /* Light grey subtle background */
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .statement-header h3 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: 2px;
+        font-weight: 700;
+    }
+
+    .hindi-title {
+        font-family: 'Hind', sans-serif;
+        font-size: 22px;
+        margin-bottom: 2px !important;
+        color: #c41e3a; /* Traditional Deep Red for Hindi heading */
+    }
+
+    .document-type {
+        font-size: 13px;
+        font-weight: 700;
+        margin-top: 5px;
+        text-transform: uppercase;
+        color: #555;
+        border-top: 1px solid #ccc;
+        display: inline-block;
+        padding-top: 5px;
+    }
+            .statement-header {
+                border-top: 2px solid #1a3a6c;
+                border-bottom: 2px solid #1a3a6c;
+                margin: 10px 0;
+                padding: 5px 0;
+                text-align: center;
+            }
+
+            .statement-header h3 { font-size: 20px; letter-spacing: 1px; }
+
+            .top-meta-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 15px;
+                font-size: 11px;
+            }
+
+            .top-meta-table td {
+                border: 1px solid #ccc;
+                padding: 6px;
+                text-align: center;
+                background: #f9f9f9;
+            }
+
+            .label-hindi { display: block; font-size: 9px; font-family: 'Hind', sans-serif; color: #444; }
+
+            .student-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin: 2px 0;
+        gap: 20px;
+        padding: 0 10px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .student-info-text {
+        flex: 1;
+        line-height: 1.2; /* Spaced out for readability */
+        color: #333;
+    }
+
+    .student-info-text p {
+        margin: 0;
+        font-size: 13.5px;
+    }
+
+    /* Styling the dynamic data */
+    .detail-row {
+        font-weight: 600;
+        color: #1a3a6c;
+        
+        padding: 0 2px;
+        display: inline-block;
+        min-width: 150px;
+        text-transform: uppercase;
+    }
+
+    .hindi-inline {
+        font-family: 'Hind', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: #444;
+    }
+
+    /* Photo Box Styling */
+    .photo-container {
+        width: 130px;
+        text-align: center;
+    }
+
+    .photo-box {
+        width: 120px;
+        height: 145px;
+        border: 2px solid #1a3a6c;
+        background: #fdfdfd;
+        padding:4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border-radius: 4px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .student-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .no-photo-text {
+        font-size: 10px;
+        color: #999;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+            .detail-row { 
+                border-bottom: 1px dotted #666; 
+                font-weight: bold; 
+                display: inline-block;
+                padding: 0 10px;
+            }
+
+            .marks-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+                text-align: center;
+                font-size: 11px;
+            }
+
+            .marks-table th, .marks-table td {
+                border: 1px solid #000;
+                padding: 6px 4px;
+            }
+
+            .marks-table th {
+                background-color: #f2f2f2;
+                color: #1a3a6c;
+                font-size: 10px;
+            }
+
+            .total-row {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+
+            
+    .footer-container {
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end; /* Keeps everything anchored to the bottom */
+        padding: 0 10px;
+        font-family: 'Roboto', sans-serif;
+    }
+   /*.footer-container {
+    position: fixed;
+    bottom: 15px; /* margin from bottom of screen */
+    left: 0;
+    right: 0;
+    margin: 0 10px; /* left/right spacing */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 10px;
+    font-family: 'Roboto', sans-serif;
+    background: #fff; /* recommended, so content behind doesn't show through */
+    z-index: 10;
+}*/
+
+    /* Column 1: Legend (Left) */
+    .footer-left {
+        flex: 1;
+        max-width: 30%;
+    }
+
+    .result-legend {
+        font-size: 10px;
+        color: #444;
+        line-height: 1.4;
+        border: 1px solid #ccc;
+        padding: 8px;
+        background-color: #fcfcfc;
+        border-radius: 4px;
+    }
+
+    /* Column 2: Signature Image (Center) */
+    .footer-center {
+        flex: 1;
+        display: flex;
+        justify-content: center; /* Perfect horizontal center */
+        align-items: center;
+        height: 100px; /* Provides space for the signature */
+    }
+
+    .signature-img {
+        max-width: 120px;
+        max-height: 80px;
+        object-fit: contain;
+    }
+
+    /* Column 3: Title & Line (Right) */
+    .footer-right {
+        flex: 1;
+        max-width: 30%;
+        text-align: center;
+    }
+
+    .signature-line {
+        border-top: 1.5px solid #1a3a6c;
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .signature-title {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #1a3a6c;
+        line-height: 1.2;
+    }
+
+    .issue-details {
+        margin-top: 12px;
+        font-size: 11px;
+        line-hight:2.5;
+        font-weight: 600;
+        color: #555;
+    }
+
+            .result-legend {
+                font-size: 9px;
+                border: 1px solid #000;
+                padding: 5px;
+                width: 180px;
+            }
+
+            .watermark {
+                position: absolute;
+                top: 55%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                opacity: 0.06;
+                width: 450px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            /* 4. PRINT SPECIFIC FIXES */
+            @media print {
+                body { background: none; padding: 0; }
+                .certificate-container { 
+                    margin: 0; 
+                    border-width: 12px !important; /* Ensure border displays */
+                }
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="certificate-container">
+            <img src="${logo}" class="watermark" alt="watermark">
+
+           <div class="header-container">
+           <div class="brand-section">
+           <img src="${logo}" class="logo-img" alt="College Logo" />
+        
+            <div class="college-info">
+              <h1>Bharat Technical College of Fire Engineering & Safety Management</h1>
+               <p class="accreditation">
+                An Autonomous Body, Under Govt. Act Established Under Act 1882<br>
+                Registered Under Govt. of U.P. & Ministry of MSME, Govt. of India | Registration No. SON/01794/2025-2026<br>
+                <strong>ISO 9001:2015 Certified Institution</strong>
+              </p>
+            </div>
+
+              <img src="${VRQR}" class="logo-img" style="width: 100px;" alt="QR Verification" />
+            </div>
+ 
+           <div class="statement-header">
+             <h3 class="hindi-title">सेंट्रल बोर्ड परीक्षा</h3>
+            <h3>CENTRAL BOARD OF EXAMINATION</h3>
+            <p class="document-type">STATEMENT OF MARKS / मार्क्स के वक्तव्य</p>
+            </div>
+          </div>
+
+            <table class="top-meta-table">
+                <tr>
+                    <td><span class="label-hindi">नामांकन संख्या</span> Enrollment No</td>
+                    <td><span class="label-hindi">अनुक्रमांक</span> Roll No.</td>
+                    <td><span class="label-hindi">पंजीकरण संख्या </span> Registration No</td>
+                    <td><span class="label-hindi">प्रमाण-पत्र क्रमांक</span> Cert No.</td>
+                </tr>
+                <tr style="font-weight: bold; font-size: 13px;">
+                    <td>${result?.enrollmentNo || 'BSTC100984168'}</td>                     
+                    <td>${result?.rollNo || 'CHDS1000'}</td>
+                    <td>${result?.registrationNo || 'JH/NCVTE/N1047669'}</td>
+                    <td>${result?.serialNo || 'NSDVE12343'}</td>
+                </tr>
+            </table>
+
+        <div class="student-container">
+         <div class="student-info-text">
+        <p>
+            <span class="hindi-inline">प्रमाणित किया जाता है कि</span> (This is to certify that) 
+            <span class="detail-row">${result?.studentName?.toUpperCase() || 'N/A'}</span>
+        </p>
+        
+        <p><span class="hindi-inline">परिषद् के अभिलेखानुसार</span> (According to the Board's Record)</p>
+        
+       
+        
+        <p>
+            <span class="hindi-inline">एवं श्री</span> (and Mr.) 
+            <span class="detail-row">${result?.fatherName || 'N/A'}</span>
+        </p>
+        
+        <p>
+            <span class="hindi-inline">जिनकी जन्मतिथि</span> (Whose Date of Birth is) 
+            <span class="detail-row">${result?.dateOfBirth || 'N/A'}</span>
+        </p>
+        
+        <p>
+            <span class="hindi-inline">पाठ्यक्रम का नाम</span> (Course Name :) 
+            <span class="detail-row">${result?.courseName || 'N/A'}</span>
+        </p> 
+
+        <p>
+            <span class="hindi-inline">की सेंट्रल बोर्ड परीक्षा</span> (Passed Central Board Exam held in) 
+            <span class="detail-row">${result?.session || 'N/A'}</span>
+        </p>
+        
+
+        <p>
+            <span class="hindi-inline">कोर्स और अवधि</span> (Course with Duration) 
+            <span class="detail-row">${result?.courseDuration || 'N/A'}</span>
+        </p>
+
+        <p>
+            <span class="hindi-inline">परीक्षा केंद्र</span> (Center Name) 
+            <span class="detail-row" style="min-width: 250px;">${result?.examinationCenter?.toUpperCase() || 'BHARAT TECHNICAL COLLEGE'}</span>
+        </p>
+
+        <p>
+            <span class="hindi-inline">श्रेणी</span> (Division) 
+            <span class="detail-row" style="min-width: 50px;">${result?.grade ?? 'A'}</span>
+        </p>
+    </div>
+
+    <div class="photo-container">
+        <div class="photo-box">
+            ${result?.photoUrl
+                ? `<img class="student-photo" src="${result.photoUrl}" alt="Student" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                   <div class="no-photo-text" style="display:none;">PHOTO<br>REQUIRED</div>`
+                : '<div class="no-photo-text">PASTE PHOTO<br>HERE</div>'
+            }
+        </div>
+    </div>
+</div>
+
+            <table class="marks-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2" style="width:35%">विषय<br>(SUBJECTS)</th>
+                        <th rowspan="2">विषय कोड<br>(CODE)</th>
+                        <th rowspan="2">अधिकतम अंक<br>(MAX)</th>
+                        <th colspan="2">प्राप्तांक (MARKS OBTAINED)</th>
+                        <th rowspan="2">योग<br>(TOTAL)</th>
+                        <th rowspan="2">योग शब्दों में<br>(TOTAL IN WORDS)</th>
+                    </tr>
+                    <tr>
+                        <th>लिखित</th>
+                        <th>प्रायो.</th>
+                    </tr>
+                </thead>
+                <tbody>
+              ${result?.subjects?.map(sub => `
+               <tr>
+                <td style="text-align: left; font-weight: bold; padding-left: 8px;">${sub.name}</td>
+                <td>${sub.code || 'FSS400'}</td>
+                <td>${sub.maxMarks}</td>
+                <td>${sub.type === 'theory' ? sub.obtainedMarks : '-'}</td>
+                <td>${sub.type === 'practical' ? sub.obtainedMarks : '-'}</td>
+                <td><strong>${sub.obtainedMarks}</strong></td>
+                <td style="text-transform: uppercase; font-size: 9px;">${sub.inWords}</td>
+             </tr>
+           `).join('')}
+  
+  <!-- Add practical subjects separately if they exist -->
+            ${result?.practicals?.map((practical, index) => `
+              <tr>
+      <td style="text-align: left; font-weight: bold; padding-left: 8px;">${practical.name}</td>
+      <td>${practical.practicalCode || `PRAC${String(index + 1).padStart(3, '0')}`}</td>
+      <td>${practical.maxMarks}</td>
+      <td>-</td>
+      <td>${practical.obtainedMarks}</td>
+      <td><strong>${practical.obtainedMarks}</strong></td>
+      <td style="text-transform: uppercase; font-size: 9px;">${convertToWords(practical.obtainedMarks)}</td>
+    </tr>
+  `).join('')}
+</tbody>
+            </table>
+
+             <!-- Grand Total -->        
+              <div style=" text-align: right; font-weight: bold;">
+           कुल योग एवं परिणाम (GRAND TOTAL & RESULT): ${result?.totalMarks || 0} /${result?.obtainedMarks || 0} 
+        </div>
+
+    <div class="footer-container">
+    
+    <div class="footer-left">
+        <div class="result-legend">
+            <strong style="display:block; border-bottom:1px solid #ddd; margin-bottom:4px; font-size:9px;">
+                GRADING SCALE / ग्रेडिंग पैमाना
+            </strong>
+            AA - Absent | &lt; 39% - Fail<br>
+            40% to 59% - Second Class<br>
+            60% to 79% - First Class<br>
+            &gt;= 80% - Distinction
+        </div>
+        <div class="issue-details">
+            <div>Place: Sonbhadra, U.P.</div>
+            <!--<div>Date: ${result?.certificateDate || '15/06/2025'}</div>-->
+             
+            <div> Date:     </div>
+        </div>
+    </div>
+
+    <div class="footer-center">
+        <img src="${Result}" alt="Official Stamp/Signature" class="signature-img" />
+    </div>
+
+    <div class="footer-right">
+        <div class="signature-line"></div>
+        <div class="signature-title">
+            Controller of Examination<br>
+            <span style="font-size: 9px; font-weight: 400;">CENTRAL BOARD OF EXAMINATION</span>
+        </div>
+    </div>
+
+</div>
+            </div>
+        </div>
+
+        <script>
+            window.onload = function() {
+                setTimeout(function() { 
+                    window.print(); 
+                }, 1000);
+            };
+        </script>
+    </body>
+    </html>
+`;
