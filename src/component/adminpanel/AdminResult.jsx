@@ -225,6 +225,20 @@ const AdminResult = () => {
   };
 
   // this working but clint now want student can print result
+  // const handlePrint = () => {
+  //   setIsPrinting(true);
+
+  //   const printWindow = window.open(
+  //     "",
+  //     "_blank",
+  //     "width=900,height=700,scrollbars=yes",
+  //   );
+
+  //   if (!printWindow) {
+  //     alert("Please allow popups to print the marksheet");
+  //     setIsPrinting(false);
+  //     return;
+  //   }
   const handlePrint = () => {
     setIsPrinting(true);
 
@@ -240,28 +254,53 @@ const AdminResult = () => {
       return;
     }
 
-    const printContent = `
+    // 🔢 Calculate total rows to decide compact sizing
+    const subjectCount = result?.subjects?.length || 0;
+    const practicalCount = result?.practicals?.length || 0;
+    const totalRows = subjectCount + practicalCount;
+
+    // Tiered sizing — adjust thresholds as you add more subjects
+    let tableFontSize = "11px";
+    let cellPadding = "6px 4px";
+    let rowFont = "13.5px";       // student info text
+    let detailMinWidth = "150px";
+    let containerPadding = "30px";
+    let headerLogoWidth = "140px";
+    let statementFont = "20px";
+
+    if (totalRows > 8 && totalRows <= 12) {
+      tableFontSize = "10px";
+      cellPadding = "4px 3px";
+      rowFont = "12.5px";
+      containerPadding = "22px";
+      headerLogoWidth = "110px";
+      statementFont = "17px";
+    } else if (totalRows > 12 && totalRows <= 16) {
+      tableFontSize = "9px";
+      cellPadding = "3px 2px";
+      rowFont = "11.5px";
+      containerPadding = "16px";
+      headerLogoWidth = "90px";
+      statementFont = "15px";
+    } else if (totalRows > 16) {
+      tableFontSize = "8px";
+      cellPadding = "2px 2px";
+      rowFont = "10.5px";
+      containerPadding = "12px";
+      headerLogoWidth = "75px";
+      statementFont = "13px";
+    }
+const printContent = `
     <!DOCTYPE html>
     <html>
     <head>
         <title>Marksheet - ${result?.studentName || "Student"}</title>
         <meta charset="UTF-8">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Hind:wght@400;600&display=swap" rel="stylesheet">
-        
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&family=Playfair+Display:wght@700;900&family=Roboto:wght@400;700&display=swap');
-            /* 1. RESET & PAGE SETUP */
-            @page { 
-                size: A4; 
-                margin: 0; /* Let the container handle margins */
-            }
-            
-            * { 
-                margin: 0; 
-                padding: 0; 
-                box-sizing: border-box; 
-            }
-
+            @page { size: A4; margin: 0; }
+            * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 font-family: 'Roboto', sans-serif;
                 background-color: #f0f0f0;
@@ -271,341 +310,81 @@ const AdminResult = () => {
                 print-color-adjust: exact;
             }
 
-            /* 2. FIXED DIMENSIONS FOR A4 */
             .certificate-container {
                 width: 210mm;
-                height: 297mm; /* Fixed A4 height */
+                height: 297mm;
                 background: white;
-                padding: 30px;
+                padding: ${containerPadding};
                 position: relative;
-                overflow: hidden; /* Prevents bleed */
-                
-                /* Border logic: ensures border stays inside the width */
+                overflow: hidden;
                 border: 12px solid transparent;
                 border-image: url('https://img.icons8.com/color/48/star--v1.png') 30 round;
                 outline: 6px solid #1a3a6c;
                 outline-offset: -8px;
+                transform-origin: top center;
             }
 
-            /* 3. SCANNABLE LAYOUT SECTIONS */
-          .header-container {
-        font-family: 'Roboto', sans-serif;
-        color: #1a3a6c;
-        padding: 18px;
-       a formal border */
-        background-color: #fff;
-    }
+            .header-container { font-family: 'Roboto', sans-serif; color: #1a3a6c; padding: 10px; background-color: #fff; }
 
-    /* Main Branding Section */
-    .brand-section {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        text-align: center;
-        border-bottom: 2px solid #d4af37; /* Gold accent line */
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-    }
+            .brand-section {
+                display: flex; justify-content: space-between; align-items: center;
+                text-align: center; border-bottom: 2px solid #d4af37;
+                padding-bottom: 10px; margin-bottom: 10px;
+            }
 
-    .college-info {
-        flex: 1;
-        padding: 0 10px;
-    }
+            .college-info { flex: 1; padding: 0 10px; }
+            .college-info h1 {
+                font-family: 'Playfair Display', serif;
+                font-size: ${totalRows > 12 ? "16px" : "20px"};
+                text-transform: uppercase; margin: 6px 0; letter-spacing: 0.5px; color: #202f34;
+            }
+            .accreditation { font-size: ${totalRows > 12 ? "10px" : "12px"}; color: #444; line-height: 1.3; font-weight: 500; }
+            .logo-img { width: ${headerLogoWidth}; height: auto; }
 
-    .college-info h1 {
-        font-family: 'Playfair Display', serif; /* Serif for academic prestige */
-        font-size: 20px;
-        text-transform: uppercase;
-        
-        margin: 10px 0 8px 0;
-        letter-spacing: 0.5px;
-        color: #202f34;
-    }
-
-    .accreditation {
-        font-size: 12px;
-        color: #444;
-        line-height: 1.4;
-        max-width: 800px;
-        margin: 0 auto;
-        font-weight: 500;
-    }
-
-    .logo-img {
-        width: 140px;
-        height: auto;
-    }
-
-    /* Document Title Section */
-    .statement-header {
-        text-align: center;
-        background-color: #f8f9fa; /* Light grey subtle background */
-        padding: 10px;
-        border-radius: 4px;
-    }
-
-    .statement-header h3 {
-        margin: 0;
-        font-size: 20px;
-        letter-spacing: 2px;
-        font-weight: 700;
-    }
-
-    .hindi-title {
-        font-family: 'Hind', sans-serif;
-        font-size: 22px;
-        margin-bottom: 2px !important;
-        color: #c41e3a; /* Traditional Deep Red for Hindi heading */
-    }
-
-    .document-type {
-        font-size: 13px;
-        font-weight: 700;
-        margin-top: 5px;
-        text-transform: uppercase;
-        color: #555;
-        border-top: 1px solid #ccc;
-        display: inline-block;
-        padding-top: 5px;
-    }
             .statement-header {
-                border-top: 2px solid #1a3a6c;
-                border-bottom: 2px solid #1a3a6c;
-                margin: 10px 0;
-                padding: 5px 0;
-                text-align: center;
+                text-align: center; background-color: #f8f9fa; padding: ${totalRows > 12 ? "5px" : "8px"};
+                border-radius: 4px; border-top: 2px solid #1a3a6c; border-bottom: 2px solid #1a3a6c;
+                margin: 8px 0;
             }
+            .statement-header h3 { font-size: ${statementFont}; letter-spacing: 1px; }
+            .hindi-title { font-family: 'Hind', sans-serif; font-size: calc(${statementFont} + 2px); margin-bottom: 2px !important; color: #c41e3a; }
+            .document-type { font-size: ${totalRows > 12 ? "11px" : "13px"}; font-weight: 700; margin-top: 4px; text-transform: uppercase; color: #555; border-top: 1px solid #ccc; display: inline-block; padding-top: 4px; }
 
-            .statement-header h3 { font-size: 20px; letter-spacing: 1px; }
+            .top-meta-table { width: 100%; border-collapse: collapse; margin-bottom: ${totalRows > 12 ? "8px" : "12px"}; font-size: ${totalRows > 12 ? "9px" : "11px"}; }
+            .top-meta-table td { border: 1px solid #ccc; padding: ${totalRows > 12 ? "4px" : "6px"}; text-align: center; background: #f9f9f9; }
+            .label-hindi { display: block; font-size: 8px; font-family: 'Hind', sans-serif; color: #444; }
 
-            .top-meta-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-bottom: 15px;
-                font-size: 11px;
-            }
+            .student-container { display: flex; justify-content: space-between; align-items: flex-start; margin: 2px 0; gap: 15px; padding: 0 10px; font-family: 'Roboto', sans-serif; }
+            .student-info-text { flex: 1; line-height: 1.15; color: #333; }
+            .student-info-text p { margin: 0; font-size: ${rowFont}; }
+            .detail-row { font-weight: 600; color: #1a3a6c; padding: 0 2px; display: inline-block; min-width: ${totalRows > 12 ? "110px" : detailMinWidth}; text-transform: uppercase; border-bottom: 1px dotted #666; }
+            .hindi-inline { font-family: 'Hind', sans-serif; font-weight: 600; font-size: ${totalRows > 12 ? "11px" : "14px"}; color: #444; }
 
-            .top-meta-table td {
-                border: 1px solid #ccc;
-                padding: 6px;
-                text-align: center;
-                background: #f9f9f9;
-            }
+            .photo-container { width: ${totalRows > 12 ? "100px" : "130px"}; text-align: center; }
+            .photo-box { width: ${totalRows > 12 ? "92px" : "120px"}; height: ${totalRows > 12 ? "112px" : "145px"}; border: 2px solid #1a3a6c; background: #fdfdfd; padding: 3px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 4px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+            .student-photo { width: 100%; height: 100%; object-fit: cover; }
+            .no-photo-text { font-size: 9px; color: #999; text-transform: uppercase; font-weight: bold; }
 
-            .label-hindi { display: block; font-size: 9px; font-family: 'Hind', sans-serif; color: #444; }
+            .marks-table { width: 100%; border-collapse: collapse; margin-top: ${totalRows > 12 ? "8px" : "14px"}; text-align: center; font-size: ${tableFontSize}; }
+            .marks-table th, .marks-table td { border: 1px solid #000; padding: ${cellPadding}; }
+            .marks-table th { background-color: #f2f2f2; color: #1a3a6c; font-size: calc(${tableFontSize} - 1px); }
+            .total-row { background-color: #f2f2f2; font-weight: bold; }
 
-            .student-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin: 2px 0;
-        gap: 20px;
-        padding: 0 10px;
-        font-family: 'Roboto', sans-serif;
-    }
+            .footer-container { margin-top: ${totalRows > 12 ? "10px" : "20px"}; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 10px; font-family: 'Roboto', sans-serif; }
+            .footer-left { flex: 1; max-width: 30%; }
+            .result-legend { font-size: 8px; color: #444; line-height: 1.3; border: 1px solid #000; padding: 5px; background-color: #fcfcfc; border-radius: 4px; width: 180px; }
+            .footer-center { flex: 1; display: flex; justify-content: center; align-items: center; height: ${totalRows > 12 ? "70px" : "100px"}; }
+            .signature-img { max-width: ${totalRows > 12 ? "90px" : "120px"}; max-height: ${totalRows > 12 ? "60px" : "80px"}; object-fit: contain; }
+            .footer-right { flex: 1; max-width: 30%; text-align: center; }
+            .signature-line { border-top: 1.5px solid #1a3a6c; width: 100%; margin-bottom: 6px; }
+            .signature-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #1a3a6c; line-height: 1.2; }
+            .issue-details { margin-top: 8px; font-size: 10px; font-weight: 600; color: #555; }
 
-    .student-info-text {
-        flex: 1;
-        line-height: 1.2; /* Spaced out for readability */
-        color: #333;
-    }
+            .watermark { position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%); opacity: 0.06; width: 400px; pointer-events: none; z-index: 0; }
 
-    .student-info-text p {
-        margin: 0;
-        font-size: 13.5px;
-    }
-
-    /* Styling the dynamic data */
-    .detail-row {
-        font-weight: 600;
-        color: #1a3a6c;
-        
-        padding: 0 2px;
-        display: inline-block;
-        min-width: 150px;
-        text-transform: uppercase;
-    }
-
-    .hindi-inline {
-        font-family: 'Hind', sans-serif;
-        font-weight: 600;
-        font-size: 14px;
-        color: #444;
-    }
-
-    /* Photo Box Styling */
-    .photo-container {
-        width: 130px;
-        text-align: center;
-    }
-
-    .photo-box {
-        width: 120px;
-        height: 145px;
-        border: 2px solid #1a3a6c;
-        background: #fdfdfd;
-        padding:4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        border-radius: 4px;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .student-photo {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .no-photo-text {
-        font-size: 10px;
-        color: #999;
-        text-transform: uppercase;
-        font-weight: bold;
-    }
-
-            .detail-row { 
-                border-bottom: 1px dotted #666; 
-                font-weight: bold; 
-                display: inline-block;
-                padding: 0 10px;
-            }
-
-            .marks-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 15px;
-                text-align: center;
-                font-size: 11px;
-            }
-
-            .marks-table th, .marks-table td {
-                border: 1px solid #000;
-                padding: 6px 4px;
-            }
-
-            .marks-table th {
-                background-color: #f2f2f2;
-                color: #1a3a6c;
-                font-size: 10px;
-            }
-
-            .total-row {
-                background-color: #f2f2f2;
-                font-weight: bold;
-            }
-
-            
-    .footer-container {
-        margin-top: 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end; /* Keeps everything anchored to the bottom */
-        padding: 0 10px;
-        font-family: 'Roboto', sans-serif;
-    }
-   /*.footer-container {
-    position: fixed;
-    bottom: 15px; /* margin from bottom of screen */
-    left: 0;
-    right: 0;
-    margin: 0 10px; /* left/right spacing */
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 0 10px;
-    font-family: 'Roboto', sans-serif;
-    background: #fff; /* recommended, so content behind doesn't show through */
-    z-index: 10;
-}*/
-
-    /* Column 1: Legend (Left) */
-    .footer-left {
-        flex: 1;
-        max-width: 30%;
-    }
-
-    .result-legend {
-        font-size: 10px;
-        color: #444;
-        line-height: 1.4;
-        border: 1px solid #ccc;
-        padding: 8px;
-        background-color: #fcfcfc;
-        border-radius: 4px;
-    }
-
-    /* Column 2: Signature Image (Center) */
-    .footer-center {
-        flex: 1;
-        display: flex;
-        justify-content: center; /* Perfect horizontal center */
-        align-items: center;
-        height: 100px; /* Provides space for the signature */
-    }
-
-    .signature-img {
-        max-width: 120px;
-        max-height: 80px;
-        object-fit: contain;
-    }
-
-    /* Column 3: Title & Line (Right) */
-    .footer-right {
-        flex: 1;
-        max-width: 30%;
-        text-align: center;
-    }
-
-    .signature-line {
-        border-top: 1.5px solid #1a3a6c;
-        width: 100%;
-        margin-bottom: 8px;
-    }
-
-    .signature-title {
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #1a3a6c;
-        line-height: 1.2;
-    }
-
-    .issue-details {
-        margin-top: 12px;
-        font-size: 11px;
-        line-hight:2.5;
-        font-weight: 600;
-        color: #555;
-    }
-
-            .result-legend {
-                font-size: 9px;
-                border: 1px solid #000;
-                padding: 5px;
-                width: 180px;
-            }
-
-            .watermark {
-                position: absolute;
-                top: 55%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                opacity: 0.06;
-                width: 450px;
-                pointer-events: none;
-                z-index: 0;
-            }
-
-            /* 4. PRINT SPECIFIC FIXES */
             @media print {
                 body { background: none; padding: 0; }
-                .certificate-container { 
-                    margin: 0; 
-                    border-width: 12px !important; /* Ensure border displays */
-                }
+                .certificate-container { margin: 0; border-width: 12px !important; }
             }
         </style>
     </head>
@@ -812,8 +591,24 @@ const AdminResult = () => {
             </div>
         </div>
 
-        <script>
+      <script>
             window.onload = function() {
+                const container = document.querySelector('.certificate-container');
+                const pageHeightPx = 297 * 3.7795; // mm to px at 96dpi
+                
+                // Reset overflow temporarily to measure real content height
+                container.style.overflow = 'visible';
+                const contentHeight = container.scrollHeight;
+                container.style.overflow = 'hidden';
+
+                if (contentHeight > pageHeightPx) {
+                    const scale = pageHeightPx / contentHeight;
+                    container.style.transform = 'scale(' + scale + ')';
+                    container.style.transformOrigin = 'top center';
+                    // Compensate the white space scale leaves below
+                    document.body.style.height = pageHeightPx + 'px';
+                }
+
                 setTimeout(function() { 
                     window.print(); 
                 }, 1000);
